@@ -10,8 +10,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/Sabsten/Hubert-eats">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://fr.postermywall.com/index.php/art/template/1937334dced5f5057b812d746dbffc28/cooking-restaurant-logo-editable-design-template">
+    <img alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Hubert-eats</h3>
@@ -105,7 +105,7 @@ This is an example of how to list things you need to use the software and how to
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone"https://github.com/Sabsten/Hubert-eats.git
+   git clone https://github.com/Sabsten/Hubert-eats.git
    ```
 3. Install NPM packages
    ```sh
@@ -175,9 +175,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Hubert-eats - [@twitter_handle](https://twitter.com/huber-eats) - support@uber-eats.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/Sabsten/Hubert-eats](https://github.com/Sabsten/Hubert-eats)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
