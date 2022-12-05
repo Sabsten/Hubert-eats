@@ -10,7 +10,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://fr.postermywall.com/index.php/art/template/1937334dced5f5057b812d746dbffc28/cooking-restaurant-logo-editable-design-template">
+  <a href="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/cooking-restaurant-logo-editable-design-template-1937334dced5f5057b812d746dbffc28_screen.jpg?ts=1597223944">
     <img alt="Logo" width="80" height="80">
   </a>
 
