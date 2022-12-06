@@ -196,7 +196,7 @@ Project Link: [https://github.com/Sabsten/Hubert-eats](https://github.com/Sabste
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://github.com/Sabsten/Hubert-eats/repo_name.svg?style=for-the-badge
+[contributors-shield]: https://github.com/Sabsten/Hubert-eats.svg?style=for-the-badge
 [contributors-url]: https://github.com/Sabsten/Hubert-eats/graphs/contributors
 [forks-shield]: https://github.com/Sabsten/Hubert-eats/repo_name.svg?style=for-the-badge
 [forks-url]: https://github.com/Sabsten/Hubert-eats/network/members
