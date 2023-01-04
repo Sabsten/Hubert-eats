@@ -10,6 +10,7 @@ using System.Data;
 using MySql.Data.MySqlClient;
 using System.Threading;
 using System.Data.SqlTypes;
+using UserEatsManager.Model.Tables;
 
 namespace ViewModel
 {
@@ -26,14 +27,13 @@ namespace ViewModel
                 return (true, "L'utilisateur a bien été ajouté dans la base de donnée.").ToTuple();
             }
         }
-        public Tuple<bool, string> modifyUser(string modifiedparameter, string modifiedvalue ,string identifiant)
+        public Tuple<bool, string> modifyUser(string modifiedparameter, int NumberSelected, List<List<string>> Data, string identifiant)
         {
             MySqlConnection connection = SQLDatabase.GetDBConnection();
             MySqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = "update "+ SQLDatabase.UserTable +" set "+ modifiedparameter +" = '" + modifiedvalue  + "' where Identifiant ='" + identifiant + "'";
+            string test = "update " + SQLDatabase.UserTable + " set " + Data[0][NumberSelected] + " = '" + modifiedparameter + "' where Identifiant ='" + identifiant + "'";
+            cmd.CommandText = test;
             return (true, "Modification effectuée " + identifiant).ToTuple();
-
-            //return (false, "Utilisateur non trouvé").ToTuple();
         }
 
         public Tuple<bool, string> deleteUser(string identifiant)
@@ -55,8 +55,8 @@ namespace ViewModel
             }
             return (false, "Utilisateur non trouvé").ToTuple();
         }
-
-        public List<Tuple<string, string, string, string, string>> FindUser(string identifiant)
+        
+        public List<List<string>> FindUser(string identifiant)
         {
             MySqlConnection connection = SQLDatabase.GetDBConnection();
             connection.Open();
@@ -64,12 +64,14 @@ namespace ViewModel
             IDcmd.CommandText = "select * from " + SQLDatabase.UserTable + " where Identifiant ='" + identifiant + "'";
             IDcmd.ExecuteNonQuery();
             MySqlDataReader readerID = IDcmd.ExecuteReader();
-            List<Tuple<string, string, string, string, string>> UserInfos = new();
+            List<List<string>> UserInfos = new();
+            Usertable test = new();
+            UserInfos.Add(DictionaryToListKeys(Usertable.GetUserTableDictionary()));
             List<string> User = new();
             int i = 0;
             while (readerID.Read())
             {
-                while (i != 5)
+                while (i != readerID.FieldCount)
                 {
                     if (!readerID.IsDBNull(i))
                     {
@@ -82,9 +84,19 @@ namespace ViewModel
                     i++;
                 }
                 i = 0;
-                UserInfos.Add((User[0], User[1], User[2], User[3], User[4]).ToTuple());
+                UserInfos.Add(User);
             }
             return UserInfos;
         }
+        private List<string> DictionaryToListKeys(Dictionary<string, string> dict)
+        {
+            List<string> list = new();
+            foreach (var item in dict)
+            {
+                list.Add(item.Key);
+            }
+            return list;
+        }
+
     }
 }

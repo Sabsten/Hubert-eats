@@ -61,9 +61,10 @@ namespace View
                                 {
                                     Console.WriteLine("Merci de renseigner son nom et prénom (exemple : Gérard DUPONT) :");
                                     Nom = Console.ReadLine();
-                                    if (Nom.IndexOf(" ") == -1)
+                                    if (Nom.Contains(" "))
                                     {
                                         ErrorMessage("Merci de respecter la casse : Prénom & ' ' & NOM.");
+                                        NomFormat = true;
                                     }
                                     else
                                         NomFormat = false;
@@ -106,14 +107,14 @@ namespace View
                             {
                                 Console.WriteLine("Entrez un identifiant :");
                                 string identifiant = Console.ReadLine();
-                                List<Tuple<string, string, string, string, string>> Data = main.FindUser(identifiant);
+                                List<List<string>> Data = main.FindUser(identifiant);
                                 ConsoleTablePrint(Data);
                                 Console.WriteLine("------------");
                                 Console.WriteLine("Selectionnez la donnée a modifier : ");
                                 int selectioned = Int32.Parse(Console.ReadLine());
                                 Console.WriteLine("Entrez une nouvelle valeur pour ce choix: ");
-                                VmResponse = main.modifyUser(Console.ReadLine(), Data[0].Console.ReadLine(), identifiant);
-                                string a = Data[0].Item3;
+
+                                VmResponse = main.modifyUser(Console.ReadLine(), selectioned, Data, identifiant);
                             }
                             else
                             {
@@ -124,7 +125,6 @@ namespace View
                     }
                     else
                     {
-
                         Console.WriteLine("Mauvais identifiants ou personne n'ayant pas les droits.");
                         Console.WriteLine("Merci de relancer l'application");
                     }
@@ -171,15 +171,14 @@ namespace View
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.White;
         }
-        private static void ConsoleTablePrint(List<Tuple<string, string, string, string, string>> BddData)
+        private static void ConsoleTablePrint(List<List<string>> BddData)
         {
-            ConsoleTable tables = new ConsoleTable("UserID", "Identifiant", "Prénom Nom", "Password", "Role");
-            foreach (var Item in BddData)
+            ConsoleTable table = new(BddData[0].ToArray());
+            foreach (var item in BddData)
             {
-                tables.AddRow(Item.Item1, Item.Item2, Item.Item3, Item.Item4, Item.Item5);
+                table.AddRow(item.ToArray());
             }
-            tables.Write();
-            Console.WriteLine();
+            table.Write();
         }
     }
 }

@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Seb\\Documents\\GitHub\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj": {}
+    "C:\\Users\\Seb\\source\\Sabsten\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Seb\\Documents\\GitHub\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj": {
+    "C:\\Users\\Seb\\source\\Sabsten\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Seb\\Documents\\GitHub\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj",
+        "projectUniqueName": "C:\\Users\\Seb\\source\\Sabsten\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj",
         "projectName": "UserEatsManager",
-        "projectPath": "C:\\Users\\Seb\\Documents\\GitHub\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj",
+        "projectPath": "C:\\Users\\Seb\\source\\Sabsten\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj",
         "packagesPath": "C:\\Users\\Seb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Seb\\Documents\\GitHub\\Hubert-eats\\UserEatsManager\\obj\\",
+        "outputPath": "C:\\Users\\Seb\\source\\Sabsten\\Hubert-eats\\UserEatsManager\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Seb\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Seb\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -55,16 +53,35 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[5.0.0, 5.0.0]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[5.0.17, 5.0.17]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[5.0.0, 5.0.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[5.0.0, 5.0.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "E:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
