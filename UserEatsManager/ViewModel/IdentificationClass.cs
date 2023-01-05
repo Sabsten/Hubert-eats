@@ -13,7 +13,7 @@ namespace ViewModel
 {
     class IdentificationClass
     {
-        public Boolean Login(string identifiant, string password)
+        public Tuple<bool, string> Login(string identifiant, string password)
         {
             if (identifiant == "42") //A supprimer pour le rendu
             {
@@ -22,7 +22,7 @@ namespace ViewModel
                 seed.CreateTable(SQLDatabase.UserTable); //A supprimer pour le rendu
                 Console.WriteLine("Table crée !"); //A supprimer pour le rendu
                 seed.Seeder(); //A supprimer pour le rendu
-                return false; //A supprimer pour le rendu
+                return (true,"La table" + SQLDatabase.UserTable + " a bien été crée!").ToTuple(); //A supprimer pour le rendu
             }
             MySqlConnection connection = SQLDatabase.GetDBConnection();
             connection.Open();
@@ -41,16 +41,16 @@ namespace ViewModel
                 EncryptClass encrypt = new();
                 if (encrypt.hashPassword(password) == dbPassword)
                 {
-                    return true;
+                    return (true, "Les mots de passes correspondent !").ToTuple(); ;
                 }
                 else
                 {
-                    return false;
+                    return (false, "la confirmation a échoué").ToTuple();
                 }
             }
             else
             {
-                return false;
+                return (false, "Identifiant non trouvé dans la base de donnée").ToTuple();
             }
         }
     }

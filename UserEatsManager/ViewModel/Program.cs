@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Model;
-using View;
-using System.Data.Common;
-using System.Data;
 using MySql.Data.MySqlClient;
-using System.Threading;
-using System.Data.SqlTypes;
-using UserEatsManager.Model.Tables;
 
 namespace ViewModel
 {
     class Program
     {
+        static readonly MySqlConnection DataBaseConnection = SQLDatabase.GetDBConnection();
         public Tuple<bool, string> addUser(Dictionary<string,string> UserInfo)
         {
             SeederClass db = new();
@@ -27,46 +19,24 @@ namespace ViewModel
                 return (true, "L'utilisateur a bien été ajouté dans la base de donnée.").ToTuple();
             }
         }
-        public Tuple<bool, string> modifyUser(string modifiedparameter, int NumberSelected, List<List<string>> Data, string identifiant)
+        public Tuple<bool, string> modifyUser(string modifiedparameter, int NumberSelected, List<List<string>> Data, string identifiant, string ModifiedBy)
         {
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            MySqlCommand cmd = connection.CreateCommand();
-            string test = "update " + SQLDatabase.UserTable + " set " + Data[0][NumberSelected] + " = '" + modifiedparameter + "' where Identifiant ='" + identifiant + "'";
-            cmd.CommandText = test;
+            ExecuteSQLCommand("update " + SQLDatabase.UserTable + " set '" + Data[0][NumberSelected] + "' = '" + modifiedparameter + "' where 'Identifiant' = '" + identifiant + "'");
+            ExecuteSQLCommand("update " + SQLDatabase.UserTable + " set '" + Data[0][8] + "' = '" + ModifiedBy + "' where Identifiant ='" + identifiant + "'");
             return (true, "Modification effectuée " + identifiant).ToTuple();
         }
 
         public Tuple<bool, string> deleteUser(string identifiant)
         {
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
-            MySqlCommand IDcmd = connection.CreateCommand();
-            IDcmd.CommandText = "delete from " + SQLDatabase.UserTable + " where Identifiant ='" + identifiant + "'";
-            IDcmd.ExecuteNonQuery();
-            MySqlDataReader readerID = IDcmd.ExecuteReader();
-            while (readerID.Read())
-            {
-                int i = 0;
-                while (readerID.FieldCount != i)
-                {
-                    if (!readerID.IsDBNull(i)) return (true,"Utilisateur " + identifiant + " supprimé").ToTuple();
-                }
-                
-            }
-            return (false, "Utilisateur non trouvé").ToTuple();
+            ExecuteSQLCommand("delete from " + SQLDatabase.UserTable + " where Identifiant ='" + identifiant + "'");
+            return (true, "Utilisateur "+ identifiant + "supprimé de la base").ToTuple();
         }
-        
+
         public List<List<string>> FindUser(string identifiant)
         {
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
-            MySqlCommand IDcmd = connection.CreateCommand();
-            IDcmd.CommandText = "select * from " + SQLDatabase.UserTable + " where Identifiant ='" + identifiant + "'";
-            IDcmd.ExecuteNonQuery();
-            MySqlDataReader readerID = IDcmd.ExecuteReader();
+            MySqlDataReader readerID = GetReaderSQLCommand("select * from " + SQLDatabase.UserTable + " where Identifiant = '" + identifiant + "'");
             List<List<string>> UserInfos = new();
-            Usertable test = new();
-            UserInfos.Add(DictionaryToListKeys(Usertable.GetUserTableDictionary()));
+            UserInfos.Add(DictionaryToListKeys(Usertable.GetUserTableToPrompt()));
             List<string> User = new();
             int i = 0;
             while (readerID.Read())
@@ -88,7 +58,7 @@ namespace ViewModel
             }
             return UserInfos;
         }
-        private List<string> DictionaryToListKeys(Dictionary<string, string> dict)
+        private static List<string> DictionaryToListKeys(Dictionary<string, string> dict)
         {
             List<string> list = new();
             foreach (var item in dict)
@@ -97,6 +67,20 @@ namespace ViewModel
             }
             return list;
         }
-
+        public static MySqlDataReader GetReaderSQLCommand(string SQLCommand)
+        {
+            DataBaseConnection.Open();
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            cmd.CommandText = SQLCommand;
+            MySqlDataReader reader = cmd.ExecuteReader();
+            return reader;
+        }
+        public static void ExecuteSQLCommand(string SQLCommand)
+        {
+            DataBaseConnection.Open();
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            cmd.CommandText = SQLCommand;
+            cmd.ExecuteNonQuery();
+        }
     }
 }

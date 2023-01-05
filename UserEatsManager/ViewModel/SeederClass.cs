@@ -15,21 +15,18 @@ namespace ViewModel
         }
         public void CreateTable(string tableName)
         {
-            // Étabilissez de la connexion à la base de données. 
             MySqlConnection connection = SQLDatabase.GetDBConnection();
             connection.Open();
-            string sql = "CREATE TABLE `" + SQLDatabase.Database + "`.`" + SQLDatabase.UserTable + "` (" +
-            "`idInternalUser` INT NOT NULL AUTO_INCREMENT," +
-            "`identifiant` VARCHAR(45) NULL," +
-            "`nom` VARCHAR(45) NULL," +
-            "`password` VARCHAR(45) NULL," +
-            "`role` VARCHAR(45) NULL," +
-            "`createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-            "`createdBy` VARCHAR(45) NULL," +
-            "`modifiedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
-            "`modifiedBy` VARCHAR(45) NULL," +
-            "PRIMARY KEY(`idInternalUser`))";
+            Dictionary<string, string> test = new(Usertable.GetUserTable());
+
+            string sql = "CREATE TABLE `" + SQLDatabase.Database + "`.`" + SQLDatabase.UserTable + "` (";
+            foreach(var item in test)
+            {
+                sql = sql + item.Key + " " + item.Value + " ";
+            }
+            sql = sql.Substring(0, sql.Length - 1) + ");";
             MySqlCommand cmd = connection.CreateCommand();
+
             cmd.CommandText = sql;
             cmd.ExecuteNonQuery();
         }
@@ -41,7 +38,7 @@ namespace ViewModel
             MySqlCommand cmd = connection.CreateCommand();
             string sqlLine1 = "Insert into " + SQLDatabase.UserTable + "(";
             string sqlLine2 = " values (";
-            foreach (KeyValuePair<string, string> item in Data)
+            foreach (var item in Data)
             {
                 sqlLine1 += item.Key + ", ";
                 sqlLine2 += "@" + item.Key + ", ";
@@ -52,13 +49,13 @@ namespace ViewModel
                 }
                 else if (item.Key == "role")
                 {
-                    if (item.Value is string)
+                    if (!int.TryParse(item.Value, out int numValue))
                     {
                         cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
                     }
                     else
                     {
-                        var role = (Role)int.Parse(item.Value);
+                        var role = (Role)int.Parse(numValue.ToString());
                         cmd.Parameters.AddWithValue("@" + item.Key, role.ToString());
                     }
                 }
@@ -87,12 +84,16 @@ namespace ViewModel
             Info.Add("nom", "Mélissa GALOS");
             Info.Add("password", "MGALOS");
             Info.Add("role", Role.BddManager.ToString());
+            Info.Add("createdBy", "root");
+            Info.Add("modifiedBy", "root");
             FillTable(Info);
 
             Info.Clear();
             Info.Add("identifiant", "p.pierre@hubert.com");
             Info.Add("nom", "Paul PIERRE");
             Info.Add("password", "PPIERRE");
+            Info.Add("createdBy", "root");
+            Info.Add("modifiedBy", "root");
             Info.Add("role", Role.BddManager.ToString());
             FillTable(Info);
 
@@ -100,6 +101,8 @@ namespace ViewModel
             Info.Add("identifiant", "j.lafond@hubert.com");
             Info.Add("nom", "Jacques LAFOND");
             Info.Add("password", "JLAFOND");
+            Info.Add("createdBy", "root");
+            Info.Add("modifiedBy", "root");
             Info.Add("role", Role.Technique.ToString());
             FillTable(Info);
 
@@ -108,6 +111,8 @@ namespace ViewModel
             Info.Add("nom", "Albert MILLER");
             Info.Add("password", "AMILLER");
             Info.Add("role", Role.Developpeur.ToString());
+            Info.Add("createdBy", "root");
+            Info.Add("modifiedBy", "root");
             FillTable(Info);
 
             Info.Clear();
@@ -115,6 +120,8 @@ namespace ViewModel
             Info.Add("nom", "Tom TOMETNANA");
             Info.Add("password", "TTOMETNANA");
             Info.Add("role", Role.Commercial.ToString());
+            Info.Add("createdBy", "root");
+            Info.Add("modifiedBy", "root");
             FillTable(Info);
         }
 
