@@ -5,28 +5,34 @@ using MySql.Data.MySqlClient;
 
 namespace ViewModel
 {
-    class Program
+    class DataBaseManagerClass
     {
-        static readonly MySqlConnection DataBaseConnection = SQLDatabase.GetDBConnection();
-        public Tuple<bool, string> addUser(Dictionary<string,string> UserInfo)
+        public enum Role
         {
-            SeederClass db = new();
-            if (SeederClass.CheckExistingAccount(UserInfo["Identifiant"]))
+            Commercial,
+            Developpeur,
+            Technique,
+            BddManager
+        }
+        public static MySqlConnection DataBaseConnection = SQLDatabase.GetDBConnection();
+        public Tuple<bool, string> AddUser(Dictionary<string,string> UserInfo)
+        {
+            if (CheckExistingAccount(UserInfo["Identifiant"]))
                 return (false, "Existing User").ToTuple();
             else
             {
-                db.FillTable(UserInfo);
+                FillTable(UserInfo);
                 return (true, "L'utilisateur a bien été ajouté dans la base de donnée.").ToTuple();
             }
         }
-        public Tuple<bool, string> modifyUser(string modifiedparameter, int NumberSelected, List<List<string>> Data, string identifiant, string ModifiedBy)
+        public Tuple<bool, string> ModifyUser(string modifiedparameter, int NumberSelected, List<List<string>> Data, string identifiant, string ModifiedBy)
         {
             ExecuteSQLCommand("update " + SQLDatabase.UserTable + " set '" + Data[0][NumberSelected] + "' = '" + modifiedparameter + "' where 'Identifiant' = '" + identifiant + "'");
             ExecuteSQLCommand("update " + SQLDatabase.UserTable + " set '" + Data[0][8] + "' = '" + ModifiedBy + "' where Identifiant ='" + identifiant + "'");
             return (true, "Modification effectuée " + identifiant).ToTuple();
         }
 
-        public Tuple<bool, string> deleteUser(string identifiant)
+        public Tuple<bool, string> DeleteUser(string identifiant)
         {
             ExecuteSQLCommand("delete from " + SQLDatabase.UserTable + " where Identifiant ='" + identifiant + "'");
             return (true, "Utilisateur "+ identifiant + "supprimé de la base").ToTuple();
@@ -58,6 +64,50 @@ namespace ViewModel
             }
             return UserInfos;
         }
+        public static void FillTable(Dictionary<string, string> Data)
+        {
+            DataBaseConnection.Open();
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            string sqlLine1 = "Insert into " + SQLDatabase.UserTable + "(";
+            string sqlLine2 = " values (";
+            foreach (var item in Data)
+            {
+                sqlLine1 += item.Key + ", ";
+                sqlLine2 += "@" + item.Key + ", ";
+                if (item.Key == "password")
+                {
+                    EncryptClass hashPswd = new EncryptClass();
+                    cmd.Parameters.AddWithValue("@" + item.Key, hashPswd.hashPassword(item.Value));
+                }
+                else if (item.Key == "role")
+                {
+                    if (!int.TryParse(item.Value, out int numValue))
+                    {
+                        cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+                    }
+                    else
+                    {
+                        var role = (Role)int.Parse(numValue.ToString());
+                        cmd.Parameters.AddWithValue("@" + item.Key, role.ToString());
+                    }
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+                }
+            }
+            sqlLine1 = sqlLine1.Substring(0, sqlLine1.Length - 2) + ")";
+            sqlLine2 = sqlLine2.Substring(0, sqlLine2.Length - 2) + ")";
+
+            cmd.CommandText = $"{sqlLine1}{sqlLine2}";
+            cmd.ExecuteNonQuery();
+            DataBaseConnection.Close();
+        }
+        public static bool CheckExistingAccount(string identifiant)
+        {
+            MySqlDataReader reader = GetReaderSQLCommand("select Identifiant from " + SQLDatabase.UserTable + " where Identifiant = '" + identifiant + "'");
+            if (reader.HasRows) { return true; } else { return false; }
+        }
         private static List<string> DictionaryToListKeys(Dictionary<string, string> dict)
         {
             List<string> list = new();
@@ -73,6 +123,7 @@ namespace ViewModel
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
             cmd.CommandText = SQLCommand;
             MySqlDataReader reader = cmd.ExecuteReader();
+            DataBaseConnection.Close();
             return reader;
         }
         public static void ExecuteSQLCommand(string SQLCommand)
@@ -81,6 +132,7 @@ namespace ViewModel
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
             cmd.CommandText = SQLCommand;
             cmd.ExecuteNonQuery();
+            DataBaseConnection.Close();
         }
     }
 }

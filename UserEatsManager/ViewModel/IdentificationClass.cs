@@ -17,11 +17,9 @@ namespace ViewModel
         {
             if (identifiant == "42") //A supprimer pour le rendu
             {
-                Console.WriteLine("Création de table :"); //A supprimer pour le rendu
+                Console.WriteLine("Mise en place du seeder"); //A supprimer pour le rendu
                 SeederClass seed = new(); //A supprimer pour le rendu
-                seed.CreateTable(SQLDatabase.UserTable); //A supprimer pour le rendu
-                Console.WriteLine("Table crée !"); //A supprimer pour le rendu
-                seed.Seeder(); //A supprimer pour le rendu
+                seed.InitDb(); //A supprimer pour le rendu
                 return (true,"La table" + SQLDatabase.UserTable + " a bien été crée!").ToTuple(); //A supprimer pour le rendu
             }
             MySqlConnection connection = SQLDatabase.GetDBConnection();
@@ -52,6 +50,8 @@ namespace ViewModel
             {
                 return (false, "Identifiant non trouvé dans la base de donnée").ToTuple();
             }
+            connection.Close();
+
         }
     }
 }

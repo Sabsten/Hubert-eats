@@ -6,87 +6,48 @@ namespace ViewModel
 {
     class SeederClass
     {
-        public enum Role
+        private static readonly string Shemas = new(SQLDatabase.Database);
+        private static readonly string UserTable = new(SQLDatabase.UserTable);
+        private static void CreateShema()
         {
-            Commercial,
-            Developpeur,
-            Technique,
-            BddManager
+            DataBaseManagerClass.ExecuteSQLCommand("CREATE SCHEMA `" + Shemas + "`");
         }
-        public void CreateTable(string tableName)
+
+        private static void CreateTable()
         {
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
+            DataBaseManagerClass.DataBaseConnection.Open();
             Dictionary<string, string> test = new(Usertable.GetUserTable());
 
-            string sql = "CREATE TABLE `" + SQLDatabase.Database + "`.`" + SQLDatabase.UserTable + "` (";
+            string sql = "CREATE TABLE `" + Shemas + "`.`" + UserTable + "` (";
             foreach(var item in test)
             {
                 sql = sql + item.Key + " " + item.Value + " ";
             }
             sql = sql.Substring(0, sql.Length - 1) + ");";
-            MySqlCommand cmd = connection.CreateCommand();
+            MySqlCommand cmd = DataBaseManagerClass.DataBaseConnection.CreateCommand();
 
             cmd.CommandText = sql;
             cmd.ExecuteNonQuery();
+            DataBaseManagerClass.DataBaseConnection.Close();
         }
 
-        public void FillTable(Dictionary<string, string> Data)
+        public void InitDb()
         {
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
-            MySqlCommand cmd = connection.CreateCommand();
-            string sqlLine1 = "Insert into " + SQLDatabase.UserTable + "(";
-            string sqlLine2 = " values (";
-            foreach (var item in Data)
-            {
-                sqlLine1 += item.Key + ", ";
-                sqlLine2 += "@" + item.Key + ", ";
-                if (item.Key == "password")
-                {
-                    EncryptClass hashPswd = new EncryptClass();
-                    cmd.Parameters.AddWithValue("@" + item.Key, hashPswd.hashPassword(item.Value));
-                }
-                else if (item.Key == "role")
-                {
-                    if (!int.TryParse(item.Value, out int numValue))
-                    {
-                        cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
-                    }
-                    else
-                    {
-                        var role = (Role)int.Parse(numValue.ToString());
-                        cmd.Parameters.AddWithValue("@" + item.Key, role.ToString());
-                    }
-                }
-                else
-                {
-                    cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
-                }
-            }
-            sqlLine1 = sqlLine1.Substring(0, sqlLine1.Length - 2) + ")";
-            sqlLine2 = sqlLine2.Substring(0, sqlLine2.Length - 2) + ")";
-
-            cmd.CommandText = $"{sqlLine1}{sqlLine2}";
-            cmd.ExecuteNonQuery();
+            //CreateShema();
+            CreateTable();
+            Seeder();
         }
-
-        public static bool CheckExistingAccount(string identifiant)
-        {
-            MySqlDataReader reader = ExecuteSQLCommand("select Identifiant from " + SQLDatabase.UserTable + " where Identifiant = '" + identifiant + "'");
-            if(reader.HasRows) { return true; } else { return false; }
-        }
-
         public void Seeder()
         {
+
             Dictionary<string, string> Info = new();
             Info.Add ("identifiant","m.galos@hubert.com");
             Info.Add("nom", "Mélissa GALOS");
             Info.Add("password", "MGALOS");
-            Info.Add("role", Role.BddManager.ToString());
+            Info.Add("role", DataBaseManagerClass.Role.BddManager.ToString());
             Info.Add("createdBy", "root");
             Info.Add("modifiedBy", "root");
-            FillTable(Info);
+            DataBaseManagerClass.FillTable(Info);
 
             Info.Clear();
             Info.Add("identifiant", "p.pierre@hubert.com");
@@ -94,8 +55,8 @@ namespace ViewModel
             Info.Add("password", "PPIERRE");
             Info.Add("createdBy", "root");
             Info.Add("modifiedBy", "root");
-            Info.Add("role", Role.BddManager.ToString());
-            FillTable(Info);
+            Info.Add("role", DataBaseManagerClass.Role.BddManager.ToString());
+            DataBaseManagerClass.FillTable(Info);
 
             Info.Clear();
             Info.Add("identifiant", "j.lafond@hubert.com");
@@ -103,36 +64,26 @@ namespace ViewModel
             Info.Add("password", "JLAFOND");
             Info.Add("createdBy", "root");
             Info.Add("modifiedBy", "root");
-            Info.Add("role", Role.Technique.ToString());
-            FillTable(Info);
+            Info.Add("role", DataBaseManagerClass.Role.Technique.ToString());
+            DataBaseManagerClass.FillTable(Info);
 
             Info.Clear();
             Info.Add("identifiant", "a.miller@hubert.com");
             Info.Add("nom", "Albert MILLER");
             Info.Add("password", "AMILLER");
-            Info.Add("role", Role.Developpeur.ToString());
+            Info.Add("role", DataBaseManagerClass.Role.Developpeur.ToString());
             Info.Add("createdBy", "root");
             Info.Add("modifiedBy", "root");
-            FillTable(Info);
+            DataBaseManagerClass.FillTable(Info);
 
             Info.Clear();
             Info.Add("identifiant", "t.tometnana@hubert.com");
             Info.Add("nom", "Tom TOMETNANA");
             Info.Add("password", "TTOMETNANA");
-            Info.Add("role", Role.Commercial.ToString());
+            Info.Add("role", DataBaseManagerClass.Role.Commercial.ToString());
             Info.Add("createdBy", "root");
             Info.Add("modifiedBy", "root");
-            FillTable(Info);
-        }
-
-        private static MySqlDataReader ExecuteSQLCommand(string SQLCommand)
-        {
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
-            MySqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = SQLCommand;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            return reader;
+            DataBaseManagerClass.FillTable(Info);
         }
     }
 }

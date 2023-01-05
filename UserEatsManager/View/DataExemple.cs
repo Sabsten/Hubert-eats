@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
-using System.Data.Common;
-using System.Data;
 using System.Threading;
 using ConsoleTables;
 using MySql.Data.MySqlClient;
@@ -17,21 +11,19 @@ namespace View
     {
         private static string UserName;
         private const string V = "Error: ";
-        private const string Header = @"
+        private static string Header = @"
                                             __  __      __              __                __      
                                            / / / /_  __/ /_  ___  _____/ /_   ___  ____ _/ /______
                                           / /_/ / / / / __ \/ _ \/ ___/ __/  / _ \/ __ `/ __/ ___/
                                          / __  / /_/ / /_/ /  __/ /  / /_   /  __/ /_/ / /_(__  ) 
                                         /_/ /_/\__,_/_.___/\___/_/   \__/   \___/\__,_/\__/____/  
-
-
-                                        ";
+                                                                                                  
+                                                                                                  
+identifé en tant que : " + UserName + "                                                      " +
+"                                                                             ";
 
         static void Main(string[] args)
         {
-            // Étabilissez de la connexion à la base de données. 
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
             try
             {
                 while (true)
@@ -43,13 +35,14 @@ namespace View
                     UserName = Console.ReadLine();
                     Console.WriteLine("Mot de passe :");
                     string password = Console.ReadLine();
+                    DataBaseManagerClass main = new();
                     IdentificationClass credentials = new();
                     Tuple<bool,string> LoginState = credentials.Login(UserName, password);
                     if (LoginState.Item1 == true)
                     {
                         clearConsole();
                         Console.WriteLine("Connection reussie.");
-                        Program main = new();
+        
                         while (true)
                         {
                             Console.WriteLine("Que souhaitez vous faire ? Tapez le code correspondant.");
@@ -60,7 +53,6 @@ namespace View
 
                             clearConsole();
                             Tuple<bool, string> VmResponse = new(false, "");
-
                             if (nbChoix == 1) //Cas ajout utilisateur
                             {
                                 Dictionary<string, string> UserInfo = new();
@@ -97,7 +89,7 @@ namespace View
                                 UserInfo.Add("role", Console.ReadLine());
                                 UserInfo.Add("createdBy", UserName);
                                 UserInfo.Add("modifiedBy", UserName);
-                                VmResponse = main.addUser(UserInfo);
+                                VmResponse = main.AddUser(UserInfo);
                                 if (VmResponse.Item1 == false)
                                 {
                                     ErrorMessage("Un utilisateur ayant le même identifiant est déclaré dans la base.");
@@ -105,7 +97,7 @@ namespace View
                                     Console.WriteLine(UserInfo["Identifiant"]);
                                     UserInfo["Identifiant"] = Console.ReadLine();
                                     clearConsole();
-                                    VmResponse = main.addUser(UserInfo);
+                                    VmResponse = main.AddUser(UserInfo);
                                 }
                             }
                             else if (nbChoix == 2)
@@ -122,11 +114,11 @@ namespace View
 
                                 }
                                 Console.WriteLine("Entrez une nouvelle valeur pour ce choix: ");
-                                VmResponse = main.modifyUser(Console.ReadLine(), selectioned, Data, identifiant,UserName);
+                                VmResponse = main.ModifyUser(Console.ReadLine(), selectioned, Data, identifiant,UserName);
                             }
                             else
                             {
-                                VmResponse = main.deleteUser(Console.ReadLine());
+                                VmResponse = main.DeleteUser(Console.ReadLine());
                             }
                             ActionStatus(VmResponse);
                         }
@@ -146,8 +138,6 @@ namespace View
             }
             finally
             {
-                connection.Close();
-                connection.Dispose();
             }
         }
 
