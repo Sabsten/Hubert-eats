@@ -15,6 +15,7 @@ namespace View
 {
     class MainProgram
     {
+        private string UserName;
         private const string V = "Error: ";
         public const string Header = @"
                                             __  __      __              __                __      
@@ -35,8 +36,13 @@ namespace View
                 {
                     Console.Title = "HEIUD";
                     clearConsole();
+                    Console.WriteLine("Merci de vous connecter.");
+                    Console.WriteLine("Identifiant :");
+                    string identifiant = Console.ReadLine();
+                    Console.WriteLine("Mot de passe :");
+                    string password = Console.ReadLine();
                     IdentificationClass credentials = new();
-                    bool LoginState = credentials.Login();
+                    bool LoginState = credentials.Login(identifiant, password);
                     if (LoginState == true)
                     {
                         clearConsole();

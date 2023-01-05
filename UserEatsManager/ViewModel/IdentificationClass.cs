@@ -13,11 +13,8 @@ namespace ViewModel
 {
     class IdentificationClass
     {
-        public Boolean Login()
+        public Boolean Login(string identifiant, string password)
         {
-            Console.WriteLine("Merci de vous connecter.");
-            Console.WriteLine("Identifiant :");
-            string identifiant = Console.ReadLine();
             if (identifiant == "42") //A supprimer pour le rendu
             {
                 Console.WriteLine("Création de table :"); //A supprimer pour le rendu
@@ -27,10 +24,6 @@ namespace ViewModel
                 seed.Seeder(); //A supprimer pour le rendu
                 return false; //A supprimer pour le rendu
             }
-            Console.Clear();
-            Console.WriteLine("Mot de passe :");
-            string password = Console.ReadLine();
-
             MySqlConnection connection = SQLDatabase.GetDBConnection();
             connection.Open();
             MySqlCommand IDcmd = connection.CreateCommand();
