@@ -1,12 +1,15 @@
 import { Request, Response } from "express";
-import Article, { ArticleType } from "../models/articles";
-import {ObjectId} from 'mongodb'
+import Article from "../models/articles";
+import { CallbackError, Document } from "mongoose";
 
 export class ArticlesController {
 
     public getAllArticles(req: Request, res: Response) {
-        // return res.status(200).json
-        return res.status(200).json({message: "GET ALL ARTICLES SUCCESS !"});
+        Article.find({}, (err: CallbackError, docs: Document) => {
+            return err ?
+                res.status(500).send(err) :
+                res.status(200).json(docs);
+        })
     };
 
     public getArticleById(req: Request, res: Response){
