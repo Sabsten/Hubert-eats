@@ -1,9 +1,10 @@
-import { Schema, model, connect, Types } from 'mongoose';
+import { ObjectId } from 'mongodb';
+import { Schema, model } from 'mongoose';
 
 // Create an interface representing a document in MongoDB.
-interface IArticle {
-    _id?: Types.ObjectId;
-    restaurant_id : Types.ObjectId;
+export interface IArticle {
+    _id?: ObjectId;
+    restaurant_id : ObjectId;
     description : string;
     name : string;
     quantity : number;
