@@ -8,7 +8,6 @@ export class Seeder {
         components.collection.drop();
         for (let i = 0; i < 10; i++) {
             let newCOMPONENTS = new components({
-                _id: new ObjectId(),
                 name : faker.commerce.productName(),
                 description : faker.commerce.productDescription(),
                 link : faker.internet.url(),

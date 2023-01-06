@@ -6,7 +6,7 @@ const composantRouter = express.Router();
 composantRouter.get('/', compoController.getAllcomponents);
 composantRouter.post('/', compoController.addcomponents);
 composantRouter.delete('/:id', compoController.deletecomponentsById);
-composantRouter.put('/', compoController.modifycomponents);
+composantRouter.put('/:id', compoController.modifycomponents);
 
 
 export default composantRouter;

@@ -10,7 +10,6 @@ interface Icomponents {
 }
 // Create a Schema corresponding to the document interface.
 const componentSchema = new Schema<Icomponents>({
-  _id: Schema.Types.ObjectId,
   name: { type: String, required: true },
   description: { type: String, required: true },
   link: { type: String, required: true },
