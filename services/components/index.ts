@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Request, Response, json } from 'express';
 import dotenv from 'dotenv';
 import routes from "./routes/router";
 import { db } from "./config/db";
@@ -13,8 +13,8 @@ const seeder = new Seeder()
 
 database.dbConnect();
 
-seeder.seedComponents()
-
+//seeder.seedComponents()
+app.use(json());
 app.use(routes);
 
 app.listen(port, () => {
