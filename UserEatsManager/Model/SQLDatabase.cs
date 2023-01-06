@@ -14,6 +14,7 @@ namespace Model
         public static int Port { get; } = 3306;
         public static string Database { get; } = "internalprofiles";
         public static string UserTable { get; } = "InternalUserTable";
+        public static string LogTable { get; } = "InternalLogTable";
 
         public static MySqlConnection GetDBConnection()
         {

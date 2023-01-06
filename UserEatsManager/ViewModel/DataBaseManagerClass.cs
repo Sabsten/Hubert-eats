@@ -17,7 +17,7 @@ namespace ViewModel
         public static MySqlConnection DataBaseConnection = SQLDatabase.GetDBConnection();
         public Tuple<bool, string> AddUser(Dictionary<string,string> UserInfo)
         {
-            if (CheckExistingAccount(UserInfo["Identifiant"]))
+            if (IsUserExists(UserInfo["Identifiant"]))
                 return (false, "Existing User").ToTuple();
             else
             {
@@ -27,22 +27,28 @@ namespace ViewModel
         }
         public Tuple<bool, string> ModifyUser(string modifiedparameter, int NumberSelected, List<List<string>> Data, string identifiant, string ModifiedBy)
         {
-            ExecuteSQLCommand("update " + SQLDatabase.UserTable + " set '" + Data[0][NumberSelected] + "' = '" + modifiedparameter + "' where 'Identifiant' = '" + identifiant + "'");
-            ExecuteSQLCommand("update " + SQLDatabase.UserTable + " set '" + Data[0][8] + "' = '" + ModifiedBy + "' where Identifiant ='" + identifiant + "'");
+            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString(Data[0][NumberSelected], modifiedparameter, identifiant));
+            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString(Data[0][8], ModifiedBy, identifiant));
             return (true, "Modification effectuée " + identifiant).ToTuple();
         }
 
         public Tuple<bool, string> DeleteUser(string identifiant)
         {
             ExecuteSQLCommand("delete from " + SQLDatabase.UserTable + " where Identifiant ='" + identifiant + "'");
-            return (true, "Utilisateur "+ identifiant + "supprimé de la base").ToTuple();
+            if (IsUserExists(identifiant) == false)
+            {
+                return (true, "l'utilisateur " + identifiant + " a été supprimé").ToTuple();
+            }
+            else
+            {
+                return (true, "l'utilisateur n'a pas pu être supprimé").ToTuple();
+            }
         }
 
         public List<List<string>> FindUser(string identifiant)
         {
-            MySqlDataReader readerID = GetReaderSQLCommand("select * from " + SQLDatabase.UserTable + " where Identifiant = '" + identifiant + "'");
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUserSQLString(identifiant));
             List<List<string>> UserInfos = new();
-            UserInfos.Add(DictionaryToListKeys(Usertable.GetUserTableToPrompt()));
             List<string> User = new();
             int i = 0;
             while (readerID.Read())
@@ -68,12 +74,8 @@ namespace ViewModel
         {
             DataBaseConnection.Open();
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
-            string sqlLine1 = "Insert into " + SQLDatabase.UserTable + "(";
-            string sqlLine2 = " values (";
             foreach (var item in Data)
             {
-                sqlLine1 += item.Key + ", ";
-                sqlLine2 += "@" + item.Key + ", ";
                 if (item.Key == "password")
                 {
                     EncryptClass hashPswd = new EncryptClass();
@@ -96,16 +98,13 @@ namespace ViewModel
                     cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
                 }
             }
-            sqlLine1 = sqlLine1.Substring(0, sqlLine1.Length - 2) + ")";
-            sqlLine2 = sqlLine2.Substring(0, sqlLine2.Length - 2) + ")";
-
-            cmd.CommandText = $"{sqlLine1}{sqlLine2}";
+            cmd.CommandText = SQLCommands.FillTableSQLCommand(Data);
             cmd.ExecuteNonQuery();
             DataBaseConnection.Close();
         }
-        public static bool CheckExistingAccount(string identifiant)
+        public static bool IsUserExists(string identifiant)
         {
-            MySqlDataReader reader = GetReaderSQLCommand("select Identifiant from " + SQLDatabase.UserTable + " where Identifiant = '" + identifiant + "'");
+            MySqlDataReader reader = GetReaderSQLCommand(SQLCommands.FindUserSQLString(identifiant));
             if (reader.HasRows) { return true; } else { return false; }
         }
         private static List<string> DictionaryToListKeys(Dictionary<string, string> dict)
