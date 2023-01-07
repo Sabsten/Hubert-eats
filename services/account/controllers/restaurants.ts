@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Restaurant from "../models/restaurant";
+import Restaurant, { IRestaurant } from "../models/restaurant";
 import { CallbackError, Document } from "mongoose";
 
 export class RestaurantsController {
@@ -13,10 +13,10 @@ export class RestaurantsController {
         } else if (req.query.city) {
             filter = {"address.city": req.query.city}
         }
-        Restaurant.find(filter , (err: CallbackError, docs: Document) => {
+        Restaurant.find(filter , (err: CallbackError, docs: IRestaurant[]) => {
             return err ?
                 res.status(500).send(err) :
                 res.status(200).json(docs);
-        });
+        }).select({account: 0});
     };
 }
