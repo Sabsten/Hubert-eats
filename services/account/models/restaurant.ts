@@ -1,7 +1,7 @@
 import { Schema, model, connect, Types } from 'mongoose';
-import { IAddress } from './IAddress';
+import addressSchema, { IAddress } from './address';
 import { ObjectId } from 'mongodb';
-import { IAccount } from './IAccount';
+import accountSchema, { IAccount } from './account';
 
 // Create an interface representing a document in MongoDB.
 export interface IRestaurant {
@@ -12,28 +12,14 @@ export interface IRestaurant {
     image?: string;
     tags?: string[];
     referent?: string;
-    rating?: number;
+    rating?: number[];
 }
 
 // Create a Schema corresponding to the document interface.
 const restaurantSchema = new Schema<IRestaurant>({
-  account: {
-    type: {
-      mail: { type: String, required: true },
-      password: { type: String, required: true },
-      referent: {type: String, required: false},
-    }, required: true 
-  },
+  account: {type: accountSchema, required: true},
   name: { type: String, required: true },
-  address: { 
-    type: {
-      city: String,
-      street_name: String,
-      street_number: Number,
-      postal_code: Number,
-      country: String
-    }, required: true
-  },
+  address: {type: addressSchema, required: true},
   image: String,
   tags: [String],
   rating: Number,

@@ -1,7 +1,6 @@
 import express, { Express, json, Request, Response } from 'express';
 import routes from "./routes/router";
 import { db } from "./config/db";
-import { Seeder } from './config/seed';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 
@@ -22,13 +21,9 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app: Express = express();
 const port = 3000;
 const database = new db()
-const seeder = new Seeder()
 
 dotenv.config()
 database.dbConnect();
-
-// seeder.seedCustomers()
-// seeder.seedRestaurants()
 
 app.use(json());
 app.use(routes);
