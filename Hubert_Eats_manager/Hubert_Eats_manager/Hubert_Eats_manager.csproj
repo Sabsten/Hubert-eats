@@ -8,7 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\Logo_Hubert_Eats.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.31" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\Logo_Hubert_Eats.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

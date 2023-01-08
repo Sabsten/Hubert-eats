@@ -26,7 +26,6 @@ C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\o
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\View\MainWindow.g.cs
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\App.g.cs
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager_MarkupCompile.cache
-C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager_MarkupCompile.lref
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\bin\Debug\net6.0-windows\Hubert_Eats_manager.exe
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\bin\Debug\net6.0-windows\Hubert_Eats_manager.deps.json
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\bin\Debug\net6.0-windows\Hubert_Eats_manager.runtimeconfig.json
@@ -48,3 +47,6 @@ C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\o
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager.csproj.CopyComplete
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager.genruntimeconfig.cache
 C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\ref\Hubert_Eats_manager.dll
+C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\View\Window1.g.cs
+C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager_MarkupCompile.lref
+C:\Users\djila\Desktop\seb\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\View\Window1.baml

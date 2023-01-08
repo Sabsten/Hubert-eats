@@ -20,7 +20,7 @@ namespace Model
         public static MySqlConnection GetDBConnection()
         {
             EncryptClass decryptpasswod = new();
-            string JSONFile = System.IO.File.ReadAllText("C:/Users/Seb/Documents/GitHub/Hubert-eats/UserEatsManager/Settings.json");
+            string JSONFile = System.IO.File.ReadAllText("../../../Settings.json");
             UserLogin test = JsonSerializer.Deserialize<UserLogin>(JSONFile);
             string connString = "Server=" + Host + ";Database=" + Database
                 + ";port=" + Port + ";User Id=" + test.username + ";password=" + decryptpasswod.DecodeFrom64(test.password);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hubert_Eats_manager.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,18 +23,54 @@ namespace Hubert_Eats_manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        public string userName { get; set; }
+        public string userPassword { get; set; }
+        public string otherUserName { get; set; }
+        public string otherUserPassword { get; set; }
+        public string otherUserPassword2 { get; set; }
+        public string otherUserRole { get; set; }
+        public string otherIdentifiant { get; set; }
+        public List<List<string>> Data { get; set; }
+
+        DataBaseManagerClass main = new();
+        IdentificationClass credentials = new();
+        Tuple<bool, string> LoginState;
+        Tuple<bool, string> VmResponse = new(false, "");
+
         public MainWindow()
         {
             InitializeComponent();
+            userName = "";
+            userPassword = "";
+            otherUserName = "";
+            otherUserPassword = "";
+            otherUserPassword2 = "";
+            otherUserRole = "";
+            otherIdentifiant = "";
+            DataContext = this;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void Button_Click_Login(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Tuple<bool, string> LoginState = credentials.Login(userName.ToString(), userPassword.ToString());
 
-        }
+                if (LoginState.Item1 == true)
+                {
+                    Resources["homeVisible"] = Visibility.Hidden;
+                    Resources["pageSelection"] = Visibility.Visible;
+                }else
+                {
+                    MessageBox.Show("Identification incorrect", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur de connexion survenue: " + ex.Message, "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
+            }
+            
         }
 
         private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
@@ -44,6 +81,90 @@ namespace Hubert_Eats_manager
         private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void Button_Click_AddUserSelection(object sender, RoutedEventArgs e)
+        {
+            Resources["pageSelection"] = Visibility.Hidden;
+            Resources["addUserPage"] = Visibility.Visible;
+        }
+
+        private void Button_Click_EditUserSelection(object sender, RoutedEventArgs e)
+        {
+            Resources["pageSelection"] = Visibility.Hidden;
+            Resources["editUserPage"] = Visibility.Visible;
+        }
+
+        private void Button_Click_RemoveUserSelection(object sender, RoutedEventArgs e)
+        {
+            Resources["pageSelection"] = Visibility.Hidden;
+            Resources["removeUserPage"] = Visibility.Visible;
+        }
+
+        private void Button_Click_ConfirmUserCreation(object sender, RoutedEventArgs e)
+        {
+            Dictionary<string, string> UserInfo = new();
+            if(!otherUserName.Contains(" ") || otherUserName == "")
+            {
+                MessageBox.Show("Merci de respecter la casse : Prénom NOM.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (otherUserPassword != otherUserPassword2 || otherUserPassword=="")
+            {
+                MessageBox.Show("La confirmation du mot de passe a échouée. Veuillez ressayer.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (otherUserRole == "")
+            {
+                MessageBox.Show("La sélection d'un rôle est nécessaire.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                UserInfo.Add("Identifiant", otherUserName.Substring(0, 1).ToLower() + "." + otherUserName.Split(" ")[1].ToLower() + "@hubert.com");
+                UserInfo.Add("Nom", otherUserName);
+                UserInfo.Add("Password", otherUserPassword);
+                UserInfo.Add("role", otherUserRole);
+                UserInfo.Add("createdBy", userName);
+                UserInfo.Add("modifiedBy", userName);
+
+                VmResponse = main.AddUser(UserInfo);
+                while (VmResponse.Item1 == false)
+                {
+                    MessageBox.Show("Un utilisateur ayant le même identifiant est déclaré dans la base \n" +
+                        "Merci de modifier légérement l'identifiant, conformément à la politique de nomage. (p.nom@hubert.com)", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    Console.WriteLine(UserInfo["Identifiant"]);
+                    Window1 win1 = new Window1(UserInfo["Identifiant"]) ;
+                    win1.ShowDialog();
+
+                    UserInfo["Identifiant"] = win1.newOtherIdentifiant;
+                    VmResponse = main.AddUser(UserInfo);
+                }
+
+                MessageBox.Show("L'indentifiant associé est : " + otherUserName.Substring(0, 1).ToLower() + "." + otherUserName.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                Resources["addUserPage"] = Visibility.Hidden;
+                Resources["pageSelection"] = Visibility.Visible;
+            }
+        }
+
+        private void Button_Click_ConfirmUserModification(object sender, RoutedEventArgs e)
+        {
+            //int selectioned = 0;
+            Data = main.FindUser(otherIdentifiant);
+            //while (Data[0].Count > selectioned && selectioned >= 0)
+            //{
+              //  //ConsoleTablePrint(Data);
+                //Console.WriteLine("Selectionnez la donnée a modifier : ");
+                //selectioned = Int32.Parse(Console.ReadLine());
+
+            //}
+            //Console.WriteLine("Entrez une nouvelle valeur pour ce choix: ");
+            //VmResponse = main.ModifyUser(Console.ReadLine(), selectioned, Data, otherIdentifiant, userName);
+        }
+
+        private void Button_Click_ConfirmUserRemoval(object sender, RoutedEventArgs e)
+        {
+            if(otherIdentifiant != "")
+            {
+                VmResponse = main.DeleteUser(otherIdentifiant);
+            }
         }
     }
 
