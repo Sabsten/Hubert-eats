@@ -10,7 +10,7 @@ namespace Model
     {
         public static string FindUserSQLString(string identifiant)
         {
-            return "SELECT * FROM '" + SQLDatabase.UserTable + "' WHERE 'identifiant' = '" + identifiant + "'";
+            return "SELECT * FROM " + SQLDatabase.UserTable + " WHERE identifiant = '" + identifiant + "'";
         }
         public static string UpdateTableSqlString(string ColumnItem, string Value, string identifiant)
         {
