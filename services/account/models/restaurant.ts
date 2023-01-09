@@ -11,7 +11,6 @@ export interface IRestaurant {
     address: IAddress;
     image?: string;
     tags?: string[];
-    referent?: string;
     rating?: number[];
 }
 
@@ -28,3 +27,39 @@ const restaurantSchema = new Schema<IRestaurant>({
 // Create a Model.
 const Restaurant = model<IRestaurant>('Restaurant', restaurantSchema);
 export default Restaurant
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Restaurant:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         account:
+ *           type: object
+ *           $ref: '#/components/schemas/Account'
+ *         name:
+ *           type: string
+ *         address:
+ *           type: object
+ *           $ref: '#/components/schemas/Address'
+ *         image:
+ *           type: string
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *         rating:
+ *           type: number
+ *       example:
+ *         id: 63b9d56c47fa01e5381f7bdc
+ *         account: {}
+ *         name: john's burgers
+ *         address: {}
+ *         image: https://linktoimage.com
+ *         tags: [burger, pizza]
+ *         balance: 259.99
+ *         rating: 4.5
+ */

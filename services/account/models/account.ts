@@ -14,3 +14,22 @@ const accountSchema = new Schema<IAccount>({
 }, { _id : false })
 
 export default accountSchema
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Account:
+ *       type: object
+ *       properties:
+ *         mail:
+ *           type: string
+ *         password:
+ *           type: string
+ *         referent:
+ *           type: string
+ *       example:
+ *         mail: john.doe@gmail.com
+ *         password: admin123
+ *         referent: jane.doe@gmail.com
+ */

@@ -28,3 +28,36 @@ const courierSchema = new Schema<ICourier>({
 const Courier = model<ICourier>('Courier', courierSchema);
 
 export default Courier
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Courier:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         account:
+ *           type: object
+ *           $ref: '#/components/schemas/Account'
+ *         firstname:
+ *           type: string
+ *         lastname:
+ *           type: string
+ *         address:
+ *           type: object
+ *           $ref: '#/components/schemas/Address'
+ *         balance:
+ *           type: number
+ *         rating:
+ *           type: number
+ *       example:
+ *         id: 63b9d56c47fa01e5381f7bdc
+ *         account: {}
+ *         firstname: john
+ *         lastname: doe
+ *         address: {}
+ *         balance: 259.99
+ *         rating: 4.5
+ */

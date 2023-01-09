@@ -10,11 +10,12 @@ import Courier, { ICourier } from "../models/courier";
 export class AuthController {
     
     public async signIn(req: Request, res: Response) {
-        if (!Object.values(UserType).includes(req.body.type)) {
-            return res.status(500).json({error: "Missing request.body.type please retry ..."});
+        const accountType: UserType = req.params.accountType as UserType;
+        if (!(accountType in UserType)) {
+            return res.status(500).json({error: "Bad accountType parameter please retry ..."});
         }
         let document: Document | null = null;
-        switch(req.body.type) {
+        switch(accountType) {
             case UserType.restaurant: {
                 document = await Restaurant.findOne({"account.mail": req.body.mail, "account.password": req.body.password});
                 break;
@@ -31,14 +32,14 @@ export class AuthController {
         if (document === null) {
             return res.status(404).json({error: "NOT FOUND"});
         };
-        const accessToken = jwt.sign({accountId: document._id, type: req.body.type}, process.env.PRIVATE_TOKEN_KEY! ,{
+        const accessToken = jwt.sign({accountId: document._id, type: accountType}, process.env.PRIVATE_TOKEN_KEY! ,{
             expiresIn: "24h",
         });
         return res.status(200).json({token: accessToken});
     };
 
     public async signUp(req: Request, res: Response) {
-        let accountType: string = req.body.type;
+        const accountType: UserType = req.params.accountType as UserType;
         if (!(accountType in UserType)) {
             return res.status(500).json({error: "Missing request.body.type please retry ..."});
         }

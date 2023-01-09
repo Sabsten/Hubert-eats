@@ -8,12 +8,13 @@ import dotenv from 'dotenv'
 
 const swaggerOptions: swaggerJsDoc.Options = {
   swaggerDefinition: {
+    openapi: '3.0.0',
     info: {
       title: "Account service API",
       version: '1.0.0',
     },
   },
-  apis: ["./routes/*.ts"]
+  apis: ["./models/*.ts","./routes/*.ts"]
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

@@ -24,3 +24,30 @@ const customerSchema = new Schema<ICustomer>({
 const Customer = model<IAccount>('Customer', customerSchema);
 
 export default Customer
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Customer:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         account:
+ *           type: object
+ *           $ref: '#/components/schemas/Account'
+ *         firstname:
+ *           type: string
+ *         lastname:
+ *           type: string
+ *         address:
+ *           type: object
+ *           $ref: '#/components/schemas/Address'
+ *       example:
+ *         id: 63b9d56c47fa01e5381f7bdc
+ *         account: {}
+ *         firstname: paul
+ *         lastname: calimache
+ *         address: {}
+ */
