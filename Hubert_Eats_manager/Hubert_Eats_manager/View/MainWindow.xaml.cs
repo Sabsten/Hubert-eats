@@ -121,7 +121,7 @@ namespace Hubert_Eats_manager
                 UserInfo.Add("Identifiant", otherUserName.Substring(0, 1).ToLower() + "." + otherUserName.Split(" ")[1].ToLower() + "@hubert.com");
                 UserInfo.Add("Nom", otherUserName);
                 UserInfo.Add("Password", otherUserPassword);
-                UserInfo.Add("role", otherUserRole);
+                UserInfo.Add("role", cmbRole.SelectionBoxItem.ToString());
                 UserInfo.Add("createdBy", userName);
                 UserInfo.Add("modifiedBy", userName);
 
