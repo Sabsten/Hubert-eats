@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LEdya/MD5FOGxklZEMkYuQeQ3vTOSdHY4tOqg0JeM17YiI3IZ6pWQ+gh3fmmBSw3zEglCzm3sXYDXSFAMhwrTA==",
+  "dgSpecHash": "y3frmVTHLzuQiN/3wOfwY4Zp8W1WHJiqAKNvlgvZgKWTxsXIQVTj68ZblD3UAOhMjRVb+wY3sTQYKdQPViWiCA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Seb\\Documents\\GitHub\\Hubert-eats\\UserEatsManager\\UserEatsManager.csproj",
   "expectedPackageFiles": [
@@ -31,7 +31,8 @@
     "C:\\Users\\Seb\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\Seb\\.nuget\\packages\\system.text.encoding.codepages\\4.4.0\\system.text.encoding.codepages.4.4.0.nupkg.sha512",
     "C:\\Users\\Seb\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
-    "C:\\Users\\Seb\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
+    "C:\\Users\\Seb\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
+    "C:\\Users\\Seb\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.14\\microsoft.netcore.app.host.win-x64.5.0.14.nupkg.sha512"
   ],
   "logs": []
 }

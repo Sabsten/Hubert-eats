@@ -10,11 +10,15 @@ namespace Model
     {
         public static string FindUserSQLString(string identifiant)
         {
-            return "SELECT * FROM " + SQLDatabase.UserTable + " WHERE 'identifiant' = '" + identifiant + "'";
+            return "SELECT * FROM " + SQLDatabase.UserTable + " WHERE identifiant = '" + identifiant + "'";
+        }
+        public static string FindHashedPasswordSQLString(string identifiant)
+        {
+            return "SELECT password FROM " + SQLDatabase.UserTable + " WHERE identifiant = '" + identifiant + "'";
         }
         public static string UpdateTableSqlString(string ColumnItem, string Value, string identifiant)
         {
-            return "UPDATE " + SQLDatabase.UserTable + " SET '" + ColumnItem + "' = '" + Value + "' WHERE 'Identifiant' = '" + identifiant + "'";
+            return "UPDATE " + SQLDatabase.UserTable + " SET '" + ColumnItem + "' = '" + Value + "' WHERE 'identifiant' = '" + identifiant + "'";
         }
         public static string FillTableSQLCommand(Dictionary<string, string> Data)
         {

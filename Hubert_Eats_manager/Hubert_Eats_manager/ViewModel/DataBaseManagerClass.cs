@@ -47,12 +47,13 @@ namespace ViewModel
 
         public List<List<string>> FindUser(string identifiant)
         {
-            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUserSQLString(identifiant));
+            string test = SQLCommands.FindUserSQLString(identifiant);
+            MySqlDataReader readerID = GetReaderSQLCommand(test);
             List<List<string>> UserInfos = new();
-            List<string> User = new();
             int i = 0;
             while (readerID.Read())
             {
+                List<string> User = new();
                 while (i != readerID.FieldCount)
                 {
                     if (!readerID.IsDBNull(i))

@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Model;
-using Hubert_Eats_manager;
-using System.Data.Common;
-using System.Data;
 using MySql.Data.MySqlClient;
 
 namespace ViewModel
@@ -25,9 +18,7 @@ namespace ViewModel
             MySqlConnection connection = SQLDatabase.GetDBConnection();
             connection.Open();
             MySqlCommand IDcmd = connection.CreateCommand();
-            IDcmd.Parameters.AddWithValue("@Identifiant", identifiant);
-            IDcmd.CommandText = "select password from " + SQLDatabase.UserTable + " where Identifiant ='" + identifiant + "'";
-            IDcmd.ExecuteNonQuery();
+            IDcmd.CommandText = SQLCommands.FindHashedPasswordSQLString(identifiant);
             MySqlDataReader readerID = IDcmd.ExecuteReader();
             if (readerID.HasRows)
             {
@@ -39,19 +30,20 @@ namespace ViewModel
                 EncryptClass encrypt = new();
                 if (encrypt.hashPassword(password) == dbPassword)
                 {
+                    connection.Close();
                     return (true, "Les mots de passes correspondent !").ToTuple(); ;
                 }
                 else
                 {
+                    connection.Close();
                     return (false, "la confirmation a échoué").ToTuple();
                 }
             }
             else
             {
+                connection.Close();
                 return (false, "Identifiant non trouvé dans la base de donnée").ToTuple();
             }
-            connection.Close();
-
         }
     }
 }

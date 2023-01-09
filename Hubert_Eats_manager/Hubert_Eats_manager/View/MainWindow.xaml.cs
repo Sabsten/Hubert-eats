@@ -1,19 +1,7 @@
 ﻿using Hubert_Eats_manager.View;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ViewModel;
 
 namespace Hubert_Eats_manager
@@ -23,30 +11,20 @@ namespace Hubert_Eats_manager
     /// </summary>
     public partial class MainWindow : Window
     {
-        public string userName { get; set; }
-        public string userPassword { get; set; }
-        public string otherUserName { get; set; }
-        public string otherUserPassword { get; set; }
-        public string otherUserPassword2 { get; set; }
-        public string otherUserRole { get; set; }
-        public string otherIdentifiant { get; set; }
-        public List<List<string>> Data { get; set; }
-
-        DataBaseManagerClass main = new();
-        IdentificationClass credentials = new();
-        Tuple<bool, string> LoginState;
-        Tuple<bool, string> VmResponse = new(false, "");
+        public static string userName;
+        public static string userPassword;
+        public static string otherUserName;
+        public static string otherUserPassword;
+        public static string otherUserPassword2;
+        public static string otherUserRole;
+        public static string otherIdentifiant;
+        public static List<List<string>> Data;
+        public static Tuple<bool, string> VmResponse;
+        private DataBaseManagerClass main;
 
         public MainWindow()
         {
             InitializeComponent();
-            userName = "";
-            userPassword = "";
-            otherUserName = "";
-            otherUserPassword = "";
-            otherUserPassword2 = "";
-            otherUserRole = "";
-            otherIdentifiant = "";
             DataContext = this;
         }
 
@@ -54,31 +32,33 @@ namespace Hubert_Eats_manager
         {
             try
             {
-                Tuple<bool, string> LoginState = credentials.Login(userName.ToString(), userPassword.ToString());
+                userName = TextBoxUsername.Text.Trim();
+                userPassword = TextBoxPassword.Password.Trim();
+                VmResponse = new(false, "");
+                IdentificationClass credentials = new();
+                Tuple<bool, string> LoginState = credentials.Login(userName, userPassword);
 
-                if (LoginState.Item1 == true)
+                if (LoginState.Item1)
                 {
                     Resources["homeVisible"] = Visibility.Hidden;
                     Resources["pageSelection"] = Visibility.Visible;
-                }else
+                }
+                else
                 {
-                    MessageBox.Show("Identification incorrect", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    MessageBox.Show(LoginState.Item2, "Identification incorrect", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erreur de connexion survenue: " + ex.Message, "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
-
             }
-            
         }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        private void TextBox_TextChanged_1(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
+        private void TextBox_TextChanged_2(object sender, RoutedEventArgs e)
         {
 
         }

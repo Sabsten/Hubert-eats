@@ -7,18 +7,15 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
     <Grid>
-
         <StackPanel>
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Un utilisateur ayant le même identifiant est déclaré dans la base
-                       Merci de modifier légérement l'identifiant, conformément à la politique de nomage. (p.nom@hubert.com)" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"><Run Text="Merci de modifier légérement l'identifiant,"/><Run Text="Un utilisateur ayant le même identifiant est déclaré dans la base                         conformément à la politique de nomage. (p.nom@hubert.com)"/></TextBlock>
             <StackPanel VerticalAlignment="Center" Width="200">
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Identifiant:" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherIdentifiant}" VerticalAlignment="Top"/>
                 <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding newOtherIdentifiant}" VerticalAlignment="Top" Width="120"/>
                 <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_ConfirmUserModification" Width="74" Margin="0,20,0,0"/>
             </StackPanel>
-            <Image Height="53" Width="100" Source="../assets/Logo_Hubert_Eats.png"/>
+            <Image Height="144" Width="151" Source="../assets/Logo_Hubert_Eats.png"/>
         </StackPanel>
-
     </Grid>
 </Window>
