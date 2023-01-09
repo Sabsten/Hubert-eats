@@ -4,35 +4,32 @@ import { ObjectId } from 'mongodb';
 import accountSchema, { IAccount } from './account';
 
 // Create an interface representing a document in MongoDB.
-export interface IRestaurant {
+export interface ICustomer {
     _id?: ObjectId;
     account: IAccount;
-    name: string;
+    firstname: string;
+    lastname: string;
     address: IAddress;
-    image?: string;
-    tags?: string[];
-    rating?: number[];
 }
 
 // Create a Schema corresponding to the document interface.
-const restaurantSchema = new Schema<IRestaurant>({
-  account: {type: accountSchema, required: true},
-  name: { type: String, required: true },
-  address: {type: addressSchema, required: true},
-  image: String,
-  tags: [String],
-  rating: Number,
+const customerSchema = new Schema<ICustomer>({
+    account: {type: accountSchema, required: true},
+    firstname: {type: String, required: true},
+    lastname: {type: String, required: true},
+    address: {type: addressSchema, required: true},
 }, { versionKey: false, timestamps: true });
 
 // Create a Model.
-const Restaurant = model<IRestaurant>('Restaurant', restaurantSchema);
-export default Restaurant
+const Customer = model<IAccount>('Customer', customerSchema);
+
+export default Customer
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Restaurant:
+ *     Customer:
  *       type: object
  *       properties:
  *         _id:
@@ -40,26 +37,17 @@ export default Restaurant
  *         account:
  *           type: object
  *           $ref: '#/components/schemas/Account'
- *         name:
+ *         firstname:
+ *           type: string
+ *         lastname:
  *           type: string
  *         address:
  *           type: object
  *           $ref: '#/components/schemas/Address'
- *         image:
- *           type: string
- *         tags:
- *           type: array
- *           items:
- *             type: string
- *         rating:
- *           type: number
  *       example:
  *         id: 63b9d56c47fa01e5381f7bdc
  *         account: {}
- *         name: john's burgers
+ *         firstname: paul
+ *         lastname: calimache
  *         address: {}
- *         image: https://linktoimage.com
- *         tags: [burger, pizza]
- *         balance: 259.99
- *         rating: 4.5
  */
