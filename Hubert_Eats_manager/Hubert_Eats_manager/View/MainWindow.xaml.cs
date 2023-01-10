@@ -113,6 +113,10 @@ namespace Hubert_Eats_manager
 
                     //UserInfo["Identifiant"] = win1.newOtherIdentifiant;
                     VmResponse = main.AddUser(UserInfo);
+                    if (VmResponse.Item1)
+                    {
+
+                    }
                 }
 
                 MessageBox.Show("L'indentifiant associé est : " + inputUserName.Substring(0, 1).ToLower() + "." + inputUserName.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
