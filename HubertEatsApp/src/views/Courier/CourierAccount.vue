@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import CourierHeader from '@/components/courier/CourierHeader.vue';
+</script>
+
 <template>
-    <h1> Courier account</h1>
+    <CourierHeader icon="fa-solid fa-reply" link="/livreur"/>
 </template>
+
+

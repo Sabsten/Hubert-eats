@@ -31,16 +31,16 @@ const router = createRouter({
       component: () => import('../views/CreateAccountView.vue')
     },
     {
-      path: '/livreurs',
+      path: '/livreur',
       component: () => import('../views/Courier/Courier.vue'),
       children: [
         {
-          path: '/livreurs/accueil',
+          path: '/livreur',
           name: 'accueil',
           component: CourierHome
         },
         {
-          path: '/livreurs/compte',
+          path: '/livreur/compte',
           name: 'compte',
           component: CourierAccount
         }

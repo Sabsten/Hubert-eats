@@ -1,37 +1,24 @@
+<script setup lang="ts">
+import CourierHeader from '@/components/courier/CourierHeader.vue';
+</script>
+
 <template>
     <div class="courierHome">
-        <div class="courierHeader">
-            <router-link to="/livreurs/compte"><i class="fa-solid fa-user"></i></router-link>
-            <img src="/logo_light.png"/>
-        </div>
+        <CourierHeader icon="fa-solid fa-user" link="/livreur/compte"/>
         <div class="ordersContent">
-            <h1>Aucune commandes actuellement disponible ...</h1>
+            <h2>Aucune commandes actuellement disponible ...</h2>
         </div>
         <div class="courierBottom">
-            <div class="tinderButton"><i class="fa-solid fa-xmark"></i></div>
-            <div class="tinderButton"><i class="fa-solid fa-bicycle"></i></div>
+            <div class="tinderButton close"><i class="fa-solid fa-xmark"></i></div>
+            <div class="tinderButton bike"><i class="fa-solid fa-bicycle"></i></div>
         </div>
     </div>
 </template>
 
-<style scoped>
-.courierHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
-}
-.fa-user {
-    color:#3EBC72;
-    font-size: 45px;
-}
-.fa-user:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-}
+<style scoped lang="scss">
 .courierHome {
-    background-color: #E3EFEB;
-    width:90%;
+    width:100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -42,12 +29,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    h2 {
+        text-align: center;
+    }
 }
 .courierBottom {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
+    align-items: center;
     justify-content:space-around;
+    margin: 20px 0;
 }
 /* BUTTONS */
 .tinderButton {
@@ -58,18 +50,40 @@
     border-radius: 50px;
     width:70px;
     height: 70px;
+    border: 3px rgb(0,0,0,0) solid;
+    i {
+        font-size: 40px;
+    }
 }
-.tinderButton:hover {
+.close:hover {
+    animation: 1.5s 1 borderRed forwards;
     cursor: pointer;
-    transform: scale(1.1);
 }
-.tinderButton i{
-    font-size: 40px;
+.bike:hover {
+    cursor: pointer;
+    animation: 1.5s 1 borderGreen forwards;
 }
 .fa-xmark {
     color:red;
 }
 .fa-bicycle {
     color:#3EBC72;
+}
+
+@keyframes borderRed {
+    25% {border-left: 3px red solid;}
+    50% {border-left: 3px red solid; border-top: 3px red solid;}
+    75% {border-left: 3px red solid; border-top: 3px red solid;
+        border-right: 3px red solid;}
+    100% {border-left: 3px red solid; border-top: 3px red solid;
+        border-right: 3px red solid;border-bottom: 3px red solid;}
+}
+@keyframes borderGreen {
+    25% {border-left: 3px #3EBC72 solid;}
+    50% {border-left: 3px #3EBC72 solid; border-top: 3px #3EBC72 solid;}
+    75% {border-left: 3px #3EBC72 solid; border-top: 3px #3EBC72 solid;
+        border-right: 3px #3EBC72 solid;}
+    100% {border-left: 3px #3EBC72 solid; border-top: 3px #3EBC72 solid;
+        border-right: 3px #3EBC72 solid;border-bottom: 3px #3EBC72 solid;}
 }
 </style>

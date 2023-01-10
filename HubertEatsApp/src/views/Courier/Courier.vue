@@ -1,6 +1,8 @@
 <template>
     <div class="courier-layout">
-        <router-view />
+        <div class="sub-layout">
+            <router-view />
+        </div>
     </div>
 </template>
 
@@ -11,5 +13,11 @@
     height: 100vh;
     display: flex;
     justify-content: center;
+}
+
+.sub-layout {
+    margin:4% 4%;
+    width: inherit;
+    display: flex;
 }
 </style>
