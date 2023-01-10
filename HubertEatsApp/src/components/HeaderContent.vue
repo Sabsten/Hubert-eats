@@ -1,9 +1,9 @@
 <template>
     <div class="content">
       <div class="links">
-        <HeaderLink to="/profile" exact> <img src="@/assets/cart2black.png" width="40" height="40"> </HeaderLink>
-        <HeaderLink to="/facts"> <img src="@/assets/home2.png" width="50" height="50"> </HeaderLink>
-        <HeaderLink to="/basket"> <img src="@/assets/profil.png" width="40" height="40"> </HeaderLink>
+        <HeaderLink to="/profile" exact></HeaderLink>
+        <HeaderLink to="/facts"></HeaderLink>
+        <HeaderLink to="/basket"></HeaderLink>
       </div>
     </div>
   </template>
