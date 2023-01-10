@@ -1,4 +1,4 @@
-﻿using Hubert_Eats_manager.View;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,17 +13,16 @@ namespace Hubert_Eats_manager
     /// </summary>
     public partial class MainWindow : Window
     {
-        public string userName;
-        public string userPassword;
-        public string otherUserName;
-        public string otherUserPassword;
-        public string otherUserPassword2;
-        public string otherUserRole;
-        public string otherIdentifiant;
+        private string userName;
+        private string userPassword;
+        private string inputUsername;
+        private string inputUserPassword;
+        private string inputUserPassword2;
+        private string inputUserRole;
+        private string inputIdentifiant;
         public List<List<string>> Data;
         public Tuple<bool, string> VmResponse;
-        //public DataGrid myDataGrid;
-        private DataBaseManagerClass main;
+        private string inputUserName;
 
         public MainWindow()
         {
@@ -47,8 +46,6 @@ namespace Hubert_Eats_manager
                     Resources["pageSelection"] = Visibility.Visible;
                     foreach(var item in DataBaseManagerClass.AllData())
                         myDataGrid.Items.Add(item);
-
-
                 }
                 else
                 {
@@ -82,42 +79,43 @@ namespace Hubert_Eats_manager
 
         private void Button_Click_ConfirmUserCreation(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, string> UserInfo = new();
-            if(!otherUserName.Contains(" ") || otherUserName == "")
+            GetInfosClearText();
+            if(!inputUserName.Contains(" ") || inputUserName == "")
             {
                 MessageBox.Show("Merci de respecter la casse : Prénom NOM.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (otherUserPassword != otherUserPassword2 || otherUserPassword=="")
+            else if (inputUserPassword != inputUserPassword2 || inputUserPassword2 == "")
             {
                 MessageBox.Show("La confirmation du mot de passe a échouée. Veuillez ressayer.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (otherUserRole == "")
+            else if (inputUserRole == "")
             {
                 MessageBox.Show("La sélection d'un rôle est nécessaire.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
-                UserInfo.Add("Identifiant", otherUserName.Substring(0, 1).ToLower() + "." + otherUserName.Split(" ")[1].ToLower() + "@hubert.com");
-                UserInfo.Add("Nom", otherUserName);
-                UserInfo.Add("Password", otherUserPassword);
-                UserInfo.Add("role", cmbRole.SelectionBoxItem.ToString());
+                Dictionary<string, string> UserInfo = new();
+                UserInfo.Add("Identifiant", inputUserName.Substring(0, 1).ToLower() + "." + inputUserName.Split(" ")[1].ToLower() + "@hubert.com");
+                UserInfo.Add("Nom", inputUserName);
+                UserInfo.Add("Password", inputUserPassword);
+                UserInfo.Add("role", inputUserRole);
                 UserInfo.Add("createdBy", userName);
                 UserInfo.Add("modifiedBy", userName);
-
+                DataBaseManagerClass main = new();
                 VmResponse = main.AddUser(UserInfo);
                 while (VmResponse.Item1 == false)
                 {
                     MessageBox.Show("Un utilisateur ayant le même identifiant est déclaré dans la base \n" +
                         "Merci de modifier légérement l'identifiant, conformément à la politique de nomage. (p.nom@hubert.com)", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
                     Console.WriteLine(UserInfo["Identifiant"]);
-                    Window1 win1 = new Window1(UserInfo["Identifiant"]) ;
-                    win1.ShowDialog();
+                    //Window1 win1 = new Window1(UserInfo["Identifiant"]) ;
+                    //win1.ShowDialog();
 
-                    UserInfo["Identifiant"] = win1.newOtherIdentifiant;
+                    //UserInfo["Identifiant"] = win1.newOtherIdentifiant;
                     VmResponse = main.AddUser(UserInfo);
                 }
 
-                MessageBox.Show("L'indentifiant associé est : " + otherUserName.Substring(0, 1).ToLower() + "." + otherUserName.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("L'indentifiant associé est : " + inputUserName.Substring(0, 1).ToLower() + "." + inputUserName.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Resources["addUserPage"] = Visibility.Hidden;
                 Resources["pageSelection"] = Visibility.Visible;
             }
@@ -126,7 +124,8 @@ namespace Hubert_Eats_manager
         private void Button_Click_ConfirmUserModification(object sender, RoutedEventArgs e)
         {
             //int selectioned = 0;
-            Data = main.FindUser(otherIdentifiant);
+            DataBaseManagerClass main = new();
+            Data = main.FindUser(inputUserName);
             //while (Data[0].Count > selectioned && selectioned >= 0)
             //{
               //  //ConsoleTablePrint(Data);
@@ -140,10 +139,24 @@ namespace Hubert_Eats_manager
 
         private void Button_Click_ConfirmUserRemoval(object sender, RoutedEventArgs e)
         {
-            if(otherIdentifiant != "")
+            if(inputUserName != "")
             {
-                VmResponse = main.DeleteUser(otherIdentifiant);
+                DataBaseManagerClass main = new();
+                VmResponse = main.DeleteUser(inputUserName);
             }
+        }
+        private void GetInfosClearText()
+        {
+            inputUserName = UsernameAddUser.Text;
+            UsernameAddUser.Clear();
+
+            inputUserPassword = PasswordAddUser.Text;
+            PasswordAddUser.Clear();
+
+            inputUserPassword2 = PasswordConfirmationAddUser.Text;
+            PasswordConfirmationAddUser.Clear();
+
+            inputUserRole = RoleAddUser.Text;
         }
     }
 

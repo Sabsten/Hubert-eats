@@ -77,7 +77,7 @@
                                     Margin="0,0,0,8"
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                                     Text="Ajouter un utilisateur" />
-                                    <TextBox
+                                    <TextBox x:Name="UsernameAddUser"
                                             VerticalAlignment="Top"
                                             materialDesign:HintAssist.Hint="Nom d'utilisateur"
                                             Style="{StaticResource MaterialDesignFilledTextBox}">
@@ -88,7 +88,7 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <TextBox
+                                    <TextBox x:Name="PasswordAddUser"
                                         VerticalAlignment="Top"
                                         materialDesign:HintAssist.Hint="Mot de passe"
                                         Style="{StaticResource MaterialDesignFilledTextBox}">
@@ -99,7 +99,7 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <TextBox
+                                    <TextBox x:Name="PasswordConfirmationAddUser"
                                         VerticalAlignment="Top"
                                         materialDesign:HintAssist.Hint="Confirmation mot de passe"
                                         Style="{StaticResource MaterialDesignFilledTextBox}">
@@ -110,7 +110,7 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
-                                    <ComboBox
+                                    <ComboBox x:Name="RoleAddUser"
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Rôle"
                                           materialDesign:HintAssist.HintOpacity=".26"
@@ -126,7 +126,8 @@
                                     </ComboBox>
                                     <Button
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand"
+                                        Click ="Button_Click_ConfirmUserCreation">
                                         Valider
                                     </Button>
                                 </StackPanel>

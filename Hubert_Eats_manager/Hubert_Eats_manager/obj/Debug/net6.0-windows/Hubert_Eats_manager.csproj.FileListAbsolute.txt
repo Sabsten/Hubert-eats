@@ -66,11 +66,9 @@ C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manage
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager.csproj.AssemblyReference.cache
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\View\MainWindow.baml
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\View\MainWindow.g.cs
-C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\View\Window1.g.cs
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\App.g.cs
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager_MarkupCompile.cache
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager_MarkupCompile.lref
-C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\View\Window1.baml
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager.g.resources
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\Hubert_Eats_manager.AssemblyInfoInputs.cache

@@ -125,8 +125,9 @@ namespace ViewModel
         }
         public static bool IsUserExists(string identifiant)
         {
+            DataBaseConnection.Open();
             MySqlDataReader reader = GetReaderSQLCommand(SQLCommands.FindUserSQLString(identifiant));
-            if (reader.HasRows) { return true; } else { return false; }
+            if (reader.HasRows) { DataBaseConnection.Close(); return true; } else { DataBaseConnection.Close(); return false; }
         }
         public static MySqlDataReader GetReaderSQLCommand(string SQLCommand)
         {
