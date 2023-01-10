@@ -15,34 +15,35 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="103*"/>
-            <RowDefinition Height="307*"/>
-        </Grid.RowDefinitions>
-        
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="135" TextChanged="TextBox_TextChanged_1"
-            x:Name="TextBoxUsername"
-            materialDesign:HintAssist.HelperText=""
-            materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="10,52,0,0">
-            <TextBox.Text>
-                <Binding
-                    Path="test"
-                    UpdateSourceTrigger="PropertyChanged">
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
-        
-        <PasswordBox
-        x:Name="TextBoxPassword"
-        materialDesign:HintAssist.HelperText=""
-        materialDesign:HintAssist.Hint="Mot de passe"
-        materialDesign:PasswordBoxAssist.Password="{Binding userPasswrd, Mode=TwoWay}"
-        materialDesign:TextFieldAssist.HasClearButton="True"
-        IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
-        Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="10,3,516,252" Grid.Row="1" />
-        
-        <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_Login" Margin="40,122,472,0" Grid.Row="1"/>
-        <Image Source="../assets/Logo_Hubert_Eats.png" Margin="308,45,83,45" Grid.RowSpan="2"/>
+        <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
+
+            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="135" TextChanged="TextBox_TextChanged_1"
+                x:Name="TextBoxUsername"
+                materialDesign:HintAssist.HelperText=""
+                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="97,41,0,0">
+                <TextBox.Text>
+                    <Binding
+                        Path="test"
+                        UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <PasswordBox
+                x:Name="TextBoxPassword"
+                materialDesign:HintAssist.HelperText=""
+                materialDesign:HintAssist.Hint="Mot de passe"
+                materialDesign:PasswordBoxAssist.Password="{Binding userPasswrd, Mode=TwoWay}"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
+                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="97,90,429,271" />
+            <Button
+                 Click="Button_Click_Login"
+                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="49,107,392,197">
+                Valider
+            </Button>
+        <Image Source="../assets/Logo_Hubert_Eats.png" Margin="367,28,39,23"/>
 
         <StackPanel Visibility="{DynamicResource pageSelection}" Grid.RowSpan="2">
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Que souhaitez vous faire ?" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
