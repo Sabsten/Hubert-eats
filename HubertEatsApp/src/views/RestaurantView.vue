@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
 import { products } from '@/assets/products'
 import { computed } from 'vue'
+import CardProduct from '@/components/CardProduct.vue'
 
 export default defineComponent({
   setup() {
@@ -19,6 +20,9 @@ export default defineComponent({
         '--fact-image': `url(${products[parseInt(useRoute().params.id[0])].image})`
       }
     }
+  },
+  components: {
+    CardProduct
   }
 })
 
@@ -53,16 +57,8 @@ export default defineComponent({
         <h2>Menus</h2>
         <div class="shopsElements" cellspacing="10" cellpadding="0">
           <div class="element" v-for="(product, i) in products" :key="i" @click="">
-           <div class="picRow">
-              <img :src="product.image" width="150" height="150" class="pic" />
-                </div>
-                  <div class="descriptionRow">
-                  <div class="descriptionRow1">
-                  <div class="restaurantName">{{ product.text }}</div>
-               </div>
-               <div class="address">{{ product.address }}</div>
-              </div>
-            </div>
+            <CardProduct :fact-id="parseInt(product.text)"/>
+          </div>
           </div>
       </div>
   </div>
@@ -130,14 +126,6 @@ export default defineComponent({
     padding-top: 180px;
   }
 
-  .title{
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    margin: 20px;
-    gap: 20px;
-  }
 
   .top{
     width: 100%;
@@ -170,9 +158,6 @@ export default defineComponent({
   line-height: 38px;
 }
 
-.image{
-  width: 70%;
-}
 
 .headerRestaurant{
   display: flex;

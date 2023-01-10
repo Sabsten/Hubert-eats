@@ -3,6 +3,7 @@ import { defineComponent } from 'vue'
 import { ref } from "vue";
 import { useRouter } from 'vue-router'
 import { products } from '@/assets/products'
+import CardRestaurant from '@/components/CardRestaurant.vue'
 
 // Caroussel
 import 'vue3-carousel/dist/carousel.css'
@@ -44,7 +45,8 @@ export default defineComponent({
     Carousel,
     Slide,
     Pagination,
-    Navigation
+    Navigation,
+    CardRestaurant
   }
 })
 </script>
@@ -86,24 +88,12 @@ export default defineComponent({
         </div>
       </div>
       <div class="bottom">
-        <div class="table-wrapper">
           <div class="table-scroll">
             <div class="shopsElements" cellspacing="10" cellpadding="0">
-              <div v-for="(product, i) in products" :key="i"
-                @click="goToFact(i)">
-                    <div class="picRow">
-                      <img :src="product.image" width="150" height="150" class="pic" />
-                    </div>
-                    <div class="descriptionRow">
-                      <div class="descriptionRow1">
-                        <div class="restaurantName">{{ product.text }}</div>
-                        <div class="restaurantRate">{{ product.grade }}</div>
-                      </div>
-                      <div class="address">{{ product.address }}</div>
-                    </div>
+              <div v-for="(product, i) in products" :key="i" @click="goToFact(i)">
+                <CardRestaurant :fact-id="parseInt(product.text)"/>
               </div>
             </div>
-          </div>
         </div>
       </div>
   </div>
@@ -219,16 +209,8 @@ export default defineComponent({
   height: 100%;
 }
 
-.table-wrapper{
-  height: 100%;
-}
 
-.descriptionRow1{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+
 
 .shopsElements{
   display: flex;
@@ -247,16 +229,6 @@ export default defineComponent({
   font-size: 16px;
 }
 
-.restaurantRate{
-  padding: 10px;
-  background-image: url(@/assets/star.png);
-  background-repeat: no-repeat;
-  background-size: 35px;
-  background-position: -1px -3px;
-  font-size: 10px;
-  color: white;
-  font-weight: bold;
-}
 
 .header{
   display: flex;

@@ -31,8 +31,7 @@ export default defineComponent({
         <img :src="restaurant.image" width="150" height="150" class="pic" />
         <div>
             <div class="descriptionRow">
-            <div class="restaurantName">{{ restaurant.text }}</div>
-            <div class="restaurantRate">{{ restaurant.grade }}</div>
+            <div class="productName">{{ restaurant.text }}</div>
         </div>
         <div>{{ restaurant.address }}</div>
         </div>
@@ -41,18 +40,7 @@ export default defineComponent({
 
 <style scoped>
 
-.restaurantRate{
-  padding: 10px;
-  background-image: url(@/assets/star.png);
-  background-repeat: no-repeat;
-  background-size: 35px;
-  background-position: -1px -3px;
-  font-size: 10px;
-  color: white;
-  font-weight: bold;
-}
-
-.restaurantName{
+.productName{
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
