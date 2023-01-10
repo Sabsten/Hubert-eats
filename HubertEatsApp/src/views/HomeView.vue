@@ -191,6 +191,10 @@ export default defineComponent({
     height: 30px;
   }
 
+  .inputSearch:focus{
+    outline: none;
+  }
+
   .carousel{
     width: 50%;
     height: 50px;

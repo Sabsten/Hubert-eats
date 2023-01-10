@@ -46,7 +46,7 @@ export default defineComponent({
   background-image: url(@/assets/star.png);
   background-repeat: no-repeat;
   background-size: 35px;
-  background-position: -1px -3px;
+  background-position: -2px -5px;
   font-size: 10px;
   color: white;
   font-weight: bold;
