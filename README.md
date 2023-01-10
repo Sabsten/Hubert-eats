@@ -104,6 +104,12 @@ This is an example of how to list things you need to use the software and how to
 
 docker-compose up --build
 
+- Front-end : http://localhost:80
+
+- Account service : http://localhost:3001
+- Components service : http://localhost:3002
+- Inventory service : http://localhost:3003
+- Ordering service : http://localhost:3004
 
 
 <!-- USAGE EXAMPLES -->
