@@ -1,4 +1,5 @@
 ﻿
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,16 +14,16 @@ namespace Hubert_Eats_manager
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string userName;
-        private string userPassword;
-        private string inputUsername;
-        private string inputUserPassword;
-        private string inputUserPassword2;
-        private string inputUserRole;
-        private string inputIdentifiant;
+        public string userName;
+        public string userPassword;
+        public string inputUsername;
+        public string inputUserPassword;
+        public string inputUserPassword2;
+        public string inputUserRole;
+        public string inputIdentifiant;
         public List<List<string>> Data;
         public Tuple<bool, string> VmResponse;
-        private string inputUserName;
+        public List<ExtractDatabase> itemss = DataBaseManagerClass.AllData();
 
         public MainWindow()
         {
@@ -36,16 +37,21 @@ namespace Hubert_Eats_manager
             {
                 userName = TextBoxUsername.Text.Trim();
                 userPassword = TextBoxPassword.Password.Trim();
-                VmResponse = new(false, "");
-                IdentificationClass credentials = new();
-                Tuple<bool, string> LoginState = credentials.Login(userName, userPassword);
-
+                Tuple<bool, string> VmResponse = new(true, "");
+                Tuple<bool, string> LoginState = new(true, "");
+                //IdentificationClass credentials = new();
+                //Tuple<bool, string> LoginState = credentials.Login(userName, userPassword);
+                
                 if (LoginState.Item1)
                 {
                     Resources["homeVisible"] = Visibility.Hidden;
                     Resources["pageSelection"] = Visibility.Visible;
-                    foreach(var item in DataBaseManagerClass.AllData())
-                        myDataGrid.Items.Add(item);
+
+                    //remplis MyDatagrid avec les données de la table
+                    myDataGrid.ItemsSource = itemss;
+                    
+
+
                 }
                 else
                 {
@@ -76,11 +82,32 @@ namespace Hubert_Eats_manager
         private void Button_Click_RemoveUserSelection(object sender, RoutedEventArgs e)
         {     
         }
+        public void TabControl_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            string tabItem = ((sender as TabControl).SelectedItem as TabItem).Name as string;
+            switch (tabItem)
+            {
+                case "AddTab":
+                    break;
+
+                case "DeleteTab":
+                    break;
+
+                case "ModifierTab":
+                    break;
+
+                case "ConsultationTab":
+                    myDataGrid.ItemsSource = DataBaseManagerClass.AllData();
+                    myDataGrid.Items.Refresh();
+                    break;
+
+            }
+        }
 
         private void Button_Click_ConfirmUserCreation(object sender, RoutedEventArgs e)
         {
             GetInfosClearText();
-            if(!inputUserName.Contains(" ") || inputUserName == "")
+            if(!inputUsername.Contains(" ") || inputUsername == "")
             {
                 MessageBox.Show("Merci de respecter la casse : Prénom NOM.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -95,8 +122,8 @@ namespace Hubert_Eats_manager
             else
             {
                 Dictionary<string, string> UserInfo = new();
-                UserInfo.Add("Identifiant", inputUserName.Substring(0, 1).ToLower() + "." + inputUserName.Split(" ")[1].ToLower() + "@hubert.com");
-                UserInfo.Add("Nom", inputUserName);
+                UserInfo.Add("Identifiant", inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com");
+                UserInfo.Add("Nom", inputUsername);
                 UserInfo.Add("Password", inputUserPassword);
                 UserInfo.Add("role", inputUserRole);
                 UserInfo.Add("createdBy", userName);
@@ -119,7 +146,7 @@ namespace Hubert_Eats_manager
                     }
                 }
 
-                MessageBox.Show("L'indentifiant associé est : " + inputUserName.Substring(0, 1).ToLower() + "." + inputUserName.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("L'indentifiant associé est : " + inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Resources["addUserPage"] = Visibility.Hidden;
                 Resources["pageSelection"] = Visibility.Visible;
             }
@@ -129,7 +156,7 @@ namespace Hubert_Eats_manager
         {
             //int selectioned = 0;
             DataBaseManagerClass main = new();
-            Data = main.FindUser(inputUserName);
+            Data = main.FindUser(inputUsername);
             //while (Data[0].Count > selectioned && selectioned >= 0)
             //{
               //  //ConsoleTablePrint(Data);
@@ -143,15 +170,15 @@ namespace Hubert_Eats_manager
 
         private void Button_Click_ConfirmUserRemoval(object sender, RoutedEventArgs e)
         {
-            if(inputUserName != "")
+            if(inputUsername != "")
             {
                 DataBaseManagerClass main = new();
-                VmResponse = main.DeleteUser(inputUserName);
+                VmResponse = main.DeleteUser(inputUsername);
             }
         }
         private void GetInfosClearText()
         {
-            inputUserName = UsernameAddUser.Text;
+            inputUsername = UsernameAddUser.Text;
             UsernameAddUser.Clear();
 
             inputUserPassword = PasswordAddUser.Text;

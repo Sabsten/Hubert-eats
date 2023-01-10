@@ -70,15 +70,13 @@ namespace ViewModel
             }
             return UserInfos;
         }
-        public static List<List<ExtractDatabase>> AllData()
+        public static List<ExtractDatabase> AllData()
         {
             DataBaseConnection.Open();
             MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.AllDataSQLString());
-            List<List<ExtractDatabase>> UserInfos = new();
-            int i = 0;
+            List<ExtractDatabase> User = new();
             while (readerID.Read())
             {
-                List<ExtractDatabase> User = new();
                 ExtractDatabase UserTest = new();
                 if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
                 if (!readerID.IsDBNull(2)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
@@ -86,10 +84,9 @@ namespace ViewModel
                 if (!readerID.IsDBNull(4)) { UserTest.password = readerID.GetString(3).ToString(); } else { UserTest.password = ""; };
                 if (!readerID.IsDBNull(5)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
                 User.Add(UserTest);
-                UserInfos.Add(User);
             }
             DataBaseConnection.Close();
-            return UserInfos;
+            return User;
         }
         public static void FillTable(Dictionary<string, string> Data)
         {

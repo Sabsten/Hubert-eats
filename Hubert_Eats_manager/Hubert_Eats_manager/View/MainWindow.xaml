@@ -18,10 +18,18 @@
     <Grid>
         <Grid Visibility="{DynamicResource homeVisible}">
             <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical"/>
-            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="198" TextChanged="TextBox_TextChanged_1"
+            <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
                 x:Name="TextBoxUsername"
                 materialDesign:HintAssist.HelperText=""
-                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="48,10,0,0" Height="28">
+                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="48,41,444,394" RenderTransformOrigin="0.5,0.5">
+                <TextBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBox.RenderTransform>
                 <TextBox.Text>
                     <Binding
                         Path="test"
@@ -37,7 +45,7 @@
                 materialDesign:PasswordBoxAssist.Password="{Binding userPasswrd, Mode=TwoWay}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
-                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="48,98,454,354" />
+                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="48,107,424,325" />
             <Button
                     Click="Button_Click_Login"
                 materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
@@ -51,11 +59,11 @@
             <Grid VerticalAlignment="Center" Width="200">
                 <Grid Margin="-295,-34,-297,-44">
                     <materialDesign:Card>
-                        <TabControl
-                        materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
-                        SnapsToDevicePixels="True"
-                        Style="{StaticResource MaterialDesignNavigationRailTabControl}"
-                        Height="472" Margin="0,0,10,0">
+                        <TabControl SelectionChanged="TabControl_SelectionChanged"
+                            materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                            SnapsToDevicePixels="True"
+                            Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+                            Height="472" Margin="0,0,10,0">
                             <TabItem x:Name="AddTab">
                                 <TabItem.Header>
                                     <StackPanel
@@ -79,7 +87,8 @@
                                     Text="Ajouter un utilisateur" />
                                     <TextBox x:Name="UsernameAddUser"
                                             VerticalAlignment="Top"
-                                            materialDesign:HintAssist.Hint="Nom d'utilisateur"
+                                            Margin="0,10,0,0"
+                                            materialDesign:HintAssist.Hint="Nom et prénom de l'utilisateur"
                                             Style="{StaticResource MaterialDesignFilledTextBox}">
                                         <TextBox.Text>
                                             <Binding
@@ -91,7 +100,8 @@
                                     <TextBox x:Name="PasswordAddUser"
                                         VerticalAlignment="Top"
                                         materialDesign:HintAssist.Hint="Mot de passe"
-                                        Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        Style="{StaticResource MaterialDesignFilledTextBox}"
+                                        Margin="0,20,0,0">
                                         <TextBox.Text>
                                             <Binding
                                             Path="Text1"
@@ -102,7 +112,8 @@
                                     <TextBox x:Name="PasswordConfirmationAddUser"
                                         VerticalAlignment="Top"
                                         materialDesign:HintAssist.Hint="Confirmation mot de passe"
-                                        Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        Style="{StaticResource MaterialDesignFilledTextBox}"
+                                        Margin="0,20,0,0">
                                         <TextBox.Text>
                                             <Binding
                                             Path="Text1"
@@ -111,6 +122,7 @@
                                         </TextBox.Text>
                                     </TextBox>
                                     <ComboBox x:Name="RoleAddUser"
+                                          Margin="0,20,0,0"
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Rôle"
                                           materialDesign:HintAssist.HintOpacity=".26"
@@ -125,7 +137,8 @@
                                             Content="Developpeur Tier" />
                                     </ComboBox>
                                     <Button
-                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,40,0,0"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand"
                                         Click ="Button_Click_ConfirmUserCreation">
                                         Valider
@@ -155,6 +168,7 @@
                                     Text="Supprimer un utilisateur" />
                                     <TextBox
                                             VerticalAlignment="Top"
+                                            Margin="0,10,0,0"
                                             materialDesign:HintAssist.Hint="Nom d'utilisateur (@hubert.com)"
                                             Style="{StaticResource MaterialDesignFilledTextBox}">
                                         <TextBox.Text>
@@ -166,27 +180,26 @@
                                     </TextBox>
                                     <Button
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,20,0,0"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
                                     <materialDesign:PackIcon
                                         Width="24"
                                         Height="24"
+                                        Margin="0,20,0,0"
                                         HorizontalAlignment="Center"
                                         Kind="Approve" />
                                     <DataGrid x:Name="DataGrid"
+                                          Margin="0,20,0,0"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
-                                          Background="LightGreen">
-                                        <DataGridTextColumn Header="idInternalUser" />
-                                        <DataGridTextColumn Header="identifiant" />
-                                        <DataGridTextColumn Header="nom" />
-                                        <DataGridTextColumn Header="password" />
-                                        <DataGridTextColumn Header="role" />
-                                    </DataGrid>
+                                          Background="LightGreen"
+                                          AutoGenerateColumns="True"/>
                                     <ComboBox
+                                          Margin="0,20,0,0"
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Champ à modifier"
                                           materialDesign:HintAssist.HintOpacity=".26"
@@ -202,6 +215,7 @@
                                     </ComboBox>
                                     <TextBox
                                             VerticalAlignment="Top"
+                                            Margin="0,20,0,0"
                                             materialDesign:HintAssist.Hint="Nouvelle valeur"
                                             Style="{StaticResource MaterialDesignFilledTextBox}">
                                         <TextBox.Text>
@@ -269,7 +283,7 @@
                                     </DataGrid>
                                 </StackPanel>
                             </TabItem>
-                            <TabItem>
+                            <TabItem x:Name="ConsultationTab">
                                 <TabItem.Header>
                                     <StackPanel
                                   Width="auto"
@@ -295,12 +309,8 @@
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
-                                          Background="LightGreen">
-                                        <DataGridTextColumn Header="idInternalUser" />
-                                        <DataGridTextColumn Header="identifiant" />
-                                        <DataGridTextColumn Header="nom" />
-                                        <DataGridTextColumn Header="password" />
-                                        <DataGridTextColumn Header="role" />
+                                          Background="LightGreen"
+                                          AutoGenerateColumns="True">
                                     </DataGrid>
                                 </StackPanel>
                             </TabItem>
