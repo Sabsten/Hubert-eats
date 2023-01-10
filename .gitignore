@@ -41,5 +41,5 @@ dist
 yarn.lock
 
 .vs/
-.Hubert_Eats_manager/Hubert_Eats_manager/obj
+.Hubert_Eats_manager/Hubert_Eats_manager/obj/Debug/
 .Hubert_Eats_manager/Hubert_Eats_manager/Settings.json
