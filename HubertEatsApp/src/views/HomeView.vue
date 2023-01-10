@@ -9,11 +9,32 @@ import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
 export default defineComponent({
+  data: () => ({
+    // carousel settings
+    settings: {
+      itemsToShow: 1,
+      snapAlign: 'center',
+    },
+    // breakpoints are mobile first
+    // any settings not specified will fallback to the carousel settings
+    breakpoints: {
+      // 700px and up
+      700: {
+        itemsToShow: 3.5,
+        snapAlign: 'center',
+      },
+      // 1024 and up
+      1024: {
+        itemsToShow: 5,
+        snapAlign: 'start',
+      },
+    },
+  }),
   setup() {
     const router = useRouter()
     let input = ref("");
     const goToFact = (id: number) => {
-      router.push({ path: `/fact/${id}` })
+      router.push({ path: `/restaurantPage/${id}` })
     }
     return { products, goToFact, input}
 
@@ -50,25 +71,26 @@ export default defineComponent({
             <input class="searchButton" type="button" value="Search">
           </div>
           
-          <carousel class="carousel" :items-to-show="5">
-            <slide v-for="slide in 10" :key="slide">
-              <div class="slide">{{ slide }}</div>
-            </slide>
+          <Carousel class="carousel" :settings="settings" :breakpoints="breakpoints">
+            <Slide v-for="(product, i) in products" :key="i">
+              <div class="carousel_item">
+                <img :src="product.image" width="40" height="40">
+                <span>Test</span>
+              </div>
+            </Slide>
 
             <template #addons>
-              <navigation class="pag" />
+              <Navigation />
             </template>
-          </carousel>
+          </Carousel>
         </div>
       </div>
       <div class="bottom">
         <div class="table-wrapper">
           <div class="table-scroll">
             <div class="shopsElements" cellspacing="10" cellpadding="0">
-              <div class="clickable" v-for="(product, i) in products" :key="i"
+              <div v-for="(product, i) in products" :key="i"
                 @click="goToFact(i)">
-                <td class="row-content">
-                  <div class="left-part">
                     <div class="picRow">
                       <img :src="product.image" width="150" height="150" class="pic" />
                     </div>
@@ -79,8 +101,6 @@ export default defineComponent({
                       </div>
                       <div class="address">{{ product.address }}</div>
                     </div>
-                  </div>
-                </td>
               </div>
             </div>
           </div>
@@ -100,8 +120,9 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: calc(100% - 150px);
+    height: calc(100% - 122px);
     flex-direction: column;
+    background-color: #D8E3E2;
   }
 
   h1{
@@ -147,7 +168,7 @@ export default defineComponent({
     position: relative;
     bottom: 40px;
     left: 30px;
-    width: 100%;
+    width: calc(100% - 30px);
   }
 
   .searchBarLeftPart{
@@ -181,11 +202,15 @@ export default defineComponent({
   }
 
   .carousel{
-    width: 300px;
-    
+    width: 50%;
+    height: 50px;
+    margin-left: 20px;
   }
 
-
+  .carousel_item{
+    display: flex;
+    flex-direction: column;
+  }
 
 
 /* Allow the table to be scrollable */
@@ -239,7 +264,6 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   margin: 20px;
-
 }
 
 .personnal{
