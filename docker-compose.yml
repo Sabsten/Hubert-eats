@@ -1,0 +1,40 @@
+version: "0.1"
+services:
+  account-service:
+    build: ./services/account
+    restart: always
+    ports:
+      - "3001:3000"
+    networks:
+      - reseau
+  components-service:
+    build: ./services/components
+    restart: always
+    ports:
+      - "3002:3000"
+    networks:
+      - reseau
+  inventory-service:
+    build: ./services/inventory
+    restart: always
+    ports:
+      - "3003:3000"
+    networks:
+      - reseau
+  ordering-service:
+    build: ./services/ordering
+    restart: always
+    ports:
+      - "3004:3000"
+    networks:
+      - reseau
+  front-end:
+    build: ./HubertEatsApp
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - reseau
+
+networks:
+  reseau:
