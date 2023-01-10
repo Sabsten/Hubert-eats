@@ -11,9 +11,9 @@ namespace Model
     }
     class SQLDatabase
     {
-        public static string Host { get; } = "localhost";
+        public static string Host { get; } = "db4free.net";
         public static int Port { get; } = 3306;
-        public static string Database { get; } = "internalprofiles";
+        public static string Database { get; } = "huberteats";
         public static string UserTable { get; } = "InternalUserTable";
         public static string LogTable { get; } = "InternalLogTable";
 
