@@ -47,8 +47,7 @@ namespace ViewModel
 
         public List<List<string>> FindUser(string identifiant)
         {
-            string test = SQLCommands.FindUserSQLString(identifiant);
-            MySqlDataReader readerID = GetReaderSQLCommand(test);
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUserSQLString(identifiant));
             List<List<string>> UserInfos = new();
             int i = 0;
             while (readerID.Read())
@@ -69,6 +68,27 @@ namespace ViewModel
                 i = 0;
                 UserInfos.Add(User);
             }
+            return UserInfos;
+        }
+        public static List<List<ExtractDatabase>> AllData()
+        {
+            DataBaseConnection.Open();
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.AllDataSQLString());
+            List<List<ExtractDatabase>> UserInfos = new();
+            int i = 0;
+            while (readerID.Read())
+            {
+                List<ExtractDatabase> User = new();
+                ExtractDatabase UserTest = new();
+                if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
+                if (!readerID.IsDBNull(2)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
+                if (!readerID.IsDBNull(3)) { UserTest.nom = readerID.GetString(2).ToString(); } else { UserTest.nom = ""; };
+                if (!readerID.IsDBNull(4)) { UserTest.password = readerID.GetString(3).ToString(); } else { UserTest.password = ""; };
+                if (!readerID.IsDBNull(5)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
+                User.Add(UserTest);
+                UserInfos.Add(User);
+            }
+            DataBaseConnection.Close();
             return UserInfos;
         }
         public static void FillTable(Dictionary<string, string> Data)
@@ -108,24 +128,14 @@ namespace ViewModel
             MySqlDataReader reader = GetReaderSQLCommand(SQLCommands.FindUserSQLString(identifiant));
             if (reader.HasRows) { return true; } else { return false; }
         }
-        private static List<string> DictionaryToListKeys(Dictionary<string, string> dict)
-        {
-            List<string> list = new();
-            foreach (var item in dict)
-            {
-                list.Add(item.Key);
-            }
-            return list;
-        }
         public static MySqlDataReader GetReaderSQLCommand(string SQLCommand)
         {
-            DataBaseConnection.Open();
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
             cmd.CommandText = SQLCommand;
             MySqlDataReader reader = cmd.ExecuteReader();
-            DataBaseConnection.Close();
             return reader;
         }
+
         public static void ExecuteSQLCommand(string SQLCommand)
         {
             DataBaseConnection.Open();

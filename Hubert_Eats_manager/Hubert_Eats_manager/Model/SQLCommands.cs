@@ -20,6 +20,11 @@ namespace Model
         {
             return "UPDATE " + SQLDatabase.UserTable + " SET '" + ColumnItem + "' = '" + Value + "' WHERE 'identifiant' = '" + identifiant + "'";
         }
+
+        public static string AllDataSQLString()
+        {
+            return "SELECT * FROM " + SQLDatabase.UserTable;
+        }
         public static string FillTableSQLCommand(Dictionary<string, string> Data)
         {
             string sqlLine1 = "INSERT INTO " + SQLDatabase.UserTable + "(";

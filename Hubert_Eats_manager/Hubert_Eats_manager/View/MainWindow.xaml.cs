@@ -1,7 +1,9 @@
 ﻿using Hubert_Eats_manager.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using ViewModel;
 
 namespace Hubert_Eats_manager
@@ -11,15 +13,16 @@ namespace Hubert_Eats_manager
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static string userName;
-        public static string userPassword;
-        public static string otherUserName;
-        public static string otherUserPassword;
-        public static string otherUserPassword2;
-        public static string otherUserRole;
-        public static string otherIdentifiant;
-        public static List<List<string>> Data;
-        public static Tuple<bool, string> VmResponse;
+        public string userName;
+        public string userPassword;
+        public string otherUserName;
+        public string otherUserPassword;
+        public string otherUserPassword2;
+        public string otherUserRole;
+        public string otherIdentifiant;
+        public List<List<string>> Data;
+        public Tuple<bool, string> VmResponse;
+        //public DataGrid myDataGrid;
         private DataBaseManagerClass main;
 
         public MainWindow()
@@ -42,6 +45,10 @@ namespace Hubert_Eats_manager
                 {
                     Resources["homeVisible"] = Visibility.Hidden;
                     Resources["pageSelection"] = Visibility.Visible;
+                    foreach(var item in DataBaseManagerClass.AllData())
+                        myDataGrid.Items.Add(item);
+
+
                 }
                 else
                 {
@@ -55,30 +62,22 @@ namespace Hubert_Eats_manager
         }
         private void TextBox_TextChanged_1(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void TextBox_TextChanged_2(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void Button_Click_AddUserSelection(object sender, RoutedEventArgs e)
         {
-            Resources["pageSelection"] = Visibility.Hidden;
-            Resources["addUserPage"] = Visibility.Visible;
         }
 
         private void Button_Click_EditUserSelection(object sender, RoutedEventArgs e)
         {
-            Resources["pageSelection"] = Visibility.Hidden;
-            Resources["editUserPage"] = Visibility.Visible;
         }
 
         private void Button_Click_RemoveUserSelection(object sender, RoutedEventArgs e)
-        {
-            Resources["pageSelection"] = Visibility.Hidden;
-            Resources["removeUserPage"] = Visibility.Visible;
+        {     
         }
 
         private void Button_Click_ConfirmUserCreation(object sender, RoutedEventArgs e)
