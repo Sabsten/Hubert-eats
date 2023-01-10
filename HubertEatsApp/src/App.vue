@@ -51,6 +51,5 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: calc(100vh - 0px);
-  padding: 2rem;
 }
 </style>
