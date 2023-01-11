@@ -31,7 +31,6 @@ export default defineComponent({
 
 <template>
   <main>
-  <div class="container-fluid">
     <!-- "router-view" is a component that is defined by Vue Router -->
      <router-view class="test" v-slot="{Component}">
       <transition
@@ -40,16 +39,12 @@ export default defineComponent({
         <component :is="Component"/>
       </transition>
   </router-view>
-  </div>
   <!-- <HeaderContent class="bar"/> -->
   </main>
 </template>
 
 <style scoped>
-
-.container-fluid{
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 0px);
+body {
+  margin:0;
 }
 </style>
