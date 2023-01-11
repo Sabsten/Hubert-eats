@@ -46,11 +46,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-
-.container-fluid{
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 0px);
-  padding: 2rem;
+body {
+  margin:0;
 }
 </style>
