@@ -19,5 +19,6 @@
     margin:4% 4%;
     width: inherit;
     display: flex;
+    flex-direction: column;
 }
 </style>

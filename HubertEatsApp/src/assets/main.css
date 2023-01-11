@@ -8,3 +8,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+:root {
+  --green: #3EBC72;
+  --light-green: #E3EFEB;
+}

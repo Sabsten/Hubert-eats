@@ -3,25 +3,17 @@ import CourierHeader from '@/components/courier/CourierHeader.vue';
 </script>
 
 <template>
-    <div class="courierHome">
-        <CourierHeader icon="fa-solid fa-user" link="/livreur/compte"/>
-        <div class="ordersContent">
-            <h2>Aucune commandes actuellement disponible ...</h2>
-        </div>
-        <div class="courierBottom">
-            <div class="tinderButton close"><i class="fa-solid fa-xmark"></i></div>
-            <div class="tinderButton bike"><i class="fa-solid fa-bicycle"></i></div>
-        </div>
+    <CourierHeader icon="fa-solid fa-user" link="/livreur/compte"/>
+    <div class="ordersContent">
+        <h2>Aucune commandes actuellement disponible ...</h2>
+    </div>
+    <div class="courierBottom">
+        <div class="tinderButton close"><i class="fa-solid fa-xmark"></i></div>
+        <div class="tinderButton bike"><i class="fa-solid fa-bicycle"></i></div>
     </div>
 </template>
 
 <style scoped lang="scss">
-.courierHome {
-    width:100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
 .ordersContent {
     background-color: white;
     width: 100%;
@@ -29,6 +21,7 @@ import CourierHeader from '@/components/courier/CourierHeader.vue';
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 5px;
     h2 {
         text-align: center;
     }
@@ -50,7 +43,7 @@ import CourierHeader from '@/components/courier/CourierHeader.vue';
     border-radius: 50px;
     width:70px;
     height: 70px;
-    border: 3px rgb(0,0,0,0) solid;
+    border: 4px rgb(0,0,0,0) solid;
     i {
         font-size: 40px;
     }
@@ -61,7 +54,7 @@ import CourierHeader from '@/components/courier/CourierHeader.vue';
 }
 .bike:hover {
     cursor: pointer;
-    animation: 1.5s 1 borderGreen forwards;
+    animation: 2s 1 borderGreen forwards;
 }
 .fa-xmark {
     color:red;
@@ -71,19 +64,19 @@ import CourierHeader from '@/components/courier/CourierHeader.vue';
 }
 
 @keyframes borderRed {
-    25% {border-left: 3px red solid;}
-    50% {border-left: 3px red solid; border-top: 3px red solid;}
-    75% {border-left: 3px red solid; border-top: 3px red solid;
-        border-right: 3px red solid;}
-    100% {border-left: 3px red solid; border-top: 3px red solid;
-        border-right: 3px red solid;border-bottom: 3px red solid;}
+    25% {border-left: 4px red solid;}
+    50% {border-left: 4px red solid; border-top: 4px red solid;}
+    75% {border-left: 4px red solid; border-top: 4px red solid;
+        border-right: 4px red solid;}
+    100% {border-left: 4px red solid; border-top: 4px red solid;
+        border-right: 4px red solid;border-bottom: 4px red solid;}
 }
 @keyframes borderGreen {
-    25% {border-left: 3px #3EBC72 solid;}
-    50% {border-left: 3px #3EBC72 solid; border-top: 3px #3EBC72 solid;}
-    75% {border-left: 3px #3EBC72 solid; border-top: 3px #3EBC72 solid;
-        border-right: 3px #3EBC72 solid;}
-    100% {border-left: 3px #3EBC72 solid; border-top: 3px #3EBC72 solid;
-        border-right: 3px #3EBC72 solid;border-bottom: 3px #3EBC72 solid;}
+    25% {border-left: 4px #3EBC72 solid;}
+    50% {border-left: 4px #3EBC72 solid; border-top: 4px #3EBC72 solid;}
+    75% {border-left: 4px #3EBC72 solid; border-top: 4px #3EBC72 solid;
+        border-right: 4px #3EBC72 solid;}
+    100% {border-left: 4px #3EBC72 solid; border-top: 4px #3EBC72 solid;
+        border-right: 4px #3EBC72 solid;border-bottom: 4px #3EBC72 solid;}
 }
 </style>
