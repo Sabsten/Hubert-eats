@@ -41,5 +41,6 @@ dist
 yarn.lock
 
 .vs/
-.Hubert_Eats_manager/Hubert_Eats_manager/obj/Debug/
+*.editorconfig
+*.cache
 .Hubert_Eats_manager/Hubert_Eats_manager/Settings.json
