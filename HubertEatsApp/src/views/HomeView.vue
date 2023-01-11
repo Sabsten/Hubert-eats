@@ -3,17 +3,40 @@ import { defineComponent } from 'vue'
 import { ref } from "vue";
 import { useRouter } from 'vue-router'
 import { products } from '@/assets/products'
+import CardRestaurant from '@/components/CardRestaurant.vue'
+import HeaderContent from '@/components/HeaderContent.vue'
 
 // Caroussel
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
 export default defineComponent({
+  data: () => ({
+    // carousel settings
+    settings: {
+      itemsToShow: 1,
+      snapAlign: 'center',
+    },
+    // breakpoints are mobile first
+    // any settings not specified will fallback to the carousel settings
+    breakpoints: {
+      // 700px and up
+      700: {
+        itemsToShow: 3.5,
+        snapAlign: 'center',
+      },
+      // 1024 and up
+      1024: {
+        itemsToShow: 5,
+        snapAlign: 'start',
+      },
+    },
+  }),
   setup() {
     const router = useRouter()
     let input = ref("");
     const goToFact = (id: number) => {
-      router.push({ path: `/fact/${id}` })
+      router.push({ path: `/restaurantPage/${id}` })
     }
     return { products, goToFact, input}
 
@@ -23,7 +46,9 @@ export default defineComponent({
     Carousel,
     Slide,
     Pagination,
-    Navigation
+    Navigation,
+    CardRestaurant,
+    HeaderContent
   }
 })
 </script>
@@ -31,13 +56,7 @@ export default defineComponent({
 <template>
   <div class="page">
       <div class="top">
-        <div class="header">
-            <img src="@/assets/HubertEatsLogo.png" width="150">
-            <div class="personnal">
-              <div>Basket</div>
-              <div>Account</div>
-            </div>
-        </div>
+        <HeaderContent/>
         <div class="title"> 
           <h1>
             Enjoy a good meal
@@ -50,40 +69,27 @@ export default defineComponent({
             <input class="searchButton" type="button" value="Search">
           </div>
           
-          <carousel class="carousel" :items-to-show="5">
-            <slide v-for="slide in 10" :key="slide">
-              <div class="slide">{{ slide }}</div>
-            </slide>
+          <Carousel class="carousel" :settings="settings" :breakpoints="breakpoints">
+            <Slide v-for="(product, i) in products" :key="i">
+              <div class="carousel_item">
+                <img :src="product.image" width="40" height="40">
+                <span>Test</span>
+              </div>
+            </Slide>
 
             <template #addons>
-              <navigation class="pag" />
+              <Navigation />
             </template>
-          </carousel>
+          </Carousel>
         </div>
       </div>
       <div class="bottom">
-        <div class="table-wrapper">
           <div class="table-scroll">
             <div class="shopsElements" cellspacing="10" cellpadding="0">
-              <div class="clickable" v-for="(product, i) in products" :key="i"
-                @click="goToFact(i)">
-                <td class="row-content">
-                  <div class="left-part">
-                    <div class="picRow">
-                      <img :src="product.image" width="150" height="150" class="pic" />
-                    </div>
-                    <div class="descriptionRow">
-                      <div class="descriptionRow1">
-                        <div class="restaurantName">{{ product.text }}</div>
-                        <div class="restaurantRate">{{ product.grade }}</div>
-                      </div>
-                      <div class="address">{{ product.address }}</div>
-                    </div>
-                  </div>
-                </td>
+              <div v-for="(product, i) in products" :key="i" @click="goToFact(i)">
+                <CardRestaurant :element=product />
               </div>
             </div>
-          </div>
         </div>
       </div>
   </div>
@@ -100,8 +106,9 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: calc(100% - 150px);
+    height: calc(100% - 122px);
     flex-direction: column;
+    background-color: #D8E3E2;
   }
 
   h1{
@@ -147,7 +154,7 @@ export default defineComponent({
     position: relative;
     bottom: 40px;
     left: 30px;
-    width: 100%;
+    width: calc(100% - 30px);
   }
 
   .searchBarLeftPart{
@@ -180,12 +187,20 @@ export default defineComponent({
     height: 30px;
   }
 
-  .carousel{
-    width: 300px;
-    
+  .inputSearch:focus{
+    outline: none;
   }
 
+  .carousel{
+    width: 50%;
+    height: 50px;
+    margin-left: 20px;
+  }
 
+  .carousel_item{
+    display: flex;
+    flex-direction: column;
+  }
 
 
 /* Allow the table to be scrollable */
@@ -194,16 +209,8 @@ export default defineComponent({
   height: 100%;
 }
 
-.table-wrapper{
-  height: 100%;
-}
 
-.descriptionRow1{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+
 
 .shopsElements{
   display: flex;
@@ -220,26 +227,6 @@ export default defineComponent({
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
-}
-
-.restaurantRate{
-  padding: 10px;
-  background-image: url(@/assets/star.png);
-  background-repeat: no-repeat;
-  background-size: 35px;
-  background-position: -1px -3px;
-  font-size: 10px;
-  color: white;
-  font-weight: bold;
-}
-
-.header{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px;
-
 }
 
 .personnal{

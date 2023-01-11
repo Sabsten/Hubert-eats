@@ -51,6 +51,27 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: calc(100vh - 0px);
-  padding: 2rem;
+}
+
+/* Change animation settings */
+.animate__animated.animate__fadeIn {
+  --animate-duration: 1s;
+}
+.animate__animated.animate__fadeOut {
+  --animate-duration: 0.2s;
+}
+
+.animate__animated.animate__fadeInLeft {
+  --animate-duration: 1s;
+}
+.animate__animated.animate__fadeOutRight {
+  --animate-duration: 0.5s;
+}
+
+.animate__animated.animate__fadeInRight {
+  --animate-duration: 1s;
+}
+.animate__animated.animate__fadeOutLeft {
+  --animate-duration: 0.5s;
 }
 </style>

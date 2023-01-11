@@ -13,7 +13,7 @@ export default defineComponent({
     const goToHome = () => {
     router.push({ path: `/basket` })
   }
-    return { goToLogin, goToHome}
+    return { goToLogin, goToHome }
   }
 })
 </script>
