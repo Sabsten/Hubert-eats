@@ -4,6 +4,7 @@ import { ref } from "vue";
 import { useRouter } from 'vue-router'
 import { products } from '@/assets/products'
 import CardRestaurant from '@/components/CardRestaurant.vue'
+import HeaderContent from '@/components/HeaderContent.vue'
 
 // Caroussel
 import 'vue3-carousel/dist/carousel.css'
@@ -46,7 +47,8 @@ export default defineComponent({
     Slide,
     Pagination,
     Navigation,
-    CardRestaurant
+    CardRestaurant,
+    HeaderContent
   }
 })
 </script>
@@ -54,13 +56,7 @@ export default defineComponent({
 <template>
   <div class="page">
       <div class="top">
-        <div class="header">
-            <img src="@/assets/HubertEatsLogo.png" width="150">
-            <div class="personnal">
-              <div>Basket</div>
-              <div>Account</div>
-            </div>
-        </div>
+        <HeaderContent/>
         <div class="title"> 
           <h1>
             Enjoy a good meal
@@ -91,7 +87,7 @@ export default defineComponent({
           <div class="table-scroll">
             <div class="shopsElements" cellspacing="10" cellpadding="0">
               <div v-for="(product, i) in products" :key="i" @click="goToFact(i)">
-                <CardRestaurant :fact-id="parseInt(product.text)"/>
+                <CardRestaurant :element=product />
               </div>
             </div>
         </div>
@@ -231,15 +227,6 @@ export default defineComponent({
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
-}
-
-
-.header{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px;
 }
 
 .personnal{

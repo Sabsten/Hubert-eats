@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router'
 import { products } from '@/assets/products'
 import { computed } from 'vue'
 import CardProduct from '@/components/CardProduct.vue'
+import HeaderContent from '@/components/HeaderContent.vue'
 
 export default defineComponent({
   setup() {
@@ -22,7 +23,8 @@ export default defineComponent({
     }
   },
   components: {
-    CardProduct
+    CardProduct,
+    HeaderContent
   }
 })
 
@@ -31,13 +33,7 @@ export default defineComponent({
 <template>
   <div class="page">
       <div class="top" z-index="200">
-        <div class="header">
-            <img src="@/assets/HubertEatsLogo.png" width="150">
-            <div class="personnal">
-              <div>Basket</div>
-              <div>Account</div>
-            </div>
-        </div>
+        <HeaderContent/>
         <div class="headerRestaurant">
             <div class="top-part-img" :style="cssVars" style="max-width:100%; height: 200px; min-width: 100%;"></div>
             <div class="top-part-text">
@@ -57,10 +53,16 @@ export default defineComponent({
         <h2>Menus</h2>
         <div class="shopsElements" cellspacing="10" cellpadding="0">
           <div class="element" v-for="(product, i) in products" :key="i" @click="">
-            <CardProduct :fact-id="parseInt(product.text)"/>
+            <CardProduct :element=product />
           </div>
+        </div>
+        <h2>Entrées</h2>
+        <div class="shopsElements" cellspacing="10" cellpadding="0">
+          <div class="element" v-for="(product, i) in products" :key="i" @click="">
+            <CardProduct :element=product />
           </div>
-      </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -137,14 +139,6 @@ export default defineComponent({
     text-align: center;
   }
 
-.header{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px;
-}
-
 .personnal{
   display: flex;
   flex-direction: row;
@@ -174,7 +168,7 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   gap: 40px;
-  justify-content: flex-start;
+  justify-content: center;
   margin: 20px;
   align-items: center;
   flex-wrap: wrap;
@@ -201,6 +195,10 @@ export default defineComponent({
 .element:hover{
   cursor: pointer;
   transform: scale(1.1);
+}
+
+h2{
+  margin-left: 70px;
 }
 
 </style>

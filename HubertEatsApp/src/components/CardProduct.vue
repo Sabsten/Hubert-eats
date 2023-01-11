@@ -2,19 +2,18 @@
 import { computed, defineComponent, useCssVars } from 'vue'
 import { products } from '@/assets/products'
 
-type CardRestaurantProps = { factId: number }
+
+type CardRestaurantProps = { element: any }
 
 export default defineComponent({
   props: {
-    factId: {
-      type: Number,
-      validator: v => typeof v === 'number' && v >= 0 && v < products.length,
+    element: {
       required: true
     }
   },
   setup(props: CardRestaurantProps) {
     //const restaurant = computed(() => products[props.factId])
-    const restaurant = products[0]
+    const restaurant = props.element
     return { restaurant }
   },
   computed: {
