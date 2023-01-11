@@ -8,14 +8,13 @@ export default defineComponent({
     const routeLocation = useRoute()
     const router = useRouter()
     const goToCreateAccount = () => {
-    router.push({ path: `/facts` })
+    router.push({ path: `/signup` })
   }
   }
 })
 </script>
 
 <template>
-   
    <div id="banner">
   
     <img src="@/assets/HubertEatsLogo.png" >

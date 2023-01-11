@@ -8,10 +8,10 @@ export default defineComponent({
     const routeLocation = useRoute()
     const router = useRouter()
     const goToCreateAccount = () => {
-    router.push({ path: `/facts` })
+    router.push({ path: `/signup` })
   }
     const goToHome = () => {
-    router.push({ path: `/basket` })
+    router.push({ path: `/home` })
 
   }
     return { goToCreateAccount, goToHome }
@@ -59,15 +59,12 @@ export default defineComponent({
 .page {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  height: 100%;
+  height: 100vh;
   width: 100%;
 }
 .presentation{
   background-color: #3EBC72;
   color: white;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
   height: 100%;
   width: 50%;
   display: flex;
