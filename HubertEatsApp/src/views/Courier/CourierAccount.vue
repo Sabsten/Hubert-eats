@@ -3,15 +3,16 @@ import CourierHeader from '@/components/courier/CourierHeader.vue';
 import CourierHistory from '@/components/courier/CourierHistory.vue';
 
 const historyTest = {
-    duree: 100,
+    duree: 900,
     distance: 2700,
     gain: 3.7,
-    date: new Date()
+    date: new Date(),
 }
 </script>
 
 <template>
-    <CourierHeader icon="fa-solid fa-reply" link="/livreur"/>
+    <div class="accountLayout">
+        <CourierHeader icon="fa-solid fa-reply" link="/livreur"/>
     <div class="courierInfos">
         <img class="photo" src="/avatar.jpg" alt="Avatar"/>
         <div class="informations">
@@ -26,11 +27,29 @@ const historyTest = {
     </div>
     <div class="history">
         <h1>Historique</h1>
-        <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date.getDate() />
+        <div class="historyContent">
+            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
+            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
+            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
+            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
+            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
+        </div>
+    </div>
     </div>
 </template>
 
-<style lang="scss">
+<style scope lang="scss">
+.sub-layout {
+    margin-bottom: 0 !important;
+}
+.accountLayout {
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.accountLayout::-webkit-scrollbar{
+    display: none;
+  }
 .courierInfos {
     width: 100%;
     display: flex;
@@ -61,6 +80,9 @@ const historyTest = {
         font-size: 25px;
         color: var(--green);
     }
+    i:hover {
+        cursor: pointer;
+    }
 }
 .balance {
     margin-top:30px;
@@ -75,7 +97,14 @@ const historyTest = {
         color: var(--green);
     }
 }
-
+.history {
+    margin-bottom: 20px;
+}
+.historyContent {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
 </style>
 
 
