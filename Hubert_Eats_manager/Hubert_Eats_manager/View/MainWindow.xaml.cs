@@ -21,9 +21,10 @@ namespace Hubert_Eats_manager
         public string inputUserPassword2;
         public string inputUserRole;
         public string inputIdentifiant;
+        public string parameterSelected;
+        public string parameterValue;
         public List<List<string>> Data;
         public Tuple<bool, string> VmResponse;
-        public List<ExtractDatabase> itemss = DataBaseManagerClass.AllData();
 
         public MainWindow()
         {
@@ -41,17 +42,11 @@ namespace Hubert_Eats_manager
                 Tuple<bool, string> LoginState = new(true, "");
                 //IdentificationClass credentials = new();
                 //Tuple<bool, string> LoginState = credentials.Login(userName, userPassword);
-                
+
                 if (LoginState.Item1)
                 {
                     Resources["homeVisible"] = Visibility.Hidden;
                     Resources["pageSelection"] = Visibility.Visible;
-
-                    //remplis MyDatagrid avec les données de la table
-                    myDataGrid.ItemsSource = itemss;
-                    
-
-
                 }
                 else
                 {
@@ -83,16 +78,32 @@ namespace Hubert_Eats_manager
         {     
         }
 
+        public void Button_Click_ModifyUser(object sender, RoutedEventArgs e)
+        {
+            ModifyGetInfosClearText();
+            DataBaseManagerClass.ModifyUser(parameterValue, parameterSelected, inputUsername, userName);
+        }
+
         private void Button_Click_FindUser(object sender, RoutedEventArgs e)
         {
-            DeleteGetInfosClearText();
-            DeleteDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(inputUsername);
-            DeleteDataGrid.Items.Refresh();
+            if ((sender as Button).Name == "FindUserButtonModifyTab")
+            {
+                ModifyDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(inputUsername);
+                ModifyDataGrid.Items.Refresh();
+            }
+            else
+            {
+                DeleteGetInfosClearText();
+                DeleteDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(inputUsername);
+                DeleteDataGrid.Items.Refresh();
+
+            }
         }
 
         private void Button_Click_DeleteUser(object sender, RoutedEventArgs e)
         {
-
+            DeleteGetInfosClearText();
+            DataBaseManagerClass.DeleteUser(inputUsername);
         }
         public void TabControl_SelectionChanged(object sender, RoutedEventArgs e)
         {
@@ -196,6 +207,16 @@ namespace Hubert_Eats_manager
         {
             inputUsername = UsernameDelete.Text;
             UsernameAddUser.Clear();
+        }
+        private void ModifyGetInfosClearText()
+        {
+            inputUsername = UsernameTextBoxModifyTab.Text;
+            UsernameTextBoxModifyTab.Clear();
+
+            parameterSelected = ModifyCombobox.Text;
+
+            parameterValue = ModifyValue.Text;
+            ModifyValue.Clear();
         }
     }
 

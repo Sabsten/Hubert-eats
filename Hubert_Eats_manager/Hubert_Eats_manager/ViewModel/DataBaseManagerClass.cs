@@ -25,10 +25,10 @@ namespace ViewModel
                 return (true, "L'utilisateur a bien été ajouté dans la base de donnée.").ToTuple();
             }
         }
-        public static Tuple<bool, string> ModifyUser(string modifiedparameter, int NumberSelected, List<List<string>> Data, string identifiant, string ModifiedBy)
+        public static Tuple<bool, string> ModifyUser(string modifiedparameter, string selectedParameter, string identifiant, string ModifiedByUsername)
         {
-            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString(Data[0][NumberSelected], modifiedparameter, identifiant));
-            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString(Data[0][8], ModifiedBy, identifiant));
+            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString(selectedParameter, modifiedparameter, identifiant));
+            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString("modifiedBy", ModifiedByUsername, identifiant));
             return (true, "Modification effectuée " + identifiant).ToTuple();
         }
 
@@ -82,7 +82,6 @@ namespace ViewModel
                 if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
                 if (!readerID.IsDBNull(2)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
                 if (!readerID.IsDBNull(3)) { UserTest.nom = readerID.GetString(2).ToString(); } else { UserTest.nom = ""; };
-                if (!readerID.IsDBNull(4)) { UserTest.password = readerID.GetString(3).ToString(); } else { UserTest.password = ""; };
                 if (!readerID.IsDBNull(5)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
                 User.Add(UserTest);
             }
@@ -100,7 +99,6 @@ namespace ViewModel
                 if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
                 if (!readerID.IsDBNull(2)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
                 if (!readerID.IsDBNull(3)) { UserTest.nom = readerID.GetString(2).ToString(); } else { UserTest.nom = ""; };
-                if (!readerID.IsDBNull(4)) { UserTest.password = readerID.GetString(3).ToString(); } else { UserTest.password = ""; };
                 if (!readerID.IsDBNull(5)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
                 User.Add(UserTest);
             }
@@ -113,7 +111,7 @@ namespace ViewModel
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
             foreach (var item in Data)
             {
-                if (item.Key == "password")
+                if (item.Key == "Password")
                 {
                     EncryptClass hashPswd = new EncryptClass();
                     cmd.Parameters.AddWithValue("@" + item.Key, hashPswd.hashPassword(item.Value));

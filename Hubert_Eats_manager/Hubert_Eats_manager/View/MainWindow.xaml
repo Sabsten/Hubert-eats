@@ -5,18 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="700">
+        Title="MainWindow" Height="500" Width="800">
 
     <Window.Resources>
         <Visibility x:Key="homeVisible">Visible</Visibility>
         <Visibility x:Key="pageSelection">Hidden</Visibility>
-        <Visibility x:Key="addUserPage">Hidden</Visibility>
-        <Visibility x:Key="editUserPage">Hidden</Visibility>
-        <Visibility x:Key="removeUserPage">Hidden</Visibility>
     </Window.Resources>
 
 
-    <Grid Background="DarkSeaGreen">
+    <Grid>
         <Grid Visibility="{DynamicResource homeVisible}">
             <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
             <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
@@ -54,8 +51,9 @@
                 Valider
             </Button>
             <materialDesign:Card
+              Background="#D8E3E2"
              Margin="363,0,0,0">
-                <Grid RenderTransformOrigin="0.494,0.499" Margin="0,0,0,-11">
+                <Grid  RenderTransformOrigin="0.494,0.499" Margin="-7,0,7,-11">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="43"/>
@@ -63,28 +61,28 @@
                     <Grid.RowDefinitions>
                         <RowDefinition
         Height="117" />
-                        <RowDefinition />
+                        <RowDefinition Height="52*" />
+                        <RowDefinition Height="311*"/>
                         <RowDefinition
         Height="Auto" MinHeight="16" />
                     </Grid.RowDefinitions>
                     <Image
       Source="../assets/Logo_Hubert_Eats.png"
-      Stretch="UniformToFill" Margin="46,0,34,7" />
-                    
+      Stretch="UniformToFill" Margin="48,0,32,7" />
+
                     <StackPanel
       Grid.Row="1"
-      Margin="8,24,5,0">
+      Margin="8,24,5,0" Grid.RowSpan="2">
                         <TextBlock
         FontWeight="Bold">
       Hubert-Eats Manager
                         </TextBlock>
                         <TextBlock
-            VerticalAlignment="Center"
-            Text="Bienvenu sur l'application de gestions des utilisateurs internes a Hubert-Eats. Merci de vous connecter pour avoir l'accès a l'application."
-            TextWrapping="Wrap" />      
+            Text="Bienvenue sur l'application de gestions des utilisateurs internes a Hubert-Eats. Merci de vous connecter pour avoir l'accès a l'application."
+            TextWrapping="Wrap" Width="293" />
                     </StackPanel>
                     <StackPanel
-      Grid.Row="2"
+      Grid.Row="3"
       Margin="138,8,0,8"
       HorizontalAlignment="Left"
       Orientation="Horizontal" Width="0" Grid.Column="1">
@@ -208,8 +206,9 @@
                                     <TextBlock
                                     Margin="0,0,0,8"
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                    Text="Supprimer un utilisateur" />
+                                    Text="Modifier un utilisateur" />
                                     <TextBox
+                                            x:Name="UsernameTextBoxModifyTab"
                                             VerticalAlignment="Top"
                                             Margin="0,10,0,0"
                                             materialDesign:HintAssist.Hint="Nom d'utilisateur (@hubert.com)"
@@ -222,18 +221,14 @@
                                         </TextBox.Text>
                                     </TextBox>
                                     <Button
+                                        x:Name="FindUserButtonModifyTab"
+                                        Click="Button_Click_FindUser"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                                         Margin="0,20,0,0"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
-                                    <materialDesign:PackIcon
-                                        Width="24"
-                                        Height="24"
-                                        Margin="0,20,0,0"
-                                        HorizontalAlignment="Center"
-                                        Kind="Approve" />
-                                    <DataGrid x:Name="DataGrid"
+                                    <DataGrid x:Name="ModifyDataGrid"
                                           Margin="0,20,0,0"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
@@ -242,6 +237,7 @@
                                           Background="LightGreen"
                                           AutoGenerateColumns="True"/>
                                     <ComboBox
+                                        x:Name="ModifyCombobox"
                                           Margin="0,20,0,0"
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Champ à modifier"
@@ -257,6 +253,7 @@
                                             Content="Rôle" />
                                     </ComboBox>
                                     <TextBox
+                                            x:Name="ModifyValue"
                                             VerticalAlignment="Top"
                                             Margin="0,20,0,0"
                                             materialDesign:HintAssist.Hint="Nouvelle valeur"
@@ -268,6 +265,13 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
+                                    <Button
+                                        Click="Button_Click_ModifyUser"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,20,0,0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Modifier l'utilisateur
+                                    </Button>
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="DeleteTab">
@@ -306,6 +310,7 @@
                                         </TextBox.Text>
                                     </TextBox>
                                     <Button
+                                        x:Name="FindUserButtonDeleteTab"
                                         Click="Button_Click_FindUser"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                                         Margin="0,20,0,0"
@@ -313,12 +318,21 @@
                                         Verifier l'existance de l'utilisateur
                                     </Button>
                                     <DataGrid x:Name="DeleteDataGrid"
+                                           Margin="0,20,0,0"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
                                           Background="PaleGreen">
                                     </DataGrid>
+                                    <Button
+                                        x:Name="DeleteUserButton"
+                                        Click="Button_Click_DeleteUser"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,20,0,0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Supprimer l'utilisateur
+                                    </Button>
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="ConsultationTab">

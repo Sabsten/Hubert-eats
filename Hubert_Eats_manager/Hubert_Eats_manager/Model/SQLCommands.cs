@@ -18,7 +18,7 @@ namespace Model
         }
         public static string UpdateTableSqlString(string ColumnItem, string Value, string identifiant)
         {
-            return "UPDATE " + SQLDatabase.UserTable + " SET '" + ColumnItem + "' = '" + Value + "' WHERE 'identifiant' = '" + identifiant + "'";
+            return "UPDATE " + SQLDatabase.UserTable + " SET " + ColumnItem + " = '" + Value + "' WHERE identifiant = '" + identifiant + "'";
         }
 
         public static string AllDataSQLString()
