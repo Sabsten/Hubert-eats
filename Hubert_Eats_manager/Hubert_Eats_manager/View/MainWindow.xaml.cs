@@ -79,8 +79,20 @@ namespace Hubert_Eats_manager
         {
         }
 
-        private void Button_Click_RemoveUserSelection(object sender, RoutedEventArgs e)
+        public void Button_Click_ConfirmUserRemoval(object sender, RoutedEventArgs e)
         {     
+        }
+
+        private void Button_Click_FindUser(object sender, RoutedEventArgs e)
+        {
+            DeleteGetInfosClearText();
+            DeleteDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(inputUsername);
+            DeleteDataGrid.Items.Refresh();
+        }
+
+        private void Button_Click_DeleteUser(object sender, RoutedEventArgs e)
+        {
+
         }
         public void TabControl_SelectionChanged(object sender, RoutedEventArgs e)
         {
@@ -106,7 +118,7 @@ namespace Hubert_Eats_manager
 
         private void Button_Click_ConfirmUserCreation(object sender, RoutedEventArgs e)
         {
-            GetInfosClearText();
+            AddGetInfosClearText();
             if(!inputUsername.Contains(" ") || inputUsername == "")
             {
                 MessageBox.Show("Merci de respecter la casse : Prénom NOM.", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -155,28 +167,19 @@ namespace Hubert_Eats_manager
         private void Button_Click_ConfirmUserModification(object sender, RoutedEventArgs e)
         {
             //int selectioned = 0;
-            DataBaseManagerClass main = new();
-            Data = main.FindUser(inputUsername);
+            //DataBaseManagerClass.ModifyUser("test");
             //while (Data[0].Count > selectioned && selectioned >= 0)
             //{
-              //  //ConsoleTablePrint(Data);
-                //Console.WriteLine("Selectionnez la donnée a modifier : ");
-                //selectioned = Int32.Parse(Console.ReadLine());
+            //  //ConsoleTablePrint(Data);
+            //Console.WriteLine("Selectionnez la donnée a modifier : ");
+            //selectioned = Int32.Parse(Console.ReadLine());
 
             //}
             //Console.WriteLine("Entrez une nouvelle valeur pour ce choix: ");
             //VmResponse = main.ModifyUser(Console.ReadLine(), selectioned, Data, otherIdentifiant, userName);
         }
 
-        private void Button_Click_ConfirmUserRemoval(object sender, RoutedEventArgs e)
-        {
-            if(inputUsername != "")
-            {
-                DataBaseManagerClass main = new();
-                VmResponse = main.DeleteUser(inputUsername);
-            }
-        }
-        private void GetInfosClearText()
+        private void AddGetInfosClearText()
         {
             inputUsername = UsernameAddUser.Text;
             UsernameAddUser.Clear();
@@ -188,6 +191,11 @@ namespace Hubert_Eats_manager
             PasswordConfirmationAddUser.Clear();
 
             inputUserRole = RoleAddUser.Text;
+        }
+        private void DeleteGetInfosClearText()
+        {
+            inputUsername = UsernameDelete.Text;
+            UsernameAddUser.Clear();
         }
     }
 

@@ -15,9 +15,10 @@
         <Visibility x:Key="removeUserPage">Hidden</Visibility>
     </Window.Resources>
 
-    <Grid>
+
+    <Grid Background="DarkSeaGreen">
         <Grid Visibility="{DynamicResource homeVisible}">
-            <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical"/>
+            <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
             <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
                 x:Name="TextBoxUsername"
                 materialDesign:HintAssist.HelperText=""
@@ -47,12 +48,52 @@
                 IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
                 Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="48,107,424,325" />
             <Button
-                    Click="Button_Click_Login"
+                Click="Button_Click_Login"
                 materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="18,210,424,242" Cursor="Hand">
+                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="18,150,424,242" Cursor="Hand">
                 Valider
             </Button>
-            <Image Source="../assets/Logo_Hubert_Eats.png" Margin="367,28,39,23"/>
+            <materialDesign:Card
+             Margin="363,0,0,0">
+                <Grid RenderTransformOrigin="0.494,0.499" Margin="0,0,0,-11">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="43"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+        Height="117" />
+                        <RowDefinition />
+                        <RowDefinition
+        Height="Auto" MinHeight="16" />
+                    </Grid.RowDefinitions>
+                    <Image
+      Source="../assets/Logo_Hubert_Eats.png"
+      Stretch="UniformToFill" Margin="46,0,34,7" />
+                    
+                    <StackPanel
+      Grid.Row="1"
+      Margin="8,24,5,0">
+                        <TextBlock
+        FontWeight="Bold">
+      Hubert-Eats Manager
+                        </TextBlock>
+                        <TextBlock
+            VerticalAlignment="Center"
+            Text="Bienvenu sur l'application de gestions des utilisateurs internes a Hubert-Eats. Merci de vous connecter pour avoir l'accès a l'application."
+            TextWrapping="Wrap" />      
+                    </StackPanel>
+                    <StackPanel
+      Grid.Row="2"
+      Margin="138,8,0,8"
+      HorizontalAlignment="Left"
+      Orientation="Horizontal" Width="0" Grid.Column="1">
+
+
+
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
         </Grid>
 
         <Grid Visibility="{DynamicResource pageSelection}">
@@ -64,11 +105,13 @@
                             SnapsToDevicePixels="True"
                             Style="{StaticResource MaterialDesignNavigationRailTabControl}"
                             Height="472" Margin="0,0,10,0">
-                            <TabItem x:Name="AddTab">
+                            <TabItem x:Name="AddTab" Background="Green">
+
                                 <TabItem.Header>
                                     <StackPanel
                                      Width="auto"
-                                     Height="auto">
+                                     Height="auto"
+                                     >
                                         <materialDesign:PackIcon
                                         Width="24"
                                         Height="24"
@@ -249,37 +292,32 @@
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                                     Text="Supprimer un utilisateur" />
                                     <TextBox
+                                        Margin="0,10,0,0"
                                             VerticalAlignment="Top"
+                                            x:Name="UsernameDelete"
                                             materialDesign:HintAssist.Hint="Nom d'utilisateur (@hubert.com)"
                                             Style="{StaticResource MaterialDesignFilledTextBox}">
                                         <TextBox.Text>
                                             <Binding
                                                 Path="Text1"
+                                                
                                                 UpdateSourceTrigger="PropertyChanged">
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
                                     <Button
+                                        Click="Button_Click_FindUser"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,20,0,0"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
-                                    <materialDesign:PackIcon
-                                        Width="24"
-                                        Height="24"
-                                        HorizontalAlignment="Center"
-                                        Kind="Approve" />
-                                    <DataGrid x:Name="Hello"
+                                    <DataGrid x:Name="DeleteDataGrid"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
-                                          Background="LightGreen">
-                                        <DataGridTextColumn Header="idInternalUser" />
-                                        <DataGridTextColumn Header="identifiant" />
-                                        <DataGridTextColumn Header="nom" />
-                                        <DataGridTextColumn Header="password" />
-                                        <DataGridTextColumn Header="role" />
+                                          Background="PaleGreen">
                                     </DataGrid>
                                 </StackPanel>
                             </TabItem>
@@ -318,47 +356,6 @@
                     </materialDesign:Card>
                 </Grid>
             </Grid>
-        </Grid>
-
-        <Grid Visibility="{DynamicResource addUserPage}">
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Informations sur l'utilisateur à ajouter utilisateur" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
-            <Grid VerticalAlignment="Center" Width="200">
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Nom du l'utilisateur (Prénom NOM)" VerticalAlignment="Top"/>
-                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherUserName}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_2"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mot de passe" VerticalAlignment="Top"/>
-                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherUserPassword}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_1"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mot de passe" VerticalAlignment="Top"/>
-                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherUserPassword2}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_1"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Rôle de l'utilisateur" VerticalAlignment="Top"/>
-                <ComboBox Name="cmbRole" SelectedValue="{Binding otherUserRole}">
-                    <ComboBoxItem>Commercial</ComboBoxItem>
-                    <ComboBoxItem>Developpeur</ComboBoxItem>
-                    <ComboBoxItem>Technique</ComboBoxItem>
-                    <ComboBoxItem>DBManager</ComboBoxItem>
-                </ComboBox>
-                <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_ConfirmUserCreation" Width="74" Margin="0,20,0,0"/>
-            </Grid>
-            <Image Height="53" Width="100" Source="../assets/Logo_Hubert_Eats.png"/>
-        </Grid>
-
-        <Grid Visibility="{DynamicResource editUserPage}" Grid.RowSpan="2">
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Modification d'un utilisateur" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
-            <Grid VerticalAlignment="Center" Width="200">
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Identifiant" VerticalAlignment="Top"/>
-                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherIdentifiant}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_2"/>
-                <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_ConfirmUserModification" Width="74" Margin="0,20,0,0"/>
-            </Grid>
-            <Image Height="53" Width="100" Source="../assets/Logo_Hubert_Eats.png"/>
-        </Grid>
-
-        <Grid Visibility="{DynamicResource removeUserPage}" Grid.RowSpan="2">
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Suppression d'un utilisateur" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
-            <Grid VerticalAlignment="Center" Width="200">
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Identifiant" VerticalAlignment="Top"/>
-                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherIdentifiant}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_2"/>
-                <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_ConfirmUserRemoval" Width="74" Margin="0,20,0,0"/>
-            </Grid>
-            <Image Height="53" Width="100" Source="../assets/Logo_Hubert_Eats.png"/>
         </Grid>
     </Grid>
 </Window>
