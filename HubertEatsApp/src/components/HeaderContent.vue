@@ -1,9 +1,9 @@
 <template>
     <div class="content">
       <div class="links">
-        <HeaderLink to="/profile" exact> </HeaderLink>
-        <HeaderLink to="/facts">  </HeaderLink>
-        <HeaderLink to="/basket">  </HeaderLink>
+        <HeaderLink to="/profile" exact></HeaderLink>
+        <HeaderLink to="/facts"></HeaderLink>
+        <HeaderLink to="/basket"></HeaderLink>
       </div>
     </div>
   </template>

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using ViewModel;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Model
 {   public class UserLogin
@@ -20,16 +14,16 @@ namespace Model
         public static int Port { get; } = 3306;
         public static string Database { get; } = "internalprofiles";
         public static string UserTable { get; } = "InternalUserTable";
+        public static string LogTable { get; } = "InternalLogTable";
 
         public static MySqlConnection GetDBConnection()
         {
             EncryptClass decryptpasswod = new();
             string JSONFile = System.IO.File.ReadAllText("C:/Users/Seb/Documents/GitHub/Hubert-eats/UserEatsManager/Settings.json");
-            UserLogin test = new();
-            test = JsonSerializer.Deserialize<UserLogin>(JSONFile);
+            UserLogin test = JsonSerializer.Deserialize<UserLogin>(JSONFile);
             string connString = "Server=" + Host + ";Database=" + Database
                 + ";port=" + Port + ";User Id=" + test.username + ";password=" + decryptpasswod.DecodeFrom64(test.password);
-            MySqlConnection conn = new MySqlConnection(connString);
+            MySqlConnection conn = new(connString);
             return conn;
         }
     }

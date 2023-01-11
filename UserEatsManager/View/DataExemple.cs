@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
-using System.Data.Common;
-using System.Data;
 using System.Threading;
 using ConsoleTables;
 using MySql.Data.MySqlClient;
@@ -15,39 +9,40 @@ namespace View
 {
     class MainProgram
     {
-        private string UserName;
+        private static string UserName;
         private const string V = "Error: ";
-        public const string Header = @"
+        private static string Header = @"
                                             __  __      __              __                __      
                                            / / / /_  __/ /_  ___  _____/ /_   ___  ____ _/ /______
                                           / /_/ / / / / __ \/ _ \/ ___/ __/  / _ \/ __ `/ __/ ___/
                                          / __  / /_/ / /_/ /  __/ /  / /_   /  __/ /_/ / /_(__  ) 
                                         /_/ /_/\__,_/_.___/\___/_/   \__/   \___/\__,_/\__/____/  
-                                        ";
+                                                                                                  
+                                                                                                  
+identifé en tant que : " + UserName + "                                                      " +
+"                                                                             ";
 
         static void Main(string[] args)
         {
-            // Étabilissez de la connexion à la base de données. 
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
             try
             {
                 while (true)
                 {
-                    Console.Title = "HEIUD";
+                    Console.Title = "HubertEatsInternal";
                     clearConsole();
                     Console.WriteLine("Merci de vous connecter.");
                     Console.WriteLine("Identifiant :");
-                    string identifiant = Console.ReadLine();
+                    UserName = Console.ReadLine();
                     Console.WriteLine("Mot de passe :");
                     string password = Console.ReadLine();
+                    DataBaseManagerClass main = new();
                     IdentificationClass credentials = new();
-                    bool LoginState = credentials.Login(identifiant, password);
-                    if (LoginState == true)
+                    Tuple<bool,string> LoginState = credentials.Login(UserName, password);
+                    if (LoginState.Item1 == true)
                     {
                         clearConsole();
                         Console.WriteLine("Connection reussie.");
-                        Program main = new();
+        
                         while (true)
                         {
                             Console.WriteLine("Que souhaitez vous faire ? Tapez le code correspondant.");
@@ -58,25 +53,20 @@ namespace View
 
                             clearConsole();
                             Tuple<bool, string> VmResponse = new(false, "");
-                            if (nbChoix == 1)
+                            if (nbChoix == 1) //Cas ajout utilisateur
                             {
                                 Dictionary<string, string> UserInfo = new();
-                                bool NomFormat = false;
                                 string Nom = "";
-                                while (NomFormat == false)
+                                while (!Nom.Contains(" "))
                                 {
                                     Console.WriteLine("Merci de renseigner son nom et prénom (exemple : Gérard DUPONT) :");
                                     Nom = Console.ReadLine();
-                                    if (Nom.Contains(" "))
-                                    {
+                                    if (!Nom.Contains(" "))
                                         ErrorMessage("Merci de respecter la casse : Prénom & ' ' & NOM.");
-                                        NomFormat = true;
-                                    }
-                                    else
-                                        NomFormat = false;
                                 }
                                 clearConsole();
                                 UserInfo.Add("Identifiant", Nom.Substring(0, 1).ToLower() + "." + Nom.Split(" ")[1].ToLower() + "@hubert.com");
+                                ConfirmationMessage("L'indentifiant associé est : " + Nom.Substring(0, 1).ToLower() + "." + Nom.Split(" ")[1].ToLower() + "@hubert.com");
                                 UserInfo.Add("Nom", Nom);
                                 string password1 = "";
                                 string password2 = "_";
@@ -87,11 +77,9 @@ namespace View
                                     Console.WriteLine("[2/2] Merci de confirmer le mot de passe choisi :");
                                     password2 = Console.ReadLine();
                                     if (password1 != password2)
-                                    {
                                         ErrorMessage("La confirmation du mot de passe a échouée. Veuillez ressayer.");
-                                    }
                                 }
-                                UserInfo.Add("password", password1);
+                                UserInfo.Add("Password", password1);
                                 clearConsole();
                                 Console.WriteLine("Merci de renseigner le code du role de l'utilisateur :");
                                 Console.WriteLine("0 - Commercial");
@@ -99,39 +87,45 @@ namespace View
                                 Console.WriteLine("2 - Technique");
                                 Console.WriteLine("3 - DBManager");
                                 UserInfo.Add("role", Console.ReadLine());
-                                VmResponse = main.addUser(UserInfo);
-                                if (VmResponse.Item2 == "Existing User")
+                                UserInfo.Add("createdBy", UserName);
+                                UserInfo.Add("modifiedBy", UserName);
+                                VmResponse = main.AddUser(UserInfo);
+                                if (VmResponse.Item1 == false)
                                 {
                                     ErrorMessage("Un utilisateur ayant le même identifiant est déclaré dans la base.");
-                                    Console.WriteLine("Merci de modifier légérement l'identifiant, conformément a la politique de nomage. (p.nom@hubert.com)");
+                                    Console.WriteLine("Merci de modifier légérement l'identifiant, conformément à la politique de nomage. (p.nom@hubert.com)");
                                     Console.WriteLine(UserInfo["Identifiant"]);
                                     UserInfo["Identifiant"] = Console.ReadLine();
-                                    VmResponse = main.addUser(UserInfo);
+                                    clearConsole();
+                                    VmResponse = main.AddUser(UserInfo);
                                 }
                             }
                             else if (nbChoix == 2)
                             {
                                 Console.WriteLine("Entrez un identifiant :");
                                 string identifiant = Console.ReadLine();
+                                int selectioned = 0;
                                 List<List<string>> Data = main.FindUser(identifiant);
-                                ConsoleTablePrint(Data);
-                                Console.WriteLine("------------");
-                                Console.WriteLine("Selectionnez la donnée a modifier : ");
-                                int selectioned = Int32.Parse(Console.ReadLine());
-                                Console.WriteLine("Entrez une nouvelle valeur pour ce choix: ");
+                                while (Data[0].Count > selectioned && selectioned >= 0)
+                                {
+                                    ConsoleTablePrint(Data);
+                                    Console.WriteLine("Selectionnez la donnée a modifier : ");
+                                    selectioned = Int32.Parse(Console.ReadLine());
 
-                                VmResponse = main.modifyUser(Console.ReadLine(), selectioned, Data, identifiant);
+                                }
+                                Console.WriteLine("Entrez une nouvelle valeur pour ce choix: ");
+                                VmResponse = main.ModifyUser(Console.ReadLine(), selectioned, Data, identifiant,UserName);
                             }
                             else
                             {
-                                VmResponse = main.deleteUser(Console.ReadLine());
+                                VmResponse = main.DeleteUser(Console.ReadLine());
                             }
                             ActionStatus(VmResponse);
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Mauvais identifiants ou personne n'ayant pas les droits.");
+                        ErrorMessage(LoginState.Item2);
                         Console.WriteLine("Merci de relancer l'application");
                     }
 
@@ -144,8 +138,6 @@ namespace View
             }
             finally
             {
-                connection.Close();
-                connection.Dispose();
             }
         }
 
