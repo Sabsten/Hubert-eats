@@ -1,23 +1,35 @@
-import { Schema, model, connect, Types } from 'mongoose';
-import { ObjectId } from 'mongodb';
-import { UserType } from './enums/userType';
+import { Schema } from "mongoose"
 
-// Create an interface representing a document in MongoDB.
 export interface IAccount {
-    _id?: ObjectId;
-    mail: string;
-    password: string;
-    type: UserType;
+    mail: string,
+    password: string,
+    referent?: string,
 }
 
-// Create a Schema corresponding to the document interface.
+
 const accountSchema = new Schema<IAccount>({
-  mail: { type: String, required: true },
-  password: { type: String, required: true },
-  type: { type: String, required: true },
-}, { versionKey: false, timestamps: true });
+    mail: {type: String, required: true, unique: true},
+    password: {type: String, required: true},
+    referent: {type: String, required: false},
+}, { _id : false })
 
-// Create a Model.
-const Account = model<IAccount>('Account', accountSchema);
+export default accountSchema
 
-export default Account
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Account:
+ *       type: object
+ *       properties:
+ *         mail:
+ *           type: string
+ *         password:
+ *           type: string
+ *         referent:
+ *           type: string
+ *       example:
+ *         mail: john.doe@gmail.com
+ *         password: admin123
+ *         referent: jane.doe@gmail.com
+ */

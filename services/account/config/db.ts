@@ -1,4 +1,4 @@
-import { connect } from 'mongoose';
+import { Connection, connect } from 'mongoose';
 
 export class db {
 

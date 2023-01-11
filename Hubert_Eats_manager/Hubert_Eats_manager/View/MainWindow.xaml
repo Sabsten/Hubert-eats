@@ -1,0 +1,354 @@
+﻿<Window x:Class="Hubert_Eats_manager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="700">
+
+    <Window.Resources>
+        <Visibility x:Key="homeVisible">Visible</Visibility>
+        <Visibility x:Key="pageSelection">Hidden</Visibility>
+        <Visibility x:Key="addUserPage">Hidden</Visibility>
+        <Visibility x:Key="editUserPage">Hidden</Visibility>
+        <Visibility x:Key="removeUserPage">Hidden</Visibility>
+    </Window.Resources>
+
+    <Grid>
+        <Grid Visibility="{DynamicResource homeVisible}">
+            <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical"/>
+            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="198" TextChanged="TextBox_TextChanged_1"
+                x:Name="TextBoxUsername"
+                materialDesign:HintAssist.HelperText=""
+                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="48,10,0,0" Height="28">
+                <TextBox.Text>
+                    <Binding
+                        Path="test"
+                        UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <PasswordBox
+                x:Name="TextBoxPassword"
+                materialDesign:HintAssist.HelperText=""
+                materialDesign:HintAssist.Hint="Mot de passe"
+                materialDesign:PasswordBoxAssist.Password="{Binding userPasswrd, Mode=TwoWay}"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
+                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="48,98,454,354" />
+            <Button
+                    Click="Button_Click_Login"
+                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="18,210,424,242" Cursor="Hand">
+                Valider
+            </Button>
+            <Image Source="../assets/Logo_Hubert_Eats.png" Margin="367,28,39,23"/>
+        </Grid>
+
+        <Grid Visibility="{DynamicResource pageSelection}">
+            <Grid VerticalAlignment="Center" Width="200">
+                <Grid Margin="-295,-34,-297,-44">
+                    <materialDesign:Card>
+                        <TabControl
+                        materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                        SnapsToDevicePixels="True"
+                        Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+                        Height="472" Margin="0,0,10,0">
+                            <TabItem x:Name="AddTab">
+                                <TabItem.Header>
+                                    <StackPanel
+                                     Width="auto"
+                                     Height="auto">
+                                        <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Add" />
+                                        <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Text="Ajouter" />
+                                    </StackPanel>
+                                </TabItem.Header>
+                                <StackPanel
+                                    Margin="16">
+                                    <TextBlock
+                                    Margin="0,0,0,8"
+                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                    Text="Ajouter un utilisateur" />
+                                    <TextBox x:Name="UsernameAddUser"
+                                            VerticalAlignment="Top"
+                                            materialDesign:HintAssist.Hint="Nom d'utilisateur"
+                                            Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="Text1"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <TextBox x:Name="PasswordAddUser"
+                                        VerticalAlignment="Top"
+                                        materialDesign:HintAssist.Hint="Mot de passe"
+                                        Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        <TextBox.Text>
+                                            <Binding
+                                            Path="Text1"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <TextBox x:Name="PasswordConfirmationAddUser"
+                                        VerticalAlignment="Top"
+                                        materialDesign:HintAssist.Hint="Confirmation mot de passe"
+                                        Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        <TextBox.Text>
+                                            <Binding
+                                            Path="Text1"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <ComboBox x:Name="RoleAddUser"
+                                          materialDesign:ComboBoxAssist.MaxLength="2"
+                                          materialDesign:HintAssist.Hint="Rôle"
+                                          materialDesign:HintAssist.HintOpacity=".26"
+                                          IsEditable="False">
+                                        <ComboBoxItem
+                                            Content="Database Manager" />
+                                        <ComboBoxItem
+                                            Content="Commercial" />
+                                        <ComboBoxItem
+                                            Content="Technique" />
+                                        <ComboBoxItem
+                                            Content="Developpeur Tier" />
+                                    </ComboBox>
+                                    <Button
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand"
+                                        Click ="Button_Click_ConfirmUserCreation">
+                                        Valider
+                                    </Button>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem x:Name="ModifierTab">
+                                <TabItem.Header>
+                                    <StackPanel
+                                  Width="auto"
+                                  Height="auto">
+                                        <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="BorderColor" />
+                                        <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Text="Modifier" />
+                                    </StackPanel>
+                                </TabItem.Header>
+                                <StackPanel
+                                    Margin="16">
+                                    <TextBlock
+                                    Margin="0,0,0,8"
+                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                    Text="Supprimer un utilisateur" />
+                                    <TextBox
+                                            VerticalAlignment="Top"
+                                            materialDesign:HintAssist.Hint="Nom d'utilisateur (@hubert.com)"
+                                            Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="Text1"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Button
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Verifier l'existance de l'utilisateur
+                                    </Button>
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Approve" />
+                                    <DataGrid x:Name="DataGrid"
+                                          materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
+                                          CanUserAddRows="False"
+                                          SelectionMode="Extended"
+                                          SelectionUnit="Cell" 
+                                          Background="LightGreen">
+                                        <DataGridTextColumn Header="idInternalUser" />
+                                        <DataGridTextColumn Header="identifiant" />
+                                        <DataGridTextColumn Header="nom" />
+                                        <DataGridTextColumn Header="password" />
+                                        <DataGridTextColumn Header="role" />
+                                    </DataGrid>
+                                    <ComboBox
+                                          materialDesign:ComboBoxAssist.MaxLength="2"
+                                          materialDesign:HintAssist.Hint="Champ à modifier"
+                                          materialDesign:HintAssist.HintOpacity=".26"
+                                          IsEditable="False">
+                                        <ComboBoxItem
+                                            Content="Identifiant" />
+                                        <ComboBoxItem
+                                            Content="Nom Prénom" />
+                                        <ComboBoxItem
+                                            Content="Mot de passe" />
+                                        <ComboBoxItem
+                                            Content="Rôle" />
+                                    </ComboBox>
+                                    <TextBox
+                                            VerticalAlignment="Top"
+                                            materialDesign:HintAssist.Hint="Nouvelle valeur"
+                                            Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="Text1"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem x:Name="DeleteTab">
+                                <TabItem.Header>
+                                    <StackPanel
+                                    Width="auto"
+                                    Height="auto">
+                                        <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Delete" />
+                                        <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Text="Delete" />
+                                    </StackPanel>
+                                </TabItem.Header>
+                                <StackPanel
+                                    Margin="16">
+                                    <TextBlock
+                                    Margin="0,0,0,8"
+                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                    Text="Supprimer un utilisateur" />
+                                    <TextBox
+                                            VerticalAlignment="Top"
+                                            materialDesign:HintAssist.Hint="Nom d'utilisateur (@hubert.com)"
+                                            Style="{StaticResource MaterialDesignFilledTextBox}">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="Text1"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Button
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Verifier l'existance de l'utilisateur
+                                    </Button>
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Approve" />
+                                    <DataGrid x:Name="Hello"
+                                          materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
+                                          CanUserAddRows="False"
+                                          SelectionMode="Extended"
+                                          SelectionUnit="Cell" 
+                                          Background="LightGreen">
+                                        <DataGridTextColumn Header="idInternalUser" />
+                                        <DataGridTextColumn Header="identifiant" />
+                                        <DataGridTextColumn Header="nom" />
+                                        <DataGridTextColumn Header="password" />
+                                        <DataGridTextColumn Header="role" />
+                                    </DataGrid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem>
+                                <TabItem.Header>
+                                    <StackPanel
+                                  Width="auto"
+                                  Height="auto">
+                                        <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Glasses" />
+                                        <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Text="Consulter" />
+                                    </StackPanel>
+                                </TabItem.Header>
+                                <StackPanel
+                                    Margin="16">
+                                    <TextBlock
+                                    Margin="0,0,0,8"
+                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                    Text="Consultation de la base de donnée" />
+                                    <DataGrid x:Name="myDataGrid"
+                                          materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
+                                          CanUserAddRows="False"
+                                          SelectionMode="Extended"
+                                          SelectionUnit="Cell" 
+                                          Background="LightGreen">
+                                        <DataGridTextColumn Header="idInternalUser" />
+                                        <DataGridTextColumn Header="identifiant" />
+                                        <DataGridTextColumn Header="nom" />
+                                        <DataGridTextColumn Header="password" />
+                                        <DataGridTextColumn Header="role" />
+                                    </DataGrid>
+                                </StackPanel>
+                            </TabItem>
+                        </TabControl>
+                    </materialDesign:Card>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Visibility="{DynamicResource addUserPage}">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Informations sur l'utilisateur à ajouter utilisateur" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
+            <Grid VerticalAlignment="Center" Width="200">
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Nom du l'utilisateur (Prénom NOM)" VerticalAlignment="Top"/>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherUserName}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_2"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mot de passe" VerticalAlignment="Top"/>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherUserPassword}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_1"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mot de passe" VerticalAlignment="Top"/>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherUserPassword2}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_1"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Rôle de l'utilisateur" VerticalAlignment="Top"/>
+                <ComboBox Name="cmbRole" SelectedValue="{Binding otherUserRole}">
+                    <ComboBoxItem>Commercial</ComboBoxItem>
+                    <ComboBoxItem>Developpeur</ComboBoxItem>
+                    <ComboBoxItem>Technique</ComboBoxItem>
+                    <ComboBoxItem>DBManager</ComboBoxItem>
+                </ComboBox>
+                <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_ConfirmUserCreation" Width="74" Margin="0,20,0,0"/>
+            </Grid>
+            <Image Height="53" Width="100" Source="../assets/Logo_Hubert_Eats.png"/>
+        </Grid>
+
+        <Grid Visibility="{DynamicResource editUserPage}" Grid.RowSpan="2">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Modification d'un utilisateur" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
+            <Grid VerticalAlignment="Center" Width="200">
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Identifiant" VerticalAlignment="Top"/>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherIdentifiant}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_2"/>
+                <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_ConfirmUserModification" Width="74" Margin="0,20,0,0"/>
+            </Grid>
+            <Image Height="53" Width="100" Source="../assets/Logo_Hubert_Eats.png"/>
+        </Grid>
+
+        <Grid Visibility="{DynamicResource removeUserPage}" Grid.RowSpan="2">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Suppression d'un utilisateur" VerticalAlignment="Top" Margin="50,20,0,30" FontSize="14"/>
+            <Grid VerticalAlignment="Center" Width="200">
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Identifiant" VerticalAlignment="Top"/>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding otherIdentifiant}" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged_2"/>
+                <Button Content="Valider" VerticalAlignment="Top" Click="Button_Click_ConfirmUserRemoval" Width="74" Margin="0,20,0,0"/>
+            </Grid>
+            <Image Height="53" Width="100" Source="../assets/Logo_Hubert_Eats.png"/>
+        </Grid>
+    </Grid>
+</Window>
