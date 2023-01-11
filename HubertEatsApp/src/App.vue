@@ -50,7 +50,10 @@ export default defineComponent({
 .container-fluid{
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 0px);
-  padding: 2rem;
+  /* height: calc(100vh - 0px); */
+  
+}
+body {
+  margin:0;
 }
 </style>
