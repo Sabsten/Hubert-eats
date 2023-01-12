@@ -82,4 +82,4 @@ C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manage
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\bin\Debug\net6.0-windows\MaterialDesignThemes.Wpf.dll
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\bin\Debug\net6.0-windows\Microsoft.Xaml.Behaviors.dll
 C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\App.baml
-C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\bin\Debug\net6.0-windows\ref\Hubert_Eats_manager.dll
+C:\Users\Seb\Documents\GitHub\Hubert-eats\Hubert_Eats_manager\Hubert_Eats_manager\obj\Debug\net6.0-windows\refint\Hubert_Eats_manager.dll

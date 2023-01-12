@@ -9,28 +9,14 @@ namespace Model
 {
     class EncryptClass
     {
-        public string hashPassword(string password)
+        public static string HashPassword(string password)
         {
-            SHA256 sha256 = SHA256.Create();
-            byte[] password_bytes = Encoding.ASCII.GetBytes(password);
-            byte[] encrypted_bytes = sha256.ComputeHash(password_bytes);
-            return Convert.ToBase64String(encrypted_bytes);
+            using SHA256 sha256 = SHA256.Create();
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            byte[] encryptedBytes = sha256.ComputeHash(passwordBytes);
+            return Convert.ToBase64String(encryptedBytes);
         }
-        public string EncodePasswordToBase64(string password)
-        {
-            try
-            {
-                byte[] encData_byte = new byte[password.Length];
-                encData_byte = System.Text.Encoding.UTF8.GetBytes(password);
-                string encodedData = Convert.ToBase64String(encData_byte);
-                return encodedData;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in base64Encode" + ex.Message);
-            }
-        }
-        public string DecodeFrom64(string encodedData)
+        public static string DecodeFrom64(string encodedData)
         {
             System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
             System.Text.Decoder utf8Decode = encoder.GetDecoder();

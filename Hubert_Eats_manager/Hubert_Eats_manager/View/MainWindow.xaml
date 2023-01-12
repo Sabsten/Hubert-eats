@@ -95,6 +95,7 @@
         </Grid>
 
         <Grid Visibility="{DynamicResource pageSelection}">
+            <TextBlock Text="{Binding ConectedAs}"/>
             <Grid VerticalAlignment="Center" Width="200">
                 <Grid Margin="-295,-34,-297,-44">
                     <materialDesign:Card>
@@ -355,7 +356,7 @@
                                     <TextBlock
                                     Margin="0,0,0,8"
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                    Text="Consultation de la base de donnée" />
+                                    Text="Consultation de la base de donnée"/>
                                     <DataGrid x:Name="myDataGrid"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
