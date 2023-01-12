@@ -1,9 +1,17 @@
 <template>
     <div class="content">
-      <img src="@/assets/HubertEatsLogo.png" width="150">
+      <img src="@/assets/HubertEatsLogo.png" width="200">
       <div class="links">
-        <HeaderLink to="/tests"> <input class="basket" type="button" value="Panier . 1" width="40" height="40"> </HeaderLink>
-        <HeaderLink to="/basket"> <input class="account" type="button" value="Compte" width="40" height="40"> </HeaderLink>
+        <HeaderLink to="/tests">
+          <button class="button cart-button" >
+            <i class="fas fa-shopping-cart"></i>   Pannier . 0
+          </button>
+        </HeaderLink>
+        <HeaderLink to="/home">
+          <button class="button account-button">
+            <i class="fa-solid fa-house-user"></i>Accueil 
+          </button>
+        </HeaderLink>
       </div>
     </div>
   </template>
@@ -22,43 +30,36 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    gap: 30px;
-    /* border: 2px solid black;
-    background: black */
+    justify-content: right;
+    gap: 0px;
   }
-  .content{
+.content{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px 10px 10px;
 }
 
-input{
+.button {
+  padding: 13px 40px;
+  border-radius: 20px;
+  font-size: 15px;
+  border: none;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.cart-button {
+  background-color: #3EBC72;
   color: white;
-  border-radius: 10px;
-  padding: 5px 10px 5px 35px;
-  background-image: url("https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=768,574");
-  background-position: left;
-  background-position-x: 5px;
-  background-repeat: no-repeat;
-  background-size: 20px 20px;
-  font-weight: bold;
-  font-size: 16px;
-  font-family: 'Roboto';
-  font-size: 17px;
-  border-color: transparent;
 }
 
-.account{
-  background: black;
+.account-button {
+  background-color: #000000;
+  color: white;
 }
 
-.basket{
-    background-color: #3EBC72;
+i{
+  margin-right: 10px;
 }
-  
   </style>

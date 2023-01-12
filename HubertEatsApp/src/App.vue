@@ -32,7 +32,7 @@ export default defineComponent({
 <template>
   <main>
     <!-- "router-view" is a component that is defined by Vue Router -->
-     <router-view class="test" v-slot="{Component}">
+     <router-view v-slot="{Component}">
       <transition
       :enter-active-class="enterClass"
       :leave-active-class="leaveClass">

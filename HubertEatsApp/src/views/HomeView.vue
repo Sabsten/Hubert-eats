@@ -103,13 +103,13 @@ export default defineComponent({
   .page{
     display: flex;
     flex-direction: row;
+    height: calc(100vh - 120px);
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: calc(100% - 122px);
     flex-direction: column;
     background-color: #D8E3E2;
-  }
+}
 
   h1{
     font-family: 'Roboto';
@@ -216,7 +216,7 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   gap: 40px;
-  justify-content: flex-start;
+  justify-content: center;
   margin: 20px;
   align-items: center;
   flex-wrap: wrap;
