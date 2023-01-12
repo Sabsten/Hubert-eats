@@ -1,4 +1,3 @@
-import type { UserType } from '@/models/userType';
 import { defineStore } from 'pinia';
 import jwt_decode from 'jwt-decode';
 
@@ -8,16 +7,23 @@ export type TokenPayload = {
 }
 export const useAuthStore = defineStore({
     id: 'Auth',
-    state: () => ({
-        auth: '',
-    }),
     getters: {
-        getAccountId: (state) => {
-            const payload = jwt_decode<TokenPayload>(state.auth);
+        getAccountId: (): string | null => {
+            const token = localStorage.getItem('TOKEN');
+            if(token === null) {
+                return null
+            }
+            const payload = jwt_decode<TokenPayload>(token);
             return payload.accountId;
         },
-        getAccountType: (state) => {
-            const payload = jwt_decode<TokenPayload>(state.auth);
+        getAccountType: (): string | null => {
+            const token = localStorage.getItem('TOKEN');
+            if(token === null) {
+                return null
+            }
+            
+            const payload = jwt_decode<TokenPayload>(token);
+            console.log(payload.type)
             return payload.type;
         }
     },
@@ -31,10 +37,9 @@ export const useAuthStore = defineStore({
             });
             const data = await RES.json();
             if (!RES.ok) {
-                this.auth = '';
                 return data.error;
             }
-            this.auth = data.token;
+            localStorage.setItem('TOKEN',data.token)
             console.log('Request successful');
             return null
         }

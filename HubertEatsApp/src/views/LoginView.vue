@@ -24,7 +24,13 @@ async function tryLogin() {
   if(errorMessage.value  !== null){
     return
   }
-  console.log(authStore.getAccountType);
+  switch(accountType) {
+    case 'customer':
+      router.push({ path: '/home'});
+      break;
+    case 'courier':
+      router.push({ path: '/courier'});
+  }
   return
 }
 

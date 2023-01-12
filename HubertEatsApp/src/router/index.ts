@@ -3,6 +3,31 @@ import HomeView from '../views/HomeView.vue'
 import { products } from '@/assets/products'
 import CourierHome from '../views/Courier/CourierHome.vue'
 import CourierAccount from '../views/Courier/CourierAccount.vue'
+import { useAuthStore } from '@/stores/auth'
+
+
+function courierGuard(to: any, from: any, next: any) {
+  const authStore = useAuthStore();
+  if (authStore.getAccountType === 'courier') {
+    next();
+  } else {
+    next('/');
+  }
+}
+
+function redirect(to: any, from: any, next: any) {
+  const authStore = useAuthStore();
+  switch (authStore.getAccountType) {
+    case 'courier':
+      next('/courier')
+      break;
+    case 'customer':
+      next('/home')
+      break;
+    default:
+      next('/login')
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +35,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'default',
+      beforeEnter: redirect,
       component: () => import('../views/LoginView.vue')
     },
     {
@@ -75,18 +101,21 @@ const router = createRouter({
       component: () => import('../views/CustomerAccount.vue')
     },
     {
-      path: '/livreur',
+      path: '/courier',
       component: () => import('../views/Courier/Courier.vue'),
+      beforeEnter: courierGuard,
       children: [
         {
-          path: '/livreur',
-          name: 'accueil',
-          component: CourierHome
+          path: '/courier',
+          name: 'courier',
+          component: CourierHome,
+          beforeEnter: courierGuard,
         },
         {
-          path: '/livreur/compte',
-          name: 'compte',
-          component: CourierAccount
+          path: '/courier/account',
+          name: 'courierAccount',
+          component: CourierAccount,
+          beforeEnter: courierGuard,
         }
       ],
     }
