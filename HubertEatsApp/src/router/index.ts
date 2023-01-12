@@ -1,13 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { products } from '@/assets/products'
-import Courier from '../views/Courier/Courier.vue'
 import CourierHome from '../views/Courier/CourierHome.vue'
 import CourierAccount from '../views/Courier/CourierAccount.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      name: 'default',
+      component: () => import('../views/LoginView.vue')
+    },
     {
       path: '/home',
       name: 'home',
