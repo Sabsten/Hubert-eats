@@ -13,7 +13,7 @@ namespace Hubert_Eats_manager.Model
             {"Database Manager", new List<string>{"Add", "Delete", "Modify", "Consult"}},
             {"Commercial", new List<string>{"Consult"}},
             {"Technique", new List<string>{"Modify", "Consult"}},
-            {"Developpeur tier", new List<string>{}}
+            {"Developpeur", new List<string>{}}
         };
         public static List<string> GetPermission(string Role)
         {

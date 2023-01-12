@@ -14,12 +14,15 @@
 
 
     <Grid>
-        <Grid Visibility="{DynamicResource homeVisible}">
+        <Grid Visibility="{DynamicResource homeVisible}" HorizontalAlignment="Center" Width="800" Height="484" VerticalAlignment="Bottom">
             <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
+            <Image
+      Source="../assets/Logo_Hubert_Eats.png"
+      Stretch="UniformToFill" Margin="10,18,424,305" />
             <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
                 x:Name="TextBoxUsername"
                 materialDesign:HintAssist.HelperText=""
-                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="48,41,444,394" RenderTransformOrigin="0.5,0.5">
+                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="40,214,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209">
                 <TextBox.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -43,43 +46,32 @@
                 materialDesign:PasswordBoxAssist.Password="{Binding userPasswrd, Mode=TwoWay}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
-                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="48,107,424,325" />
-            <Button
-                Click="Button_Click_Login"
-                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="18,150,424,242" Cursor="Hand">
-                Valider
-            </Button>
+                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="40,273,0,0" HorizontalAlignment="Left" Width="209" Height="32" VerticalAlignment="Top" />
             <materialDesign:Card
               Background="#D8E3E2"
-             Margin="363,0,0,0">
-                <Grid  RenderTransformOrigin="0.494,0.499" Margin="-7,0,7,-11">
+             Margin="406,0,0,0">
+                <Grid  RenderTransformOrigin="0.494,0.499" Margin="0,0,0,-11">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="43"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition
-        Height="117" />
-                        <RowDefinition Height="52*" />
-                        <RowDefinition Height="311*"/>
+        Height="20" />
+                        <RowDefinition Height="77*" />
+                        <RowDefinition Height="76*"/>
                         <RowDefinition
         Height="Auto" MinHeight="16" />
                     </Grid.RowDefinitions>
-                    <Image
-      Source="../assets/Logo_Hubert_Eats.png"
-      Stretch="UniformToFill" Margin="48,0,32,7" />
+
 
                     <StackPanel
-      Grid.Row="1"
-      Margin="8,24,5,0" Grid.RowSpan="2">
+      Grid.Row="2"
+      Margin="10,10,-2,-79" Grid.ColumnSpan="2" Grid.RowSpan="2">
                         <TextBlock
-        FontWeight="Bold">
-      Hubert-Eats Manager
-                        </TextBlock>
+        FontWeight="Bold" Width="298"><Run Text="Hubert-Eats Manager"/></TextBlock>
                         <TextBlock
-            Text="Bienvenue sur l'application de gestions des utilisateurs internes a Hubert-Eats. Merci de vous connecter pour avoir l'accès a l'application."
-            TextWrapping="Wrap" Width="293" />
+            TextWrapping="Wrap" Width="294" Height="190" ><Run/><LineBreak/><Run Text="Bienvenue sur l'application de gestions des utilisateurs internes "/><Run Text="à"/><Run Text=" Hubert-Eats. Merci de vous connecter pour avoir l'accès a l'application."/><LineBreak/><Run/><LineBreak/><Run Text="En cas de problème avec l'application, merci de contacter "/><Run Text="le support de la DSI :"/><LineBreak/><LineBreak/><Run Text="☎ "/><Run Language="fr-fr" Text=": +33 9 15 89 78 31"/><LineBreak/><Run Language="fr-fr" Text="📧 : assistance@hubert.com"/></TextBlock>
                     </StackPanel>
                     <StackPanel
       Grid.Row="3"
@@ -90,6 +82,31 @@
 
 
                     </StackPanel>
+                    <GroupBox
+                        Margin="10,10,20,10"
+                        Header="Huber-Eats en images..."
+                        Style="{StaticResource MaterialDesignCardGroupBox}" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="32"
+                                        Height="32"
+                                        VerticalAlignment="Center"
+                                        Kind="ImageArea" />
+                                    <TextBlock
+                                        Margin="8,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                        Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <Image
+                            HorizontalAlignment="Center"
+                            Source="/assets/slider_3.jpg" Margin="0,0,0,-15" Height="193" VerticalAlignment="Bottom" />
+                    </GroupBox>
                 </Grid>
             </materialDesign:Card>
         </Grid>
@@ -372,5 +389,9 @@
                 </Grid>
             </Grid>
         </Grid>
+        <Button
+                Click="Button_Click_Login"
+                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="38,0,440,89" Cursor="Hand" Content="Valider" Height="32" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

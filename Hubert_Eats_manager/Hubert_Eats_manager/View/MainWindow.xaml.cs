@@ -47,7 +47,7 @@ namespace Hubert_Eats_manager
                     UserLoggedClass.UserName = userName;
                     ConnectedAs.Text = "Connecté en tant que : " + userName;
                     UserLoggedClass.UserRole = DataBaseManagerClass.GetRole(userName);
-                    if (UserLoggedClass.UserRole == "Developpeur Tier")
+                    if (UserLoggedClass.UserRole == "Developpeur")
                     {
                         MessageBox.Show("Utilisateur enregistré, mais n'a pas accès a Hubert-Eats Manager. Merci de contacter votre manager.");
                     }

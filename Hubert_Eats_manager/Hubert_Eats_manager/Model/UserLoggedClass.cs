@@ -10,7 +10,6 @@ namespace Hubert_Eats_manager.Model
     {
         public static string? UserName;
         public static string? UserRole;
-        public static List<string> Permission;
     }
 
 }
