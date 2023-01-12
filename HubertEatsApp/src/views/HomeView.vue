@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import { products } from '@/assets/products'
 import CardRestaurant from '@/components/CardRestaurant.vue'
 import HeaderContent from '@/components/HeaderContent.vue'
+import WelcomeItem from '@/components/WelcomeItem.vue';
 
 // Caroussel
 import 'vue3-carousel/dist/carousel.css'
@@ -14,20 +15,30 @@ export default defineComponent({
   data: () => ({
     // carousel settings
     settings: {
-      itemsToShow: 1,
+      itemsToShow: 2,
       snapAlign: 'center',
     },
     // breakpoints are mobile first
     // any settings not specified will fallback to the carousel settings
     breakpoints: {
+      // 200 and up
+      200: {
+        itemsToShow: 2,
+        snapAlign: 'center',
+      },
+      // 400 and up
+      400: {
+        itemsToShow: 4,
+        snapAlign: 'center',
+      },
       // 700px and up
       700: {
-        itemsToShow: 3.5,
+        itemsToShow: 8,
         snapAlign: 'center',
       },
       // 1024 and up
       1024: {
-        itemsToShow: 5,
+        itemsToShow: 8,
         snapAlign: 'start',
       },
     },
@@ -48,7 +59,8 @@ export default defineComponent({
     Pagination,
     Navigation,
     CardRestaurant,
-    HeaderContent
+    HeaderContent,
+    WelcomeItem
   }
 })
 </script>
@@ -57,18 +69,23 @@ export default defineComponent({
   <div class="page">
       <div class="top">
         <HeaderContent/>
-        <div class="title"> 
-          <h1>
-            Enjoy a good meal
-          </h1>
-          <img src="@/assets/freshVegetable.png" width="170" style="position:relative; bottom:40px;">
-        </div>
-        <div class="searchBar">
-          <div class="searchBarLeftPart">
-            <input class="inputSearch" type="email" id="email" name="email" placeholder="Which dishes are you looking for ?"/> 
-            <input class="searchButton" type="button" value="Search">
+          <div class="afterHeader">
+            <div class="title"> 
+            <h1>
+              Enjoy a good meal
+            </h1>
+            <img src="@/assets/freshVegetable.png" width="170" style="position:relative; left:10px; bottom:20px;">
           </div>
-          
+          <div class="searchBar">
+              <div class="searchBarInputArea">
+                <div class="localisation">
+                  <i class="fa-solid fa-location-dot fa-xl"></i>
+                  <input value="" placeholder="Localisation">
+                </div>
+                <input class="inputSearch" type="email" id="email" name="email" placeholder="Which dishes are you looking for ?"/>
+              </div>
+              <input class="searchButton" type="button" value="Search">
+          </div>
           <Carousel class="carousel" :settings="settings" :breakpoints="breakpoints">
             <Slide v-for="(product, i) in products" :key="i">
               <div class="carousel_item">
@@ -82,6 +99,7 @@ export default defineComponent({
             </template>
           </Carousel>
         </div>
+        
       </div>
       <div class="bottom">
           <div class="table-scroll">
@@ -93,35 +111,58 @@ export default defineComponent({
         </div>
       </div>
   </div>
+
+  <WelcomeItem class="element"/>
+
+
 </template>
 
 <style scoped>
+.element{
+  position:absolute;
+  top: 0;
+  max-height: 100vh;
+  overflow: scroll;
+}
+
+
   *{
     color: black;
   }
 
-  .page{
-    display: flex;
-    flex-direction: row;
-    height: calc(100vh - 120px);
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    flex-direction: column;
-    background-color: #D8E3E2;
+.page{
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 160px);
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  background-color: var(--light-green);
 }
 
-  h1{
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 40px;
-    line-height: 47px;
-    display: flex;
-    align-items: center;
-    color: #000000;
-    margin-bottom: 20px;
+.top{
+    width: 100%;
+    height: 150px;
+    margin-bottom: 80px;
   }
+
+.afterHeader{
+  position: relative;
+  bottom: 50px;
+}
+
+h1{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 47px;
+  display: flex;
+  align-items: center;
+  color: #000000;
+  margin-bottom: 20px;
+}
 
   .bottom{
     background-color: white;
@@ -136,13 +177,6 @@ export default defineComponent({
     justify-content: left;
     align-items: center;
     margin: 20px;
-    gap: 20px;
-  }
-
-  .top{
-    width: 100%;
-    height: 150px;
-    margin-bottom: 40px;
   }
 
 /* Barre de recherche */
@@ -152,17 +186,12 @@ export default defineComponent({
     justify-content: left;
     align-items: space-between;
     position: relative;
-    bottom: 40px;
+    flex-wrap: wrap;
+    bottom: 30px;
     left: 30px;
-    width: calc(100% - 30px);
+    width: calc(100% - 30px)
   }
 
-  .searchBarLeftPart{
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-  }
 
   .searchButton{
     background-color: #3EBC72;
@@ -187,19 +216,51 @@ export default defineComponent({
     height: 30px;
   }
 
+  .searchBarInputArea{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 3px;
+    height: 30px;
+  }
+
+  .localisation{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 13px;
+    margin-top: 15px;
+  }
+
+  .localisation input{
+    border: none;
+    width: 100px;
+    height: 20px;
+    font-size: 15px;
+    background-color: transparent;
+    text-align: center;
+    color: rgb(155, 27, 17)
+  }
+
   .inputSearch:focus{
     outline: none;
   }
 
+  .localisation input:focus{
+    outline: none;
+  }
+
   .carousel{
-    width: 50%;
     height: 50px;
-    margin-left: 20px;
+    width: 100%;
   }
 
   .carousel_item{
     display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
   }
 
 

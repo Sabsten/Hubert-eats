@@ -4,12 +4,17 @@
       <div class="links">
         <HeaderLink to="/tests">
           <button class="button cart-button" >
-            <i class="fas fa-shopping-cart"></i>   Pannier . 0
+            <i class="fas fa-shopping-cart"></i>   Panier · 0
           </button>
         </HeaderLink>
-        <HeaderLink to="/home">
+        <HeaderLink v-if="currentUrl!=homePath" to="/home">
           <button class="button account-button">
             <i class="fa-solid fa-house-user"></i>Accueil 
+          </button>
+        </HeaderLink>
+        <HeaderLink v-if="currentUrl==homePath" to="/accountc">
+          <button class="button account-button">
+            <i class="fa-solid fa-user"></i>Compte 
           </button>
         </HeaderLink>
       </div>
@@ -21,7 +26,15 @@
   import HeaderLink from './HeaderLinks.vue'
   
   export default defineComponent({
-    components: { HeaderLink }
+    components: { HeaderLink },
+    setup() {
+      const currentUrl = window.location.pathname;
+      const homePath = "/home"
+      return{
+        currentUrl,
+        homePath
+      }
+  }
   })
   </script>
   

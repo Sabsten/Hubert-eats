@@ -13,4 +13,14 @@
 </template>
 
 <style scoped>
+.item {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 20px;
+  background-color: red;
+  width: 300px;
+  height: 3000px;
+  overflow: scroll;
+}
 </style>

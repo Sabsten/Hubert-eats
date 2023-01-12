@@ -8,9 +8,10 @@ export default defineComponent({
   setup() {
     const routeLocation = useRoute()
     const router = useRouter()
-    const goToCreateAccount = () => {
-    router.push({ path: `/signup` })
+    const goToHome = () => {
+    router.push({ path: `/home` })
     }
+    return{ goToHome }
   },
   components: {
     CardPayment
@@ -21,14 +22,23 @@ export default defineComponent({
 <template>
    <div class="page">
     <div class="left-part">
-        <div class="editAddress">
-            <div class="name">
-                Adresse de livraison <i class="fa-solid fa-pen-to-square"></i>
-            </div>
-            <input type="button" value="Modifier">
+        <div class="left-header">
+            <i class="fa-solid fa-circle-arrow-left fa-2xl" @click="goToHome()"></i>
+            <img src="@/assets/HubertEatsLogo.png" width="250">
+            <div></div>
         </div>
-        <CardPayment></CardPayment>
-        <input class="confirm" type="button" value="Payer . 16€">
+
+        <div class="left-body">
+            <div class="editAddress">
+                <div class="name">
+                    Adresse de livraison <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                <input type="button" value="Modifier">
+            </div>
+            <CardPayment></CardPayment>
+            <input class="confirm" type="button" value="Payer . 16€">
+        </div>
+        <div></div>
     </div>
     <div class="right-part">
         <div class="element">
@@ -107,6 +117,22 @@ export default defineComponent({
     width: 60%;
     padding-left: 20px;
     padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.left-body{
     display: flex;
     flex-direction: column;
     justify-content: center;

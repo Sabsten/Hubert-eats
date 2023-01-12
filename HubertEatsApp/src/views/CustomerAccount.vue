@@ -62,7 +62,9 @@ export default defineComponent({
 .page{
     min-height: 100vh;
     width: 100%;
-    background-color: #E3EFEB;
+    background-color: var(--light-green);
+    display: flex;
+    flex-direction: column;
 }
 
 .content_{
@@ -89,6 +91,7 @@ export default defineComponent({
   gap: 50px;
   width: 50%;
   min-width: 400px;
+  max-width: 500px;
 }
 
 .name{
