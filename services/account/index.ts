@@ -3,8 +3,8 @@ import routes from "./routes/router";
 import { db } from "./config/db";
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
-
 import dotenv from 'dotenv'
+import { dbMysql } from "./config/db.mysql";
 
 const swaggerOptions: swaggerJsDoc.Options = {
   swaggerDefinition: {
@@ -22,6 +22,14 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app: Express = express();
 const port = 3000;
 const database = new db()
+
+const MysqlDatabase = new dbMysql()
+
+
+MysqlDatabase.checkIfUserExists("m.galos@hubert.com","MGALOS").then((result) => {
+  console.log("resultat de la requete : ",);
+  console.log(result);
+})
 
 dotenv.config()
 database.dbConnect();
