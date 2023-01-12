@@ -95,7 +95,6 @@
         </Grid>
 
         <Grid Visibility="{DynamicResource pageSelection}">
-            <TextBlock Text="{Binding ConectedAs}"/>
             <Grid VerticalAlignment="Center" Width="200">
                 <Grid Margin="-295,-34,-297,-44">
                     <materialDesign:Card>
@@ -229,6 +228,7 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
+                                    <TextBlock x:Name ="ConnectedAs"/>
                                     <DataGrid x:Name="ModifyDataGrid"
                                           Margin="0,20,0,0"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"

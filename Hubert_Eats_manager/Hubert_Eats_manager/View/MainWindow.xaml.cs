@@ -16,7 +16,6 @@ namespace Hubert_Eats_manager
     public partial class MainWindow : Window
     {
         public string userName;
-        public string ConectedAs;
         public string userPassword;
         public string inputUsername;
         public string inputUserPassword;
@@ -46,7 +45,7 @@ namespace Hubert_Eats_manager
                 {
                     
                     UserLoggedClass.UserName = userName;
-                    ConectedAs = "Connecté en tant que : " + userName;
+                    ConnectedAs.Text = "Connecté en tant que : " + userName;
                     UserLoggedClass.UserRole = DataBaseManagerClass.GetRole(userName);
                     if (UserLoggedClass.UserRole == "Developpeur Tier")
                     {
