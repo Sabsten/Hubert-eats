@@ -12,7 +12,7 @@ const historyTest = {
 
 <template>
     <div class="accountLayout">
-        <CourierHeader icon="fa-solid fa-reply" link="/livreur"/>
+        <CourierHeader icon="fa-solid fa-reply" link="/courier"/>
     <div class="courierInfos">
         <img class="photo" src="/avatar.jpg" alt="Avatar"/>
         <div class="informations">

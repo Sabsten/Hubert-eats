@@ -11,7 +11,7 @@ const props = withDefaults(
 <template>
     <div class="courierHeader">
         <router-link :to=props.link.toString()><i :class=props.icon.toString()></i></router-link>
-        <router-link to="/livreur"><img src="/logo_light.png"/></router-link>
+        <router-link to="/courier"><img src="/logo_light.png"/></router-link>
     </div>
 </template>
 
