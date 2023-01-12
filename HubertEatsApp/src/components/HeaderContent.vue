@@ -2,7 +2,12 @@
     <div class="content">
       <img src="@/assets/HubertEatsLogo.png" width="200">
       <div class="links">
-        <HeaderLink to="/tests">
+        <HeaderLink v-if="route.query.cart!='true'" :to="route.fullPath+'?cart=true'">
+          <button class="button cart-button" >
+            <i class="fas fa-shopping-cart"></i>   Panier · 0
+          </button>
+        </HeaderLink>
+        <HeaderLink v-if="route.query.cart=='true'" to="/home">
           <button class="button cart-button" >
             <i class="fas fa-shopping-cart"></i>   Panier · 0
           </button>
@@ -24,15 +29,18 @@
   <script lang="ts">
   import { defineComponent } from 'vue'
   import HeaderLink from './HeaderLinks.vue'
+  import { useRoute } from 'vue-router'
   
   export default defineComponent({
     components: { HeaderLink },
     setup() {
       const currentUrl = window.location.pathname;
       const homePath = "/home"
+      const route = useRoute()
       return{
         currentUrl,
-        homePath
+        homePath,
+        route
       }
   }
   })

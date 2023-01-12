@@ -69,7 +69,7 @@ export default defineComponent({
 
 .content_{
   justify-content: space-around;
-  gap: 50px;
+  gap: 30px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -120,6 +120,7 @@ export default defineComponent({
   flex-direction: column;
   gap: 20px;
   max-width: 500px;
+  margin-bottom: 10px;
 }
 
 .commandsHistory{

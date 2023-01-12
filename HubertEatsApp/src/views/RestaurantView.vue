@@ -32,7 +32,7 @@ export default defineComponent({
 
 <template>
   <div class="page">
-      <div class="top" z-index="200">
+      <div class="top" z-index="300">
         <HeaderContent/>
         <div class="headerRestaurant">
             <div class="top-part-img" :style="cssVars" style="max-width:100%; height: 200px; min-width: 100%;"></div>
@@ -133,7 +133,7 @@ export default defineComponent({
     width: 100%;
     height: 150px;
     margin-bottom: 40px;
-    z-index: 200;
+    z-index: 30;
     display: flex;
     flex-direction: column;
     text-align: center;

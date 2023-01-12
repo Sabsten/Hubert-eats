@@ -8,10 +8,10 @@ export default defineComponent({
   setup() {
     const routeLocation = useRoute()
     const router = useRouter()
-    const goToHome = () => {
-    router.push({ path: `/home` })
+    const goBack = () => {
+        router.go(-1)
     }
-    return{ goToHome }
+    return{ goBack }
   },
   components: {
     CardPayment
@@ -23,7 +23,7 @@ export default defineComponent({
    <div class="page">
     <div class="left-part">
         <div class="left-header">
-            <i class="fa-solid fa-circle-arrow-left fa-2xl" @click="goToHome()"></i>
+            <i class="fa-solid fa-circle-arrow-left fa-2xl" @click="goBack()"></i>
             <img src="@/assets/HubertEatsLogo.png" width="250">
             <div></div>
         </div>

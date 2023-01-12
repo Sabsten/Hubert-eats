@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router'
 import { products } from '@/assets/products'
 import CardRestaurant from '@/components/CardRestaurant.vue'
 import HeaderContent from '@/components/HeaderContent.vue'
-import WelcomeItem from '@/components/WelcomeItem.vue';
 
 // Caroussel
 import 'vue3-carousel/dist/carousel.css'
@@ -28,7 +27,7 @@ export default defineComponent({
       },
       // 400 and up
       400: {
-        itemsToShow: 4,
+        itemsToShow: 6,
         snapAlign: 'center',
       },
       // 700px and up
@@ -38,7 +37,12 @@ export default defineComponent({
       },
       // 1024 and up
       1024: {
-        itemsToShow: 8,
+        itemsToShow: 10,
+        snapAlign: 'start',
+      },
+      // 1268 and up
+      1268: {
+        itemsToShow: 14,
         snapAlign: 'start',
       },
     },
@@ -59,8 +63,7 @@ export default defineComponent({
     Pagination,
     Navigation,
     CardRestaurant,
-    HeaderContent,
-    WelcomeItem
+    HeaderContent
   }
 })
 </script>
@@ -71,10 +74,10 @@ export default defineComponent({
         <HeaderContent/>
           <div class="afterHeader">
             <div class="title"> 
-            <h1>
-              Enjoy a good meal
-            </h1>
-            <img src="@/assets/freshVegetable.png" width="170" style="position:relative; left:10px; bottom:20px;">
+              <h1>
+                Enjoy a good meal
+              </h1>
+              <img class="vegetables" src="@/assets/freshVegetable.png" width="170" style="position:relative; left:10px; bottom:20px;">
           </div>
           <div class="searchBar">
               <div class="searchBarInputArea">
@@ -112,19 +115,9 @@ export default defineComponent({
       </div>
   </div>
 
-  <WelcomeItem class="element"/>
-
-
 </template>
 
 <style scoped>
-.element{
-  position:absolute;
-  top: 0;
-  max-height: 100vh;
-  overflow: scroll;
-}
-
 
   *{
     color: black;
@@ -187,7 +180,7 @@ h1{
     align-items: space-between;
     position: relative;
     flex-wrap: wrap;
-    bottom: 30px;
+    bottom: 25px;
     left: 30px;
     width: calc(100% - 30px)
   }
@@ -301,6 +294,21 @@ h1{
   font-weight: 700;
   font-size: 32px;
   line-height: 38px;
+}
+
+@media screen and (max-width: 800px) {
+  .title{
+    display: none;
+  }
+
+.afterHeader{
+  top: 50px;
+}
+
+.top{
+  margin-bottom: 30px;
+}
+
 }
 
 </style>
