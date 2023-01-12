@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Hubert_Eats_manager.Model
 {
-    class UserClass
+    internal class UserLoggedClass
     {
-        private string userName;
-        private string UserRole;
+        public static string? UserName;
+        public static string? UserRole;
     }
+
 }
