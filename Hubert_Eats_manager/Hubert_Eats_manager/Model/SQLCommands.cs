@@ -1,6 +1,8 @@
-﻿using MySql.Data.MySqlClient;
+﻿using MaterialDesignThemes.Wpf;
+using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 using System.Windows.Markup;
 using static ViewModel.DataBaseManagerClass;
 
@@ -8,7 +10,7 @@ namespace Model
 {
     class SQLCommands
     {
-        public static MySqlCommand FindUserSQLString(Dictionary<string,string> UserData)
+        public static MySqlCommand FindUserSQLString(Dictionary<string, string> UserData)
         {
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
             foreach (var item in UserData)
@@ -17,6 +19,11 @@ namespace Model
             }
             cmd.CommandText = "SELECT * FROM " + SQLDatabase.UserTable + " WHERE identifiant = @identifiant";
             return cmd;
+        }
+
+        public static string LogFindUserSQLString(Dictionary<string, string> UserData)
+        {
+            return "SELECT * FROM " + SQLDatabase.UserTable + " WHERE identifiant = " + UserData["identifiant"];
         }
         public static MySqlCommand FindHashedPasswordSQLString(Dictionary<string, string> UserData)
         {
@@ -28,6 +35,12 @@ namespace Model
             cmd.CommandText = "SELECT password FROM " + SQLDatabase.UserTable + " WHERE identifiant = @identifiant";
             return cmd;
         }
+
+        public static string LogFindHashedPasswordSQLString(Dictionary<string, string> UserData)
+        {
+            return "SELECT password FROM " + SQLDatabase.UserTable + " WHERE identifiant = " + UserData["identifiant"];
+        }
+
         public static MySqlCommand UpdateTableSqlString(Dictionary<string, string> UserData)
         {
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
@@ -39,11 +52,22 @@ namespace Model
             return cmd;
         }
 
+        public static string LogUpdateTableSqlString(Dictionary<string, string> UserData)
+        {
+            return "UPDATE " + SQLDatabase.UserTable + " SET " + UserData["Key"] + " = " + UserData["Value"] + " WHERE identifiant = " + UserData["identifiant"];
+        }
+
+
         public static MySqlCommand AllDataSQLString()
         {
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM " + SQLDatabase.UserTable;
             return cmd;
+        }
+
+        public static string LogAllDataSQLString()
+        {
+            return "SELECT * FROM " + SQLDatabase.UserTable;
         }
 
         public static MySqlCommand DeleteUserSQLString(Dictionary<string, string> UserData)
@@ -57,6 +81,10 @@ namespace Model
             return cmd;
         }
 
+        public static string LogDeleteUserSQLString(Dictionary<string, string> UserData)
+        {
+            return "DELETE FROM " + SQLDatabase.UserTable + " WHERE identifiant = " + UserData["identifiant"];
+        }
 
         public static MySqlCommand FillTableSQLCommand(Dictionary<string, string> UserData)
         {
@@ -65,7 +93,7 @@ namespace Model
             string sqlLine2 = " VALUE (";
             foreach (var item in UserData)
             {
-                if (item.Key == "Password")
+                if (item.Key == "Password" || item.Key == "password")
                 {
                     cmd.Parameters.AddWithValue("@" + item.Key, EncryptClass.HashPassword(item.Value));
                 }
@@ -85,16 +113,41 @@ namespace Model
                 {
                     cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
                 }
-                sqlLine1 = sqlLine1 + ("@"+item.Value, item.Key);
-                sqlLine2 = sqlLine2 + ("@" + item.Value, item.Key);
+                sqlLine1 = sqlLine1 + item.Key + ", ";
+                sqlLine2 = sqlLine2 + "@" + item.Key + ", ";
             }
-            sqlLine1.Substring(sqlLine1.Length - 2, 2);
-            sqlLine2.Substring(sqlLine2.Length - 2, 2);
-            sqlLine1 = sqlLine1 + ')';
-            sqlLine2 = sqlLine2 +')';
-            cmd.CommandText = sqlLine1 + sqlLine2;
+            cmd.CommandText = sqlLine1[..^2] + ')' + sqlLine2[..^2] + ')';
             return cmd;
         }
-    }
 
+        
+
+        public static MySqlCommand Log_FillTableSQLCommand(Dictionary<string, string> UserData)
+        {
+            MySqlCommand cmd = LogConnection.CreateCommand();
+            string sqlLine1 = "INSERT INTO " + SQLDatabase.LogTable + " (";
+            string sqlLine2 = " VALUE (";
+            foreach (var item in UserData)
+            {
+                cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+                sqlLine1 = sqlLine1  + item.Key +", ";
+                sqlLine2 = sqlLine2 + "@" + item.Key + "', ";
+            }
+            cmd.CommandText = sqlLine1[..^2] + ')' + sqlLine2[..^2] + ')';
+            return cmd;
+        }
+
+        public static string LogFillTableSQLCommand(Dictionary<string, string> UserData)
+        {
+            MySqlCommand cmd = LogConnection.CreateCommand();
+            string sqlLine1 = "INSERT INTO " + SQLDatabase.UserTable + " (";
+            string sqlLine2 = " VALUE (";
+            foreach (var item in UserData)
+            {
+                sqlLine1 = sqlLine1 + item.Key + ", ";
+                sqlLine2 = sqlLine2 + "'" + item.Value + "', ";
+            }
+            return sqlLine1[..^2] + ')' + sqlLine2[..^2] + ')';
+        }
+    }
 }

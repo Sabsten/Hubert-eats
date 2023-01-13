@@ -45,11 +45,15 @@ namespace Hubert_Eats_manager
                 {
                     
                     UserLoggedClass.UserName = userName;
-                    ConnectedAs.Text = "Connecté en tant que : " + userName;
+                    string connected = "Connecté en tant que : " + userName;
+                    ConnectedAsAdd.Text = connected;
+                    ConnectedAsModify.Text = connected;
+                    ConnectedAsDelete.Text = connected;
+                    ConnectedAsConsult.Text = connected;
                     UserLoggedClass.UserRole = DataBaseManagerClass.GetRole(userName);
                     if (UserLoggedClass.UserRole == "Developpeur")
                     {
-                        MessageBox.Show("Utilisateur enregistré, mais n'a pas accès a Hubert-Eats Manager. Merci de contacter votre manager.");
+                        MessageBox.Show(MessageClass.GetErrorMessage("UserNotAllowed"));
                     }
                     else
                     {
@@ -74,7 +78,8 @@ namespace Hubert_Eats_manager
                 }
                 else
                 {
-                    MessageBox.Show(LoginState.Item2, "Identification incorrect", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    ErrorMessage.Text = LoginState.Item2;
+                 
                 }
             }
             catch (Exception ex)
@@ -134,6 +139,7 @@ namespace Hubert_Eats_manager
             string tabItem = ((sender as TabControl).SelectedItem as TabItem).Name as string;
             switch (tabItem)
             {
+                
                 case "AddTab":
                     break;
 
@@ -146,6 +152,10 @@ namespace Hubert_Eats_manager
                 case "ConsultationTab":
                     myDataGrid.ItemsSource = DataBaseManagerClass.SQLDataToDatagrid();
                     myDataGrid.Items.Refresh();
+                    break;
+                case "LogTab":
+                    //LogDataGrid.ItemsSource = DataBaseManagerClass.SQLDataToDatagridLog();
+                    //LogDataGrid.Items.Refresh();
                     break;
 
             }

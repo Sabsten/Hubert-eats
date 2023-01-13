@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800">
+        Title="MainWindow" Height="510" Width="800" MaxHeight="510" MaxWidth="800" MinHeight="510" MinWidth="800">
 
     <Window.Resources>
         <Visibility x:Key="homeVisible">Visible</Visibility>
@@ -15,14 +15,21 @@
 
     <Grid>
         <Grid Visibility="{DynamicResource homeVisible}" HorizontalAlignment="Center" Width="800" Height="484" VerticalAlignment="Bottom">
+            <TextBlock x:Name ="ErrorMessage" Foreground="Red"  Margin="38,196,490,266" />
+            <Button
+                Click="Button_Click_Login"
+                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="38,0,440,89" Cursor="Hand" Content="Valider" Height="32" VerticalAlignment="Bottom"/>
             <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
+            
             <Image
       Source="../assets/Logo_Hubert_Eats.png"
-      Stretch="UniformToFill" Margin="10,18,424,305" />
+      Stretch="UniformToFill" Margin="10,0,424,323" />
+           
             <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
                 x:Name="TextBoxUsername"
                 materialDesign:HintAssist.HelperText=""
-                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="40,214,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209">
+                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="40,242,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209">
                 <TextBox.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -46,7 +53,7 @@
                 materialDesign:PasswordBoxAssist.Password="{Binding userPasswrd, Mode=TwoWay}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
-                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="40,273,0,0" HorizontalAlignment="Left" Width="209" Height="32" VerticalAlignment="Top" />
+                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="40,293,0,0" HorizontalAlignment="Left" Width="209" Height="27" VerticalAlignment="Top" />
             <materialDesign:Card
               Background="#D8E3E2"
              Margin="406,0,0,0">
@@ -67,20 +74,17 @@
 
                     <StackPanel
       Grid.Row="2"
-      Margin="10,10,-2,-79" Grid.ColumnSpan="2" Grid.RowSpan="2">
+      Margin="10,10,-2,10" Grid.ColumnSpan="2">
                         <TextBlock
         FontWeight="Bold" Width="298"><Run Text="Hubert-Eats Manager"/></TextBlock>
                         <TextBlock
             TextWrapping="Wrap" Width="294" Height="190" ><Run/><LineBreak/><Run Text="Bienvenue sur l'application de gestions des utilisateurs internes "/><Run Text="à"/><Run Text=" Hubert-Eats. Merci de vous connecter pour avoir l'accès a l'application."/><LineBreak/><Run/><LineBreak/><Run Text="En cas de problème avec l'application, merci de contacter "/><Run Text="le support de la DSI :"/><LineBreak/><LineBreak/><Run Text="☎ "/><Run Language="fr-fr" Text=": +33 9 15 89 78 31"/><LineBreak/><Run Language="fr-fr" Text="📧 : assistance@hubert.com"/></TextBlock>
                     </StackPanel>
                     <StackPanel
-      Grid.Row="3"
-      Margin="138,8,0,8"
-      HorizontalAlignment="Left"
-      Orientation="Horizontal" Width="0" Grid.Column="1">
-
-
-
+                        Grid.Row="3"
+                        Margin="138,8,0,8"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal" Width="0" Grid.Column="1">
                     </StackPanel>
                     <GroupBox
                         Margin="10,10,20,10"
@@ -201,8 +205,10 @@
                                         Click ="Button_Click_ConfirmUserCreation">
                                         Valider
                                     </Button>
+                                    <TextBlock x:Name ="ConnectedAsAdd"/>
                                 </StackPanel>
                             </TabItem>
+
                             <TabItem x:Name="ModifierTab">
                                 <TabItem.Header>
                                     <StackPanel
@@ -245,7 +251,7 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
-                                    <TextBlock x:Name ="ConnectedAs"/>
+
                                     <DataGrid x:Name="ModifyDataGrid"
                                           Margin="0,20,0,0"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
@@ -290,6 +296,7 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Modifier l'utilisateur
                                     </Button>
+                                    <TextBlock x:Name ="ConnectedAsModify"/>
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="DeleteTab">
@@ -351,6 +358,7 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Supprimer l'utilisateur
                                     </Button>
+                                    <TextBlock x:Name ="ConnectedAsDelete" VerticalAlignment="Bottom"/>
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="ConsultationTab">
@@ -382,16 +390,46 @@
                                           Background="LightGreen"
                                           AutoGenerateColumns="True">
                                     </DataGrid>
+                                    <TextBlock x:Name ="ConnectedAsConsult" Margin="0,100"/>
                                 </StackPanel>
+                            </TabItem>
+                            <TabItem x:Name="LogTab">
+                                <TabItem.Header>
+                                    <StackPanel
+                                  Width="auto"
+                                  Height="auto">
+                                        <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Glasses"/>
+                                        <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Text="Logs" />
+                                    </StackPanel>
+                                </TabItem.Header>
+                                <StackPanel
+                                    Margin="16">
+                                    <TextBlock
+                                    Margin="0,0,0,8"
+                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                    Text="Consultation des logs servers"/>
+                                    <DataGrid x:Name="DataGridLog"
+                                          materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
+                                          CanUserAddRows="False"
+                                          SelectionMode="Extended"
+                                          SelectionUnit="Cell" 
+                                          Background="LightGreen"
+                                          AutoGenerateColumns="True">
+                                    </DataGrid>
+                                    <TextBlock x:Name ="ConnectedAsLoggin"/>
+                                </StackPanel>
+        
                             </TabItem>
                         </TabControl>
                     </materialDesign:Card>
                 </Grid>
             </Grid>
         </Grid>
-        <Button
-                Click="Button_Click_Login"
-                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="38,0,440,89" Cursor="Hand" Content="Valider" Height="32" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

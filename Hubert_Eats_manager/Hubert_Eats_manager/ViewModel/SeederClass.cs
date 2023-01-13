@@ -6,12 +6,12 @@ namespace ViewModel
 {
     class SeederClass
     {
-        private static void CreateTable()
+        private static void CreateLogTable()
         {
             DataBaseManagerClass.DataBaseConnection.Open();
-            Dictionary<string, string> test = new(Usertable.GetUserTable());
+            Dictionary<string, string> test = new(Usertable.Seeder_GetLogTable());
 
-            string sql = "CREATE TABLE `" + SQLDatabase.Shema + "`.`" + SQLDatabase.UserTable + "` (";
+            string sql = "CREATE TABLE " + SQLDatabase.LogTable + " (";
             foreach (var item in test)
             {
                 sql = sql + item.Key + " " + item.Value + " ";
@@ -24,12 +24,31 @@ namespace ViewModel
             DataBaseManagerClass.DataBaseConnection.Close();
         }
 
-        public void InitDb()
+        private static void CreateUserTable()
         {
-            //CreateTable();
+            DataBaseManagerClass.DataBaseConnection.Open();
+            Dictionary<string, string> test = new(Usertable.Seeder_GetUserTable());
+
+            string sql = "CREATE TABLE `" + SQLDatabase.Database + "`.`" + SQLDatabase.UserTable + "` (";
+            foreach (var item in test)
+            {
+                sql = sql + item.Key + " " + item.Value + " ";
+            }
+            sql = sql.Substring(0, sql.Length - 1) + ");";
+            MySqlCommand cmd = DataBaseManagerClass.DataBaseConnection.CreateCommand();
+
+            cmd.CommandText = sql;
+            cmd.ExecuteNonQuery();
+            DataBaseManagerClass.DataBaseConnection.Close();
+        }
+
+        public static void InitDb()
+        {
+            CreateLogTable();
+            CreateUserTable();
             Seeder();
         }
-        public void Seeder()
+        public static void Seeder()
         {
 
             Dictionary<string, string> Info = new();
