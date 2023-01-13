@@ -30,8 +30,5 @@ export default defineComponent({
 <!-- :class="active ? null : 'font-weight-bold'" -->
 
 <style scoped>
-/* .font-weight-bold {
-  font-weight: bold;
-  filter: invert(31%) sepia(0%) saturate(2388%) hue-rotate(317deg) brightness(104%) contrast(90%);
-} */
+  
 </style>

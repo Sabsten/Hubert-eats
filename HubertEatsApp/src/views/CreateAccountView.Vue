@@ -21,13 +21,13 @@ export default defineComponent({
 
 <template>
     <div class="page">
-      <div class="presentation">
-        <h1>Hello !</h1>
-        <input class="sign_in" type="button" value="SIGN IN" @click="goToLogin()">
+        <div class="presentation">
+          <h1>Bonjour !</h1>
+          <input class="sign_in" type="button" value="SIGN IN" @click="goToLogin()">
         </div>
         <div class="rightPart">
           <h2>
-            Create an account
+            Créer un compte
           </h2>
             <form class="loginForm" @submit.prevent="goToHome()">
                 <div class="inputs1">
@@ -57,15 +57,23 @@ export default defineComponent({
                     <input class="shadow" type="password" id="password" name="password" placeholder="Referent"/>
                 </div>
                 <span class="subtitle">Address :</span>
-                <div class="inputs1">
+                <div class="inputs2">
+                  <div>
                     <input class="shadow" type="email" id="email" name="email" placeholder="Steet name"/>
-                    <input class="shadow small" type="password" id="password" name="password" placeholder="Streen number"/>
+                    <input class="shadow small" type="password" id="password" name="password" placeholder="Numéro de la rue"/>
+                  </div>
+                  <div>
                     <input class="shadow small" type="password" id="password" name="password" placeholder="City"/>
                     <input class="shadow small" type="email" id="email" name="email" placeholder="Postal code"/>
                     <input class="shadow small" type="password" id="password" name="password" placeholder="Country"/>
+                    </div>
                 </div>
                 <button class="sign_up" type="submit">SIGN UP</button>
             </form>
+            <div class="connectMessage">
+              <span><br><br>Vous avez déjà un compte?<br>
+              <a href="#" @click="goToLogin()">Se connecter</a></span>
+            </div>
         </div>
     </div>
 </template>
@@ -74,19 +82,18 @@ export default defineComponent({
 .subtitle{
   color:black;
   text-decoration: underline;
-  width: 100%;
-  margin-left: 30%;
   font-weight: bold;
 }
 
 .page {
   display: flex;
+  flex-direction: row;
   align-items: center;
   height: 100vh;
   width: 100%;
 }
 .presentation{
-  background-color: #3EBC72;
+  background-color: var(--green);
   height: 100%;
   width: 50%;
   display: flex;
@@ -97,7 +104,6 @@ export default defineComponent({
 }
 .loginForm{
   width: 100%;
-  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -115,13 +121,13 @@ h2{
   margin-top: 10%;
   margin: 30px;
   text-align: center;
-  color: #3EBC72;
+  color: var(--green);
   font-weight: bold;
 }
 
 .sign_in{
   font-size: 20px;
-  color: #3EBC72;
+  color: var(--green);
   text-align: center;
   border-radius: 30px;
   width: 50%;
@@ -133,7 +139,7 @@ h2{
 .sign_up{
   font-size: 20px;
   color: white;
-  background-color: #3EBC72;
+  background-color: var(--green);
   text-align: center;
   border-radius: 30px;
   width: 200px;
@@ -184,6 +190,17 @@ fieldset{
   flex-wrap: wrap;
 }
 
+.inputs2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.inputs2 input{
+  margin: 0px 20px;
+}
 
 /* Radio button */
 .wrapper{
@@ -258,6 +275,35 @@ input[type="radio"]{
 #option-2:checked:checked ~ .option-2 span,
 #option-3:checked:checked ~ .option-3 span{
   color: #fff;
+}
+
+.connectMessage{
+  display: none;
+  text-align: center;
+  margin-top: 30px;
+}
+
+
+@media screen and (max-width: 700px) {
+    .page {
+        flex-direction: column;
+    }
+    .presentation{
+      width: 100%;
+      height: 200px;
+    }
+    .sign_in{
+      display: none;
+    }
+    .connectMessage{
+      display: contents;
+    }
+    .rightPart{
+      max-height: calc(100% - 200px);
+    }
+    .page{
+    min-height: 900px;
+    }
 }
 
 </style>
