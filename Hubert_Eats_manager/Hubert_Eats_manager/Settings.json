@@ -1,4 +1,7 @@
 {
-  "username": "hubert",
-  "password": "Y2VzaWh1YmVydA=="
+  "Host": "db4free.net",
+  "Database": "huberteats",
+  "Port": "3306",
+  "Username": "hubert",
+  "Password": "Y2VzaWh1YmVydA=="
 }

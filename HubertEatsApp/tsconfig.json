@@ -4,8 +4,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+    },
+    "types": ["node"],
+    "allowJs": true
   },
 
   "references": [

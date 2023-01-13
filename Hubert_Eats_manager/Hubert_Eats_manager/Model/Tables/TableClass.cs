@@ -17,7 +17,6 @@ namespace Model
         public string? idInternalUser { get; set; }
         public string? identifiant { get; set; }
         public string? nom { get; set; }
-        public string? password { get; set; }
         public string? role { get; set; }
 
     }

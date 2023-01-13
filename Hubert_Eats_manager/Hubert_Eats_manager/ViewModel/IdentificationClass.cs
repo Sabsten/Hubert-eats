@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Model;
 using MySql.Data.MySqlClient;
 
@@ -6,19 +7,20 @@ namespace ViewModel
 {
     class IdentificationClass
     {
-        public Tuple<bool, string> Login(string identifiant, string password)
+        public static Tuple<bool, string> Login(string identifiant, string password)
         {
-            if (identifiant == "42") //A supprimer pour le rendu
+            if (identifiant == "hubert" && password == EncryptClass.DecodeFrom64("Y2VzaWh1YmVydA=="))
             {
-                Console.WriteLine("Mise en place du seeder"); //A supprimer pour le rendu
-                SeederClass seed = new(); //A supprimer pour le rendu
-                seed.InitDb(); //A supprimer pour le rendu
-                return (true, "La table" + SQLDatabase.UserTable + " a bien été crée!").ToTuple(); //A supprimer pour le rendu
+                Console.WriteLine("Mise en place du seeder"); 
+                SeederClass seed = new(); 
+                seed.InitDb(); 
+                return (false, "La table" + SQLDatabase.UserTable + " a bien été crée!").ToTuple(); 
             }
-            MySqlConnection connection = SQLDatabase.GetDBConnection();
-            connection.Open();
-            MySqlCommand IDcmd = connection.CreateCommand();
-            IDcmd.CommandText = SQLCommands.FindHashedPasswordSQLString(identifiant);
+            Dictionary<string, string> UserInfo = new();
+            UserInfo.Add("identifiant", identifiant);
+            DataBaseManagerClass.DataBaseConnection.Open();
+            MySqlCommand IDcmd = SQLCommands.FindHashedPasswordSQLString(UserInfo);
+
             MySqlDataReader readerID = IDcmd.ExecuteReader();
             if (readerID.HasRows)
             {
@@ -27,21 +29,20 @@ namespace ViewModel
                 {
                     dbPassword = readerID.GetString(0);
                 }
-                EncryptClass encrypt = new();
-                if (encrypt.hashPassword(password) == dbPassword)
+                if (EncryptClass.HashPassword(password) == dbPassword)
                 {
-                    connection.Close();
+                    DataBaseManagerClass.DataBaseConnection.Close();
                     return (true, "Les mots de passes correspondent !").ToTuple(); ;
                 }
                 else
                 {
-                    connection.Close();
+                    DataBaseManagerClass.DataBaseConnection.Close();
                     return (false, "la confirmation a échoué").ToTuple();
                 }
             }
             else
             {
-                connection.Close();
+                DataBaseManagerClass.DataBaseConnection.Close();
                 return (false, "Identifiant non trouvé dans la base de donnée").ToTuple();
             }
         }

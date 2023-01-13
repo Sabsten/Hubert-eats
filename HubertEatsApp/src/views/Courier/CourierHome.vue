@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import CourierHeader from '@/components/courier/CourierHeader.vue';
+import Map from '@/components/Map.vue';
 </script>
 
 <template>
-    <CourierHeader icon="fa-solid fa-user" link="/livreur/compte"/>
+    <CourierHeader icon="fa-solid fa-user" link="/courier/account"/>
     <div class="ordersContent">
+        <!-- <Map :courier-lat-long="[47.42322, -1.239482]" :restau-lat-long="[47.41322, -1.219482]"/> -->
         <h2>Aucune commandes actuellement disponible ...</h2>
     </div>
     <div class="courierBottom">

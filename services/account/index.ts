@@ -3,6 +3,7 @@ import routes from "./routes/router";
 import { db } from "./config/db";
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
+import cors from 'cors';
 
 import dotenv from 'dotenv'
 
@@ -20,12 +21,13 @@ const swaggerOptions: swaggerJsDoc.Options = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 const app: Express = express();
-const port = 3000;
+const port = 3001;
 const database = new db()
 
 dotenv.config()
 database.dbConnect();
 
+app.use(cors())
 app.use(json());
 app.use(routes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));

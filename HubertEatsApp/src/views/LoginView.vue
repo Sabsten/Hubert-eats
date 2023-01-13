@@ -1,22 +1,39 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/auth';
+import { reactive, ref, type Ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-export default defineComponent({
-  setup() {
-    const routeLocation = useRoute()
-    const router = useRouter()
-    const goToCreateAccount = () => {
-    router.push({ path: `/signup` })
-  }
-    const goToHome = () => {
-    router.push({ path: `/home` })
+const routeLocation = useRoute()
+const authStore = useAuthStore()
+const router = useRouter()
+const goToCreateAccount = () => {
+  router.push({ path: `/signup` })
+}
 
+let mail: string | undefined;
+let password: string | undefined;
+let accountType: string | undefined;
+let errorMessage: Ref<string | null> = ref(null);
+
+async function tryLogin() {
+  if(accountType === undefined || mail === undefined || password === undefined) {
+    errorMessage.value = "Please fill all fields !"
+    return
+  };
+  errorMessage.value = await authStore.signIn(accountType, mail, password);
+  if(errorMessage.value  !== null){
+    return
   }
-    return { goToCreateAccount, goToHome }
+  switch(accountType) {
+    case 'customer':
+      router.push({ path: '/home'});
+      break;
+    case 'courier':
+      router.push({ path: '/courier'});
   }
-})
+  return
+}
+
 </script>
 
 <template>
@@ -29,13 +46,13 @@ export default defineComponent({
           <h2>
             Connect to your account
           </h2>
-            <form class="loginForm" @submit.prevent="goToHome()">
-                <input class="shadow" type="email" id="email" name="email" placeholder="Entrez un pseudo"/>
-                <input class="shadow" type="password" id="password" name="password" placeholder="Entrez un pseudo"/>
+            <form class="loginForm" @submit.prevent="tryLogin()">
+                <input v-model="mail" class="shadow" type="email" id="email" name="email" placeholder="Entrez un pseudo"/>
+                <input v-model="password" class="shadow" type="password" id="password" name="password" placeholder="Entrez un pseudo"/>
                 <div class="wrapper">
-                  <input type="radio" name="select" id="option-1" checked>
-                  <input type="radio" name="select" id="option-2">
-                  <input type="radio" name="select" id="option-3">
+                  <input v-model="accountType" value="customer" type="radio" name="select" id="option-1">
+                  <input v-model="accountType" value="restaurant" type="radio" name="select" id="option-2">
+                  <input v-model="accountType" value="courier" type="radio" name="select" id="option-3">
                     <label for="option-1" class="option option-1">
                       <div class="dot"></div>
                         <span>Customer</span>
@@ -50,6 +67,7 @@ export default defineComponent({
                     </label>
                 </div>
                 <button class="sign_in" type="submit">SIGN IN</button>
+                <span v-if="errorMessage !== null" class="error-msg">{{ errorMessage }}</span>
             </form>
             <div class="createMessage">
               <span><br><br>Vou n'avez pas de compte?<br>
@@ -236,6 +254,11 @@ input[type="radio"]{
 .createMessage{
   display: none;
   text-align: center;
+}
+
+
+.error-msg {
+  color:red;
 }
 
 @media screen and (max-width: 700px) {

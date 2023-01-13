@@ -7,6 +7,8 @@ services:
       - "3001:3000"
     networks:
       - reseau
+    profiles: ["backend"]
+
   components-service:
     build: ./services/components
     restart: always
@@ -14,6 +16,8 @@ services:
       - "3002:3000"
     networks:
       - reseau
+    profiles: ["backend"]
+
   inventory-service:
     build: ./services/inventory
     restart: always
@@ -21,6 +25,8 @@ services:
       - "3003:3000"
     networks:
       - reseau
+    profiles: ["backend"]
+
   ordering-service:
     build: ./services/ordering
     restart: always
@@ -28,6 +34,8 @@ services:
       - "3004:3000"
     networks:
       - reseau
+    profiles: ["backend"]
+
   front-end:
     build: ./HubertEatsApp
     restart: always
