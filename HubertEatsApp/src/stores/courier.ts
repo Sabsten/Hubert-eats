@@ -23,7 +23,18 @@ export const useCourierStore = defineStore({
                 return somme/total;
             }
             return null
-        }
+        },
+        getCourierForm(state): ICourierForm{
+            return {
+                mail: state.courierAccount?.account.mail,
+                firstname: state.courierAccount?.firstname,
+                lastname: state.courierAccount?.lastname,
+                street_name: state.courierAccount?.address.street_name,
+                street_number: state.courierAccount?.address.street_number,
+                city: state.courierAccount?.address.city,
+                postal_code: state.courierAccount?.address.postal_code,
+            }
+        },
     },
     actions: {
         async getCourierAccount() {
@@ -35,7 +46,7 @@ export const useCourierStore = defineStore({
                 return
             });
         },
-        async modifyCourierAcount(courierForm: ICourierForm) {
+        async modifyCourierAcount() {
             const authStore = useAuthStore();
             const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/couriers/account/' + authStore.getAccountId!;
             const RES: Response = await fetch(URL, {
@@ -44,7 +55,7 @@ export const useCourierStore = defineStore({
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer: ' + authStore.getToken!
                 },
-                body: JSON.stringify(courierForm)
+                body: JSON.stringify(this.getCourierForm)
             });
             const data: ICourier = await RES.json();
             if (!RES.ok) {

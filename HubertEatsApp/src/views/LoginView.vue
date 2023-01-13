@@ -30,6 +30,9 @@ async function tryLogin() {
       break;
     case 'courier':
       router.push({ path: '/courier'});
+      break
+    case 'restaurant':
+      router.push({ path: '/home'});
   }
   return
 }
@@ -39,23 +42,23 @@ async function tryLogin() {
 <template>
     <div class="page">
       <div class="presentation">
-        <h1>Hello !</h1>
+        <h1>Bienvenue !</h1>
         <input class="sign_up" type="button" value="SIGN UP" @click="goToCreateAccount()">
         </div>
         <div class="rightPart">
           <h2>
-            Connect to your account
+            Connectez vous à votre compte
           </h2>
             <form class="loginForm" @submit.prevent="tryLogin()">
-                <input v-model="mail" class="shadow" type="email" id="email" name="email" placeholder="Entrez un pseudo"/>
-                <input v-model="password" class="shadow" type="password" id="password" name="password" placeholder="Entrez un pseudo"/>
+                <input v-model="mail" class="shadow" type="email" id="email" name="email" placeholder="Entrez votre email"/>
+                <input v-model="password" class="shadow" type="password" id="password" name="password" placeholder="Entrez votre mot de passe"/>
                 <div class="wrapper">
                   <input v-model="accountType" value="customer" type="radio" name="select" id="option-1">
                   <input v-model="accountType" value="restaurant" type="radio" name="select" id="option-2">
                   <input v-model="accountType" value="courier" type="radio" name="select" id="option-3">
                     <label for="option-1" class="option option-1">
                       <div class="dot"></div>
-                        <span>Customer</span>
+                        <span>Client</span>
                         </label>
                     <label for="option-2" class="option option-2">
                       <div class="dot"></div>
@@ -63,7 +66,7 @@ async function tryLogin() {
                     </label>
                     <label for="option-3" class="option option-3">
                       <div class="dot"></div>
-                        <span>Courier</span>
+                        <span>Livreur</span>
                     </label>
                 </div>
                 <button class="sign_in" type="submit">SIGN IN</button>
