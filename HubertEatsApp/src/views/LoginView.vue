@@ -69,6 +69,10 @@ async function tryLogin() {
                 <button class="sign_in" type="submit">SIGN IN</button>
                 <span v-if="errorMessage !== null" class="error-msg">{{ errorMessage }}</span>
             </form>
+            <div class="createMessage">
+              <span><br><br>Vou n'avez pas de compte?<br>
+              <a href="#" @click="goToCreateAccount()">Créer un compte</a></span>
+            </div>
         </div>
     </div>
 </template>
@@ -246,8 +250,32 @@ input[type="radio"]{
 #option-3:checked:checked ~ .option-3 span{
   color: #fff;
 }
+
+.createMessage{
+  display: none;
+  text-align: center;
+}
+
+
 .error-msg {
   color:red;
 }
+
+@media screen and (max-width: 700px) {
+    .page {
+        flex-direction: column;
+    }
+    .presentation{
+      width: 100%;
+      height: 200px;
+    }
+    .sign_up{
+      display: none;
+    }
+    .createMessage{
+      display: contents;
+    }
+}
+
 </style>
   

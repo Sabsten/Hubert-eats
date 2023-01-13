@@ -6,19 +6,12 @@ namespace ViewModel
 {
     class SeederClass
     {
-        private static readonly string Shemas = new(SQLDatabase.Database);
-        private static readonly string UserTable = new(SQLDatabase.UserTable);
-        private static void CreateShema()
-        {
-            DataBaseManagerClass.ExecuteSQLCommand("CREATE SCHEMA `" + Shemas + "`");
-        }
-
         private static void CreateTable()
         {
             DataBaseManagerClass.DataBaseConnection.Open();
             Dictionary<string, string> test = new(Usertable.GetUserTable());
 
-            string sql = "CREATE TABLE `" + Shemas + "`.`" + UserTable + "` (";
+            string sql = "CREATE TABLE `" + SQLDatabase.Shema + "`.`" + SQLDatabase.UserTable + "` (";
             foreach (var item in test)
             {
                 sql = sql + item.Key + " " + item.Value + " ";
@@ -33,8 +26,7 @@ namespace ViewModel
 
         public void InitDb()
         {
-            //CreateShema();
-            CreateTable();
+            //CreateTable();
             Seeder();
         }
         public void Seeder()

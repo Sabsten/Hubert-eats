@@ -1,40 +1,100 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Markup;
+using static ViewModel.DataBaseManagerClass;
 
 namespace Model
 {
     class SQLCommands
     {
-        public static string FindUserSQLString(string identifiant)
+        public static MySqlCommand FindUserSQLString(Dictionary<string,string> UserData)
         {
-            return "SELECT * FROM " + SQLDatabase.UserTable + " WHERE identifiant = '" + identifiant + "'";
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            foreach (var item in UserData)
+            {
+                cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+            }
+            cmd.CommandText = "SELECT * FROM " + SQLDatabase.UserTable + " WHERE identifiant = @identifiant";
+            return cmd;
         }
-        public static string FindHashedPasswordSQLString(string identifiant)
+        public static MySqlCommand FindHashedPasswordSQLString(Dictionary<string, string> UserData)
         {
-            return "SELECT password FROM " + SQLDatabase.UserTable + " WHERE identifiant = '" + identifiant + "'";
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            foreach (var item in UserData)
+            {
+                cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+            }
+            cmd.CommandText = "SELECT password FROM " + SQLDatabase.UserTable + " WHERE identifiant = @identifiant";
+            return cmd;
         }
-        public static string UpdateTableSqlString(string ColumnItem, string Value, string identifiant)
+        public static MySqlCommand UpdateTableSqlString(Dictionary<string, string> UserData)
         {
-            return "UPDATE " + SQLDatabase.UserTable + " SET " + ColumnItem + " = '" + Value + "' WHERE identifiant = '" + identifiant + "'";
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            foreach (var item in UserData)
+            {
+                cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+            }
+            cmd.CommandText = "UPDATE " + SQLDatabase.UserTable + " SET @Key = @Value WHERE identifiant = @identifiant";
+            return cmd;
         }
 
-        public static string AllDataSQLString()
+        public static MySqlCommand AllDataSQLString()
         {
-            return "SELECT * FROM " + SQLDatabase.UserTable;
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            cmd.CommandText = "SELECT * FROM " + SQLDatabase.UserTable;
+            return cmd;
         }
-        public static string FillTableSQLCommand(Dictionary<string, string> Data)
+
+        public static MySqlCommand DeleteUserSQLString(Dictionary<string, string> UserData)
         {
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            foreach (var item in UserData)
+            {
+                cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+            }
+            cmd.CommandText = "DELETE FROM " + SQLDatabase.UserTable + " WHERE identifiant = @identifiant";
+            return cmd;
+        }
+
+
+        public static MySqlCommand FillTableSQLCommand(Dictionary<string, string> UserData)
+        {
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
             string sqlLine1 = "INSERT INTO " + SQLDatabase.UserTable + "(";
             string sqlLine2 = " VALUE (";
-            foreach (var item in Data)
+            foreach (var item in UserData)
             {
-                sqlLine1 += item.Key + ", ";
-                sqlLine2 += "@" + item.Key + ", ";
+                if (item.Key == "Password")
+                {
+                    cmd.Parameters.AddWithValue("@" + item.Key, EncryptClass.HashPassword(item.Value));
+                }
+                else if (item.Key == "role")
+                {
+                    if (!int.TryParse(item.Value, out int numValue))
+                    {
+                        cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+                    }
+                    else
+                    {
+                        var role = (Role)int.Parse(numValue.ToString());
+                        cmd.Parameters.AddWithValue("@" + item.Key, role.ToString());
+                    }
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+                }
+                sqlLine1 = sqlLine1 + ("@"+item.Value, item.Key);
+                sqlLine2 = sqlLine2 + ("@" + item.Value, item.Key);
             }
-            return sqlLine1[0..^2] + ")" + sqlLine2[0..^2] + ")";
+            sqlLine1.Substring(sqlLine1.Length - 2, 2);
+            sqlLine2.Substring(sqlLine2.Length - 2, 2);
+            sqlLine1 = sqlLine1 + ')';
+            sqlLine2 = sqlLine2 +')';
+            cmd.CommandText = sqlLine1 + sqlLine2;
+            return cmd;
         }
     }
+
 }
