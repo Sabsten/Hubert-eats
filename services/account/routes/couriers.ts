@@ -7,5 +7,6 @@ const couriersRouter = express.Router();
 
 couriersRouter.get('/:id', couriersController.getCourierById);
 couriersRouter.get('/account/:id', courierAccess, couriersController.getCourierAccountById);
+couriersRouter.patch('/account/:id', courierAccess, couriersController.updateCourierAccount)
 
 export default couriersRouter;

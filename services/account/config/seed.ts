@@ -5,16 +5,17 @@ import Customer, { ICustomer } from "../models/customer";
 import mongoose, {Document} from "mongoose";
 import Courier, { ICourier } from "../models/courier";
 
-mongoose.connect('mongodb+srv://db:cesi@clusterhubert.9rf9vju.mongodb.net/?retryWrites=true&w=majority').then(async (a) => {
+async function seed() {
+    const a = await mongoose.connect('mongodb+srv://db:cesi@clusterhubert.9rf9vju.mongodb.net/?retryWrites=true&w=majority');
     await a.connection.dropCollection('restaurants');
     await a.connection.dropCollection('customers');
     await a.connection.dropCollection('couriers');
     await Restaurant.bulkSave(createRestaurants());
     await Customer.bulkSave(createCustomers());
     await Courier.bulkSave(createCouriers());
-}).finally(() => {
     process.exit();
-});
+}
+seed();
 
 function createRestaurants(): Document[] {
     let restaurantsList: Document[] = [];
@@ -35,7 +36,7 @@ function createRestaurants(): Document[] {
             },
             image: faker.image.food(300, 300, true),
             tags: [faker.datatype.string(), faker.datatype.string(), faker.datatype.string()],
-            rating: [faker.datatype.number({min: 0, max: 5, precision: 0.1})],
+            rating: [faker.datatype.number({min: 0, max: 5, precision: 0.1}), faker.datatype.number({min: 0, max: 5, precision: 0.1})],
         });
         restaurantsList.push(newRestaurant);
     };
@@ -85,7 +86,12 @@ function createCouriers(): Document[] {
                 country: faker.address.country(),
             },
             balance: faker.datatype.number({min: 0, max: 500, precision: 0.1}),
-            rating: [faker.datatype.number({min: 0, max: 5, precision: 0.1})],
+            rating: [
+                faker.datatype.number({min: 0, max: 5, precision: 0.1}),
+                faker.datatype.number({min: 0, max: 5, precision: 0.1}),
+                faker.datatype.number({min: 0, max: 5, precision: 0.1}),
+                faker.datatype.number({min: 0, max: 5, precision: 0.1})
+            ],
         });
         couriersList.push(newCourier);
     };

@@ -5,26 +5,28 @@ export type TokenPayload = {
     type: string,
     accountId: string,
 }
+
+function getTokenPayload(): TokenPayload | null {
+    const token = localStorage.getItem('TOKEN');
+    if(token === null) {
+        return null
+    }
+    return jwt_decode<TokenPayload>(token);
+}
+
 export const useAuthStore = defineStore({
     id: 'Auth',
     getters: {
         getAccountId: (): string | null => {
-            const token = localStorage.getItem('TOKEN');
-            if(token === null) {
-                return null
-            }
-            const payload = jwt_decode<TokenPayload>(token);
-            return payload.accountId;
+            const payload = getTokenPayload();
+            return payload === null ? null : payload.accountId;
         },
         getAccountType: (): string | null => {
-            const token = localStorage.getItem('TOKEN');
-            if(token === null) {
-                return null
-            }
-            
-            const payload = jwt_decode<TokenPayload>(token);
-            console.log(payload.type)
-            return payload.type;
+            const payload = getTokenPayload();
+            return payload === null ? null : payload.type;
+        },
+        getToken: (): string | null => {
+            return localStorage.getItem('TOKEN');
         }
     },
     actions: {
@@ -42,6 +44,6 @@ export const useAuthStore = defineStore({
             localStorage.setItem('TOKEN',data.token)
             console.log('Request successful');
             return null
-        }
+        },
     }
 })

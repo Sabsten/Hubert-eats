@@ -21,7 +21,7 @@ const restaurantSchema = new Schema<IRestaurant>({
   address: {type: addressSchema, required: true},
   image: String,
   tags: [String],
-  rating: Number,
+  rating: [Number],
 }, { versionKey: false, timestamps: true });
 
 // Create a Model.
