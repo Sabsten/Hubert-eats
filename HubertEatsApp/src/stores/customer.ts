@@ -1,10 +1,7 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './auth';
-import type { ICourier } from '@/models/ICourier';
-import axios, { type AxiosResponse } from 'axios';
-import type { ICourierForm } from '@/models/courierForm';
-import type { ICustomer } from '@/models/ICustomer';
-import type { ICustomerForm } from '@/models/customerForm';
+import type { ICourier } from '@/models/couriers';
+import type { ICustomerForm, ICustomer } from '@/models/customers';
 
 export const useCustomerStore = defineStore({
     id: 'Customer',

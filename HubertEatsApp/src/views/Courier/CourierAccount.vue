@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CourierHeader from '@/components/courier/CourierHeader.vue';
 import CourierHistory from '@/components/courier/CourierHistory.vue';
-import type { ICourierForm } from '@/models/courierForm';
 import { useCourierStore } from '@/stores/courier';
 import { storeToRefs } from 'pinia';
 import { getCurrentInstance, onMounted, onUpdated, reactive, ref, type Ref } from 'vue';

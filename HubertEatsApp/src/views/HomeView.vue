@@ -1,71 +1,65 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineComponent, onMounted } from 'vue'
 import { ref } from "vue";
 import { useRouter } from 'vue-router'
 import { products } from '@/assets/products'
 import CardRestaurant from '@/components/CardRestaurant.vue'
 import HeaderContent from '@/components/HeaderContent.vue'
-
 // Caroussel
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { useRestaurantStore } from '@/stores/restaurant';
+import { storeToRefs } from 'pinia'
 
-export default defineComponent({
-  data: () => ({
-    // carousel settings
-    settings: {
-      itemsToShow: 2,
-      snapAlign: 'center',
-    },
-    // breakpoints are mobile first
-    // any settings not specified will fallback to the carousel settings
-    breakpoints: {
-      // 200 and up
-      200: {
-        itemsToShow: 2,
-        snapAlign: 'center',
-      },
-      // 400 and up
-      400: {
-        itemsToShow: 6,
-        snapAlign: 'center',
-      },
-      // 700px and up
-      700: {
-        itemsToShow: 8,
-        snapAlign: 'center',
-      },
-      // 1024 and up
-      1024: {
-        itemsToShow: 10,
-        snapAlign: 'start',
-      },
-      // 1268 and up
-      1268: {
-        itemsToShow: 14,
-        snapAlign: 'start',
-      },
-    },
-  }),
-  setup() {
-    const router = useRouter()
-    let input = ref("");
-    const goToFact = (id: number) => {
-      router.push({ path: `/restaurantPage/${id}` })
-    }
-    return { products, goToFact, input}
-
+const carouselSettings = {
+  itemsToShow: 2,
+  snapAlign: 'center',
+}
+const carouselBreakPoints = {
+  // 200 and up
+  200: {
+    itemsToShow: 2,
+    snapAlign: 'center',
   },
-
-  components: {
-    Carousel,
-    Slide,
-    Pagination,
-    Navigation,
-    CardRestaurant,
-    HeaderContent
-  }
+  // 400 and up
+  400: {
+    itemsToShow: 6,
+    snapAlign: 'center',
+  },
+  // 700px and up
+  700: {
+    itemsToShow: 8,
+    snapAlign: 'center',
+  },
+  // 1024 and up
+  1024: {
+    itemsToShow: 10,
+    snapAlign: 'start',
+  },
+  // 1268 and up
+  1268: {
+    itemsToShow: 14,
+    snapAlign: 'start',
+  },
+}
+defineComponent({
+  Carousel,
+  Slide,
+  Pagination,
+  Navigation,
+  CardRestaurant,
+  HeaderContent
 })
+const router = useRouter()
+const goToRestaurant = (id: string) => {
+  router.push({ path: `/restaurantPage/${id}` })
+}
+const restaurantStore = useRestaurantStore();
+const { restaurantsList, error } = storeToRefs(restaurantStore);
+onMounted(async () => {
+  await restaurantStore.getRestaurants();
+})
+
 </script>
 
 <template>
@@ -89,7 +83,7 @@ export default defineComponent({
               </div>
               <input class="searchButton" type="button" value="Search">
           </div>
-          <Carousel class="carousel" :settings="settings" :breakpoints="breakpoints">
+          <Carousel class="carousel" :settings="carouselSettings" :breakpoints="carouselBreakPoints">
             <Slide v-for="(product, i) in products" :key="i">
               <div class="carousel_item">
                 <img :src="product.image" width="40" height="40">
@@ -107,8 +101,8 @@ export default defineComponent({
       <div class="bottom">
           <div class="table-scroll">
             <div class="shopsElements" cellspacing="10" cellpadding="0">
-              <div v-for="(product, i) in products" :key="i" @click="goToFact(i)">
-                <CardRestaurant :element=product />
+              <div v-for="(restaurant) in restaurantsList" @click="goToRestaurant(restaurant._id)">
+                <CardRestaurant :restaurant=restaurant />
               </div>
             </div>
         </div>

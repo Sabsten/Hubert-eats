@@ -69,6 +69,9 @@
   font-size: 15px;
   margin-right: 10px;
 }
+.button:hover {
+    cursor: pointer;
+}
 
 .cart-button {
   background-color: #3EBC72;

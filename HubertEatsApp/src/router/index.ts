@@ -68,19 +68,10 @@ const router = createRouter({
       component: () => import('../views/RestaurantView.vue'),
       beforeEnter: (to, _, next) => {
         const { id } = to.params
-  
-        if (Array.isArray(id)) {
+        if (id === null || id === undefined) {
           next({ path: '/error' })
           return
         }
-  
-        // Is a valid index number
-        const index = parseInt(id)
-        if (index < 0 || index >= products.length) {
-          next({ path: '/error' })
-          return
-        }
-  
         next()
       }
     },

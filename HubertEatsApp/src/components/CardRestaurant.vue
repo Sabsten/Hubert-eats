@@ -1,26 +1,9 @@
-<script lang="ts">
-import { computed, defineComponent, useCssVars } from 'vue'
-import { products } from '@/assets/products'
+<script setup lang="ts">
+import type { IRestaurant } from '@/models/restaurants';
 
-type CardRestaurantProps = { element: any }
-
-export default defineComponent({
-  props: {
-    element: {
-      required: true
-    }
-  },
-  setup(props: CardRestaurantProps) {
-    //const restaurant = computed(() => products[props.factId])
-    const restaurant = props.element
-    return { restaurant }
-  },
-  computed: {
-    cssVars(props: CardRestaurantProps) {
-    }
-  }
-}
-)
+defineProps<{
+  restaurant: IRestaurant,
+}>();
 
 </script>
 
@@ -28,11 +11,12 @@ export default defineComponent({
     <div class="table-wrapper">
         <img :src="restaurant.image" width="150" height="150" class="pic" />
         <div>
-            <div class="descriptionRow">
-            <div class="restaurantName">{{ restaurant.text }}</div>
-            <div class="restaurantRate">{{ restaurant.grade }}</div>
-        </div>
-        <div>{{ restaurant.address }}</div>
+          <div class="descriptionRow">
+            <div class="restaurantName">{{ restaurant.name }}</div>
+            <!-- <div class="restaurantRate">{{ restaurant }}</div> -->
+          </div>
+          <!-- <div>{{ restaurant.address.street_number }}&nbsp;{{ restaurant.address.street_name }}</div> -->
+          <div>{{ restaurant.address.postal_code }},&nbsp;{{ restaurant.address.city }}</div>
         </div>
     </div>
 </template>
