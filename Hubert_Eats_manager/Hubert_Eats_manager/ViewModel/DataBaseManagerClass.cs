@@ -136,10 +136,32 @@ namespace ViewModel
             while (readerID.Read())
             {
                 ExtractDatabase UserTest = new();
-                if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
+                if (!readerID.IsDBNull(0)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
+                if (!readerID.IsDBNull(1)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
+                if (!readerID.IsDBNull(2)) { UserTest.nom = readerID.GetString(2).ToString(); } else { UserTest.nom = ""; };
+                if (!readerID.IsDBNull(4)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
+                User.Add(UserTest);
+            }
+            DataBaseConnection.Close();
+            Dictionary<string, string> UserInfo = new();
+            UserInfo.Add("createdBy", UserLoggedClass.UserName);
+            UserInfo.Add("role", UserLoggedClass.UserRole);
+            UserInfo.Add("command", SQLCommands.LogAllDataSQLString());
+            ExecuteSQLCommand(SQLCommands.Log_FillTableSQLCommand(UserInfo), LogConnection);
+            return User;
+        }
+        public static List<ExtractDatabase> LogSQLDataToDatagrid()
+        {
+            DataBaseConnection.Open();
+            MySqlCommand test = SQLCommands.MakeLogAllDataSQLString();
+            MySqlDataReader readerID = GetReaderSQLCommand(test);
+            List<ExtractDatabase> User = new();
+            while (readerID.Read())
+            {
+                ExtractDatabase UserTest = new();
+                if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(1).ToString(); } else { UserTest.idInternalUser = ""; };
                 if (!readerID.IsDBNull(2)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
-                if (!readerID.IsDBNull(3)) { UserTest.nom = readerID.GetString(2).ToString(); } else { UserTest.nom = ""; };
-                if (!readerID.IsDBNull(5)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
+                if (!readerID.IsDBNull(3)) { UserTest.nom = readerID.GetString(3).ToString(); } else { UserTest.nom = ""; };
                 User.Add(UserTest);
             }
             DataBaseConnection.Close();

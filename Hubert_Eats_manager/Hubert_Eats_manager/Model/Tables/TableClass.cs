@@ -50,7 +50,7 @@ namespace Model
                 { "`createdBy`", "VARCHAR(45) NULL," },
                 { "`role`", "VARCHAR(45) NULL," },
                 { "`command`", "VARCHAR(300) NULL," },
-                { "`createdAt`", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP," },
+                { "`createdAt`", "TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP," },
                 { "PRIMARY KEY", "(`idTransaction`)" }
             };
             return TableInfo;

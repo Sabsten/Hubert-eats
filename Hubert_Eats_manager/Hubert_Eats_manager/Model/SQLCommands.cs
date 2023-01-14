@@ -61,13 +61,20 @@ namespace Model
         public static MySqlCommand AllDataSQLString()
         {
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM " + SQLDatabase.UserTable;
+            cmd.CommandText = "SELECT * FROM " + SQLDatabase.UserTable +"WHERE isActive = True";
+            return cmd;
+        }
+
+        public static MySqlCommand MakeLogAllDataSQLString()
+        {
+            MySqlCommand cmd = DataBaseConnection.CreateCommand();
+            cmd.CommandText = "SELECT * FROM " + SQLDatabase.LogTable + "WHERE isActive = True";
             return cmd;
         }
 
         public static string LogAllDataSQLString()
         {
-            return "SELECT * FROM " + SQLDatabase.UserTable;
+            return "SELECT * FROM " + SQLDatabase.LogTable;
         }
 
         public static MySqlCommand DeleteUserSQLString(Dictionary<string, string> UserData)
@@ -77,7 +84,7 @@ namespace Model
             {
                 cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
             }
-            cmd.CommandText = "DELETE FROM " + SQLDatabase.UserTable + " WHERE identifiant = @identifiant";
+            cmd.CommandText = "UPDATE " + SQLDatabase.UserTable + " SET isActive = FALSE WHERE identifiant = @identifiant";
             return cmd;
         }
 

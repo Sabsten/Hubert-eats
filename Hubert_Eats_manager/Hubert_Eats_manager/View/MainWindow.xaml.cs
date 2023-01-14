@@ -61,6 +61,7 @@ namespace Hubert_Eats_manager
                         ModifierTab.Visibility = Visibility.Collapsed;
                         DeleteTab.Visibility = Visibility.Collapsed;
                         ConsultationTab.Visibility = Visibility.Collapsed;
+                        LogTab.Visibility = Visibility.Collapsed;
                         List<string> Permission = RolePermissionClass.GetPermission(UserLoggedClass.UserRole);
 
                         
@@ -72,6 +73,8 @@ namespace Hubert_Eats_manager
                             DeleteTab.Visibility = Visibility.Visible;
                         if (Permission.Contains("Consult"))
                             ConsultationTab.Visibility = Visibility.Visible;
+                        if (Permission.Contains("Log"))
+                            LogTab.Visibility = Visibility.Visible;
                         Resources["homeVisible"] = Visibility.Hidden;
                         Resources["pageSelection"] = Visibility.Visible;
                     }
@@ -154,8 +157,8 @@ namespace Hubert_Eats_manager
                     myDataGrid.Items.Refresh();
                     break;
                 case "LogTab":
-                    //LogDataGrid.ItemsSource = DataBaseManagerClass.SQLDataToDatagridLog();
-                    //LogDataGrid.Items.Refresh();
+                    DataGridLog.ItemsSource = DataBaseManagerClass.LogSQLDataToDatagrid();
+                    DataGridLog.Items.Refresh();
                     break;
 
             }
