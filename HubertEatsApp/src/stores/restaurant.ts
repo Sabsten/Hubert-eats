@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './auth';
 import type { IRestaurant } from '@/models/restaurants';
+import { useRoute } from 'vue-router';
 
 export const useRestaurantStore = defineStore({
     id: 'Restaurant',
@@ -11,6 +12,9 @@ export const useRestaurantStore = defineStore({
         }
     },
     getters: {
+        getCurrentRestaurant: (state): IRestaurant | undefined => {
+            return state.restaurantsList.find(restaurant => restaurant._id === useRoute().params.id);
+        },
     },
     actions: {
         async getRestaurants() {
@@ -32,5 +36,16 @@ export const useRestaurantStore = defineStore({
                 return
             };
         },
+        getAverageRating(ratings: number[] | undefined){
+            if (ratings === undefined) {
+                return null;
+            }
+            const total = ratings.length;
+            let somme: number = 0;
+            ratings?.forEach(r => {
+                somme += r;
+            });
+            return Math.round(somme/total * 10)/ 10;
+        }
     }
 })

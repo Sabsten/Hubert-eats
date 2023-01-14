@@ -9,20 +9,20 @@ services:
       - reseau
     profiles: ["backend"]
 
+  inventory-service:
+    build: ./services/inventory
+    restart: always
+    ports:
+      - "3003:3002"
+    networks:
+      - reseau
+    profiles: ["backend"]
+
   components-service:
     build: ./services/components
     restart: always
     ports:
       - "3002:3000"
-    networks:
-      - reseau
-    profiles: ["backend"]
-
-  inventory-service:
-    build: ./services/inventory
-    restart: always
-    ports:
-      - "3003:3000"
     networks:
       - reseau
     profiles: ["backend"]
