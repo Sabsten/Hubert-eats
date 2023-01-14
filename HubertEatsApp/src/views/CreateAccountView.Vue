@@ -1,21 +1,16 @@
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 
-export default defineComponent({
-  setup() {
-    const routeLocation = useRoute()
-    const router = useRouter()
-    const goToLogin = () => {
-    router.push({ path: `/login` })
-  }
-    const goToHome = () => {
-    router.push({ path: `/home` })
-  }
-    return { goToLogin, goToHome }
-  }
-})
+const routeLocation = useRoute()
+const router = useRouter()
+const goToLogin = () => {
+  router.push({ path: `/login` })
+}
+const goToHome = () => {
+  router.push({ path: `/home` })
+}
 </script>
 
 
@@ -23,7 +18,7 @@ export default defineComponent({
     <div class="page">
         <div class="presentation">
           <h1>Bonjour !</h1>
-          <input class="sign_in" type="button" value="SIGN IN" @click="goToLogin()">
+          <input class="sign_in button" type="button" value="CONNEXION" @click="goToLogin()">
         </div>
         <div class="rightPart">
           <h2>
@@ -31,8 +26,8 @@ export default defineComponent({
           </h2>
             <form class="loginForm" @submit.prevent="goToHome()">
                 <div class="inputs1">
-                    <input class="shadow" type="email" id="email" name="email" placeholder="Entrez un pseudo"/>
-                    <input class="shadow" type="password" id="password" name="password" placeholder="Entrez un pseudo"/>
+                    <input class="shadow" type="email" id="email" name="email" placeholder="Entrez un mail"/>
+                    <input class="shadow" type="password" id="password" name="password" placeholder="Entrez un mot de passe"/>
                 </div>
                 <div class="wrapper">
                   <input type="radio" name="select" id="option-1" checked>
@@ -40,7 +35,7 @@ export default defineComponent({
                   <input type="radio" name="select" id="option-3">
                     <label for="option-1" class="option option-1">
                       <div class="dot"></div>
-                        <span>Customer</span>
+                        <span>Client</span>
                         </label>
                     <label for="option-2" class="option option-2">
                       <div class="dot"></div>
@@ -48,27 +43,26 @@ export default defineComponent({
                     </label>
                     <label for="option-3" class="option option-3">
                       <div class="dot"></div>
-                        <span>Courier</span>
+                        <span>Livreur</span>
                     </label>
                 </div>
                 <div class="inputs1">
-                    <input class="shadow" type="email" id="email" name="email" placeholder="First name"/>
-                    <input class="shadow" type="password" id="password" name="password" placeholder="Last name"/>
-                    <input class="shadow" type="password" id="password" name="password" placeholder="Referent"/>
+                    <input class="shadow" type="text" placeholder="Prénom"/>
+                    <input class="shadow" type="text" placeholder="Nom"/>
+                    <input class="shadow" type="text" placeholder="Parrain"/>
                 </div>
-                <span class="subtitle">Address :</span>
+                <span class="subtitle">Adresse :</span>
                 <div class="inputs2">
                   <div>
-                    <input class="shadow" type="email" id="email" name="email" placeholder="Steet name"/>
-                    <input class="shadow small" type="password" id="password" name="password" placeholder="Numéro de la rue"/>
+                    <input class="shadow" type="text" placeholder="Nom de la rue"/>
+                    <input class="shadow small" type="number" placeholder="Numéro de la rue"/>
                   </div>
                   <div>
-                    <input class="shadow small" type="password" id="password" name="password" placeholder="City"/>
-                    <input class="shadow small" type="email" id="email" name="email" placeholder="Postal code"/>
-                    <input class="shadow small" type="password" id="password" name="password" placeholder="Country"/>
+                    <input class="shadow small" type="text" placeholder="Ville"/>
+                    <input class="shadow small" type="text" placeholder="Code postal"/>
                     </div>
                 </div>
-                <button class="sign_up" type="submit">SIGN UP</button>
+                <button class="sign_up button" type="submit">S'ENREGISTRER</button>
             </form>
             <div class="connectMessage">
               <span><br><br>Vous avez déjà un compte?<br>
@@ -282,7 +276,9 @@ input[type="radio"]{
   text-align: center;
   margin-top: 30px;
 }
-
+.button:hover {
+  cursor:pointer;
+}
 
 @media screen and (max-width: 700px) {
     .page {

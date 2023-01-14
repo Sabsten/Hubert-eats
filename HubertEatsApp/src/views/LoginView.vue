@@ -43,7 +43,7 @@ async function tryLogin() {
     <div class="page">
       <div class="presentation">
         <h1>Bienvenue !</h1>
-        <input class="sign_up" type="button" value="SIGN UP" @click="goToCreateAccount()">
+        <input class="sign_up button" type="button" value="S'ENREGISTRER" @click="goToCreateAccount()">
         </div>
         <div class="rightPart">
           <h2>
@@ -69,7 +69,7 @@ async function tryLogin() {
                         <span>Livreur</span>
                     </label>
                 </div>
-                <button class="sign_in" type="submit">SIGN IN</button>
+                <button class="sign_in button" type="submit">CONNEXION</button>
                 <span v-if="errorMessage !== null" class="error-msg">{{ errorMessage }}</span>
             </form>
             <div class="createMessage">
@@ -166,18 +166,11 @@ h2{
   height: 30px;
 }
 
-.shadow:hover{
-  border: transparent
-}
-
 fieldset{
   border: none;
   color: black;
   font-size: 20px;
 }
-
-
-
 
 /* Radio button */
 .wrapper{
@@ -258,7 +251,9 @@ input[type="radio"]{
   display: none;
   text-align: center;
 }
-
+.button:hover {
+  cursor: pointer;
+}
 
 .error-msg {
   color:red;

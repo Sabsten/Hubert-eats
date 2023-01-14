@@ -17,9 +17,10 @@ export const useRestaurantStore = defineStore({
         },
     },
     actions: {
-        async getRestaurants() {
+        async getRestaurants(filter: string) {
             const authStore = useAuthStore();
-            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/restaurants';
+            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/restaurants' + filter;
+            console.log(URL)
             const RES: Response = await fetch(URL, {
                 method: 'GET',
                 headers: {
@@ -27,7 +28,6 @@ export const useRestaurantStore = defineStore({
                 },
             });
             const data: IRestaurant[] = await RES.json();
-            console.log(data);
             if (!RES.ok) {
                 this.$patch({ error: RES.statusText });
                 return

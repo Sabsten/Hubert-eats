@@ -57,89 +57,71 @@ const goToRestaurant = (id: string) => {
 const restaurantStore = useRestaurantStore();
 const { restaurantsList, error } = storeToRefs(restaurantStore);
 onMounted(async () => {
-  await restaurantStore.getRestaurants();
+  await restaurantStore.getRestaurants('');
 })
+let searchValue: string;
 
 </script>
 
 <template>
-  <div class="page">
-      <div class="top">
-        <HeaderContent/>
-          <div class="afterHeader">
-            <div class="title"> 
-              <h1>
-                Enjoy a good meal
-              </h1>
-              <img class="vegetables" src="@/assets/freshVegetable.png" width="170" style="position:relative; left:10px; bottom:20px;">
-          </div>
-          <div class="searchBar">
-              <div class="searchBarInputArea">
-                <div class="localisation">
-                  <i class="fa-solid fa-location-dot fa-xl"></i>
-                  <input value="" placeholder="Localisation">
-                </div>
-                <input class="inputSearch" type="email" id="email" name="email" placeholder="Which dishes are you looking for ?"/>
-              </div>
-              <input class="searchButton" type="button" value="Search">
-          </div>
-          <Carousel class="carousel" :settings="carouselSettings" :breakpoints="carouselBreakPoints">
-            <Slide v-for="(product, i) in products" :key="i">
-              <div class="carousel_item">
-                <img :src="product.image" width="40" height="40">
-                <span>Test</span>
-              </div>
-            </Slide>
-
-            <template #addons>
-              <Navigation />
-            </template>
-          </Carousel>
-        </div>
-        
+  <HeaderContent class="header"/>
+    <div class="top">
+      <div class="title">
+        <h1 class="title">Enjoy a good meal</h1>
+        <img class="vegetables" src="@/assets/freshVegetable.png" width="170px" style="position:relative; left:10px; bottom:20px;">
       </div>
-      <div class="bottom">
-          <div class="table-scroll">
-            <div class="shopsElements" cellspacing="10" cellpadding="0">
-              <div v-for="(restaurant) in restaurantsList">
-                <router-link :to="{name: 'restaurantPage', params: {id: restaurant._id}}">
-                  <CardRestaurant class="card-restaurant" :restaurant=restaurant />
-                </router-link>
-              </div>
+      <div class="searchBar">
+          <div class="searchBarInputArea">
+            <div class="localisation">
+              <i class="fa-solid fa-location-dot fa-xl"></i>
+              <input value="" placeholder="Localisation">
             </div>
-        </div>
+            <input v-model="searchValue" class="inputSearch" type="text" placeholder="Which dishes are you looking for ?"/>
+          </div>
+          <input class="searchButton" type="button" value="Search" @click="restaurantStore.getRestaurants('?name='+searchValue)">
       </div>
+      <Carousel class="carousel" :settings="carouselSettings" :breakpoints="carouselBreakPoints">
+      <Slide v-for="(product, i) in products" :key="i">
+        <div class="carousel_item">
+          <img :src="product.image" width="40" height="40">
+          <span>Test</span>
+        </div>
+      </Slide>
+
+      <template #addons>
+        <Navigation />
+      </template>
+    </Carousel>
   </div>
+  <div class="shopsElements">
+    <div v-for="(restaurant) in restaurantsList">
+      <router-link :to="{name: 'restaurantPage', params: {id: restaurant._id}}">
+        <CardRestaurant class="card-restaurant" :restaurant=restaurant />
+      </router-link>
+    </div>
+  </div>
+ </template>
 
-</template>
-
-<style scoped>
+<style lang="scss" scoped>
 
   *{
     color: black;
   }
 
-.page{
-  display: flex;
-  flex-direction: row;
-  height: calc(100vh - 160px);
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  flex-direction: column;
-  background-color: var(--light-green);
-}
-
-.top{
+  a {
+    text-decoration: none;
+  }
+  .top{
     width: 100%;
-    height: 150px;
-    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    background-color: #D8E3E2;
   }
 
-.afterHeader{
-  position: relative;
-  bottom: 50px;
-}
+.header{
+    position: sticky; top: 0;
+    z-index: 1;
+  }
 
 h1{
   font-family: 'Roboto';
@@ -173,7 +155,6 @@ h1{
     flex-direction: row;
     justify-content: left;
     align-items: space-between;
-    position: relative;
     flex-wrap: wrap;
     bottom: 25px;
     left: 30px;
@@ -192,6 +173,9 @@ h1{
     padding-right: 20px;
     margin-top: 2px;
     margin-left: 30px;
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .inputSearch{
@@ -241,7 +225,7 @@ h1{
   }
 
   .carousel{
-    height: 50px;
+    margin:30px 0px;
     width: 100%;
   }
 
@@ -251,13 +235,6 @@ h1{
     flex-wrap: nowrap;
   }
 
-
-/* Allow the table to be scrollable */
-.table-scroll {
-  overflow: auto;
-  height: 100%;
-}
-
 .card-restaurant {
   width:300px;
 }
@@ -266,11 +243,10 @@ h1{
 }
 .shopsElements{
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content:space-evenly;
   flex-wrap: wrap;
-  gap: 40px;
-  margin: 20px;
+  row-gap: 30px;
+  margin: 40px;
 }
 
 .restaurantName{
@@ -297,10 +273,6 @@ h1{
   .title{
     display: none;
   }
-
-.afterHeader{
-  top: 50px;
-}
 
 .top{
   margin-bottom: 30px;
