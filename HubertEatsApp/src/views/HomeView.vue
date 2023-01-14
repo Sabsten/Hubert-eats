@@ -101,8 +101,10 @@ onMounted(async () => {
       <div class="bottom">
           <div class="table-scroll">
             <div class="shopsElements" cellspacing="10" cellpadding="0">
-              <div v-for="(restaurant) in restaurantsList" @click="goToRestaurant(restaurant._id)">
-                <CardRestaurant :restaurant=restaurant />
+              <div v-for="(restaurant) in restaurantsList">
+                <router-link :to="{name: 'restaurantPage', params: {id: restaurant._id}}">
+                  <CardRestaurant class="card-restaurant" :restaurant=restaurant />
+                </router-link>
               </div>
             </div>
         </div>
@@ -154,7 +156,6 @@ h1{
   .bottom{
     background-color: white;
     width: 100%;
-    height: calc(100% - 150px);
     margin-top: 80px;
   }
 
@@ -257,17 +258,19 @@ h1{
   height: 100%;
 }
 
-
-
-
+.card-restaurant {
+  width:300px;
+}
+.card-restaurant:hover {
+  cursor: pointer;
+}
 .shopsElements{
   display: flex;
-  flex-direction: row;
-  gap: 40px;
-  justify-content: center;
-  margin: 20px;
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  gap: 40px;
+  margin: 20px;
 }
 
 .restaurantName{
