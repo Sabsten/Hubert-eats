@@ -3,7 +3,7 @@ export interface IInventory {
 }
 
 export interface IArticle {
-    _id?: string;
+    _id: string;
     restaurant_id : string;
     description : string;
     name : string;

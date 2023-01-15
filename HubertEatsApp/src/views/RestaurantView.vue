@@ -6,6 +6,7 @@ import CardProduct from '@/components/CardProduct.vue'
 import HeaderContent from '@/components/HeaderContent.vue'
 import { useInventoryStore } from '@/stores/inventory.js';
 import { useRestaurantStore } from '@/stores/restaurant';
+import { useCartStore } from '@/stores/cart'
 
 defineComponent({
   CardProduct,
@@ -14,6 +15,7 @@ defineComponent({
 const restaurantID: string = useRoute().params.id.toString();
 const inventoryStore = useInventoryStore();
 const restaurantStore = useRestaurantStore();
+const cartStore = useCartStore();
 // const { restaurantsList, error } = storeToRefs(restaurantStore);
 
 let cssVars = computed(() => {
@@ -67,7 +69,7 @@ function scrollTo(anchor: string) {
         <h2>Entrée</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in inventoryStore.getStarters">
-            <i class="fa-solid fa-circle-plus"></i>
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
             <CardProduct :article=product />
           </div>
         </div>
@@ -76,7 +78,7 @@ function scrollTo(anchor: string) {
         <h2>Plats</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in inventoryStore.getMains">
-            <i class="fa-solid fa-circle-plus"></i>
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
             <CardProduct :article=product />
           </div>
         </div>
@@ -85,7 +87,7 @@ function scrollTo(anchor: string) {
         <h2>Desserts</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in inventoryStore.getDesserts">
-            <i class="fa-solid fa-circle-plus"></i>
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
             <CardProduct :article=product />
           </div>
         </div>
@@ -94,7 +96,7 @@ function scrollTo(anchor: string) {
         <h2>Boissons</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in inventoryStore.getDrinks">
-            <i class="fa-solid fa-circle-plus"></i>
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
             <CardProduct :article=product />
           </div>
         </div>

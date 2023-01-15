@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue'
 import HeaderLink from './HeaderLinks.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useCartStore } from '@/stores/cart';
 
 defineComponent({
   HeaderLink,
@@ -10,6 +11,7 @@ const currentUrl = window.location.pathname;
 const homePath = "/home"
 const route = useRoute()
 const router = useRouter()
+const cartStore = useCartStore();
 
 function logout() {
   router.push('/login');
@@ -22,12 +24,12 @@ function logout() {
       <div class="links">
         <HeaderLink v-if="route.query.cart!='true'" :to="route.fullPath+'?cart=true'">
           <button class="button cart-button" >
-            <i class="fas fa-shopping-cart"></i>   Panier · 0
+            <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
         <HeaderLink v-if="route.query.cart=='true'" to="/home">
           <button class="button cart-button" >
-            <i class="fas fa-shopping-cart"></i>   Panier · 0
+            <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
         <HeaderLink v-if="currentUrl!=homePath" to="/home">
