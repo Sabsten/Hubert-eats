@@ -22,13 +22,12 @@ function getRating(ratings: number[] | undefined): number | null {
 <template>
     <div class="table-wrapper">
         <div class="image-box">
-          <img :src="restaurant.image" class="pic" />
+          <img v-if="restaurant.image" :src="restaurant.image" class="pic" />
         </div>
         <div class="description">
           <div class="restaurantName">
             {{ restaurant.name }}
-            &nbsp;- {{ getRating(restaurant.rating)}}
-            <i class="fa-solid fa-star"></i>
+            <span v-if="restaurant.rating!.length > 0">&nbsp;- {{ getRating(restaurant.rating)}} <i class="fa-solid fa-star"></i></span>
           </div>
           <div>{{ restaurant.address.city }}</div>
         </div>
@@ -46,6 +45,7 @@ function getRating(ratings: number[] | undefined): number | null {
 }
 .image-box {
   width:100%;
+  height: 200px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background: linear-gradient(180deg, #FFFFFF 0%, #D0DCC5 0.01%, rgba(236, 250, 213, 0) 100%);
   display: flex;

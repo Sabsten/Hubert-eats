@@ -1,15 +1,63 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
+import type { CreateForm } from '@/models/createForm';
+import { useAuthStore } from '@/stores/auth';
+import { defineComponent, ref, type Ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-const routeLocation = useRoute()
-const router = useRouter()
+const authStore = useAuthStore();
+const routeLocation = useRoute();
+const router = useRouter();
 const goToLogin = () => {
-  router.push({ path: `/login` })
-}
+  router.push({ path: `/login` });
+};
 const goToHome = () => {
-  router.push({ path: `/home` })
+  router.push({ path: `/home` });
+};
+let err: Ref<string | null> = ref(null);
+
+let mail: string | undefined;
+let password: string | undefined;
+let referent: string | undefined;
+let firstname: string | undefined;
+let lastname: string | undefined;
+let name: string | undefined;
+let accountType: Ref<string> = ref('customer');
+let street_name:string | undefined;
+let street_number: number | undefined;
+let city:string | undefined;
+let postal_code: number | undefined;
+
+async function createAccount(){
+  const form: CreateForm = {
+    account: {
+      mail: mail,
+      password: password,
+      referent: referent
+    },
+    firstname: firstname,
+    lastname: lastname,
+    name: name,
+    address: {
+      street_name: street_name,
+      street_number: street_number,
+      city: city,
+      postal_code: postal_code,
+    }
+  }
+  err.value = await authStore.createAccount(accountType.value, form);
+  if (err.value === null){
+    switch(accountType.value) {
+      case 'customer':
+        router.push({ path: '/home'});
+        break;
+      case 'courier':
+        router.push({ path: '/courier'});
+        break
+      case 'restaurant':
+        router.push({ path: '/home'});
+    }
+  }
 }
 </script>
 
@@ -24,15 +72,15 @@ const goToHome = () => {
           <h2>
             Créer un compte
           </h2>
-            <form class="loginForm" @submit.prevent="goToHome()">
+            <form class="loginForm" @submit.prevent="createAccount()">
                 <div class="inputs1">
-                    <input class="shadow" type="email" id="email" name="email" placeholder="Entrez un mail"/>
-                    <input class="shadow" type="password" id="password" name="password" placeholder="Entrez un mot de passe"/>
+                    <input class="shadow" type="email" v-model="mail" placeholder="Entrez un mail" required/>
+                    <input class="shadow" type="password" v-model="password" placeholder="Entrez un mot de passe" required/>
                 </div>
                 <div class="wrapper">
-                  <input type="radio" name="select" id="option-1" checked>
-                  <input type="radio" name="select" id="option-2">
-                  <input type="radio" name="select" id="option-3">
+                  <input v-model="accountType" value="customer" type="radio" name="select" id="option-1" checked required>
+                  <input v-model="accountType" value="restaurant" type="radio" name="select" id="option-2">
+                  <input v-model="accountType" value="courier" type="radio" name="select" id="option-3">
                     <label for="option-1" class="option option-1">
                       <div class="dot"></div>
                         <span>Client</span>
@@ -47,22 +95,24 @@ const goToHome = () => {
                     </label>
                 </div>
                 <div class="inputs1">
-                    <input class="shadow" type="text" placeholder="Prénom"/>
-                    <input class="shadow" type="text" placeholder="Nom"/>
-                    <input class="shadow" type="text" placeholder="Parrain"/>
+                    <input v-if="accountType !== 'restaurant'" class="shadow" type="text" v-model="firstname" placeholder="Prénom" required/>
+                    <input v-if="accountType !== 'restaurant'" class="shadow" type="text" v-model="lastname" placeholder="Nom" required/>
+                    <input v-if="accountType === 'restaurant'" class="shadow" type="text" v-model="name" placeholder="Nom du restaurant" required/>
+                    <input class="shadow" type="text" v-model="referent" placeholder="Parrain"/>
                 </div>
                 <span class="subtitle">Adresse :</span>
                 <div class="inputs2">
                   <div>
-                    <input class="shadow" type="text" placeholder="Nom de la rue"/>
-                    <input class="shadow small" type="number" placeholder="Numéro de la rue"/>
+                    <input class="shadow" type="text" v-model="street_name" placeholder="Nom de la rue" required/>
+                    <input class="shadow small" type="number" v-model="street_number" placeholder="Numéro de la rue" required/>
                   </div>
                   <div>
-                    <input class="shadow small" type="text" placeholder="Ville"/>
-                    <input class="shadow small" type="text" placeholder="Code postal"/>
+                    <input class="shadow small" type="text" v-model="city" placeholder="Ville" required/>
+                    <input class="shadow small" type="number" v-model="postal_code" placeholder="Code postal" required/>
                     </div>
                 </div>
                 <button class="sign_up button" type="submit">S'ENREGISTRER</button>
+                <span v-if="err !== null">{{ err }}</span>
             </form>
             <div class="connectMessage">
               <span><br><br>Vous avez déjà un compte?<br>

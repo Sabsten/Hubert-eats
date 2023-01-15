@@ -1,5 +1,5 @@
 export interface IAccount {
-    mail: string,
-    password: string,
+    mail?: string,
+    password?: string,
     referent?: string,
 }
