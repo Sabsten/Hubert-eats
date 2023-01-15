@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Hubert_Eats_manager.Model;
 using Model;
 using MySql.Data.MySqlClient;
@@ -12,13 +13,14 @@ namespace ViewModel
         {
             if (identifiant == "hubert" && password == EncryptClass.DecodeFrom64("Y2VzaWh1YmVydA=="))
             {
-                SeederClass.InitDb(); 
-                return (false, "La table" + SQLDatabase.UserTable + " a bien été crée!").ToTuple(); 
+                return Tuple.Create(false, "root");
+
+
             }
             Dictionary<string, string> UserInfo = new();
             UserInfo.Add("identifiant", identifiant);
             DataBaseManagerClass.DataBaseConnection.Open();
-            MySqlCommand IDcmd = SQLCommands.FindHashedPasswordSQLString(UserInfo);
+            MySqlCommand IDcmd = SQLCommands.FindHashedPassword(UserInfo);
 
             MySqlDataReader readerID = IDcmd.ExecuteReader();
             if (readerID.HasRows)

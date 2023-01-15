@@ -1,12 +1,21 @@
 ﻿
 using Hubert_Eats_manager.Model;
+using Microsoft.Win32;
 using Model;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ViewModel;
+using Microsoft.VisualBasic;
+using System.Text.RegularExpressions;
+using System.Globalization;
+using System.IO.Enumeration;
+using MySql.Data.MySqlClient;
 
 namespace Hubert_Eats_manager
 {
@@ -46,10 +55,8 @@ namespace Hubert_Eats_manager
                     
                     UserLoggedClass.UserName = userName;
                     string connected = "Connecté en tant que : " + userName;
-                    ConnectedAsAdd.Text = connected;
-                    ConnectedAsModify.Text = connected;
-                    ConnectedAsDelete.Text = connected;
-                    ConnectedAsConsult.Text = connected;
+                    ConnectedAs.Text = connected;
+
                     UserLoggedClass.UserRole = DataBaseManagerClass.GetRole(userName);
                     if (UserLoggedClass.UserRole == "Developpeur")
                     {
@@ -79,6 +86,12 @@ namespace Hubert_Eats_manager
                         Resources["pageSelection"] = Visibility.Visible;
                     }
                 }
+                else if (LoginState.Item2 =="root")
+                {
+                    seederVisible.Visibility = Visibility.Visible;
+                    Resources["homeVisible"] = Visibility.Hidden;
+
+                }
                 else
                 {
                     ErrorMessage.Text = LoginState.Item2;
@@ -89,25 +102,6 @@ namespace Hubert_Eats_manager
             {
                 MessageBox.Show("Erreur de connexion survenue: " + ex.Message, "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }
-        private void TextBox_TextChanged_1(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void TextBox_TextChanged_2(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Button_Click_AddUserSelection(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Button_Click_EditUserSelection(object sender, RoutedEventArgs e)
-        {
-        }
-
-        public void Button_Click_ConfirmUserRemoval(object sender, RoutedEventArgs e)
-        {
         }
 
         public void Button_Click_ModifyUser(object sender, RoutedEventArgs e)
@@ -128,7 +122,6 @@ namespace Hubert_Eats_manager
                 DeleteGetInfosClearText();
                 DeleteDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(inputUsername);
                 DeleteDataGrid.Items.Refresh();
-
             }
         }
 
@@ -181,39 +174,57 @@ namespace Hubert_Eats_manager
             }
             else
             {
-                Dictionary<string, string> UserInfo = new();
-                UserInfo.Add("Identifiant", inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com");
-                UserInfo.Add("Nom", inputUsername);
-                UserInfo.Add("Password", inputUserPassword);
-                UserInfo.Add("role", inputUserRole);
-                UserInfo.Add("createdBy", userName);
-                UserInfo.Add("modifiedBy", userName);
-                VmResponse = DataBaseManagerClass.AddUser(UserInfo);
+                VmResponse = DataBaseManagerClass.AddUser(inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com", inputUsername, inputUserPassword, inputUserRole);
                 while (VmResponse.Item1 == false)
                 {
                     MessageBox.Show("Un utilisateur ayant le même identifiant est déclaré dans la base \n" +
                         "Merci de modifier légérement l'identifiant, conformément à la politique de nomage. (p.nom@hubert.com)", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    Console.WriteLine(UserInfo["Identifiant"]);
-                    //Window1 win1 = new Window1(UserInfo["Identifiant"]) ;
-                    //win1.ShowDialog();
-
-                    //UserInfo["Identifiant"] = win1.newOtherIdentifiant;
-                    VmResponse = DataBaseManagerClass.AddUser(UserInfo);
+                    //VmResponse = DataBaseManagerClass.FindUser(inputUsername).ToArray()[0];
                     if (VmResponse.Item1)
                     {
-
+                        MessageBox.Show("L'indentifiant associé est : " + inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        Resources["addUserPage"] = Visibility.Hidden;
+                        Resources["pageSelection"] = Visibility.Visible;
                     }
                 }
-
-                MessageBox.Show("L'indentifiant associé est : " + inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                Resources["addUserPage"] = Visibility.Hidden;
-                Resources["pageSelection"] = Visibility.Visible;
             }
         }
 
         private void Button_Click_ConfirmUserModification(object sender, RoutedEventArgs e)
         {
         }
+
+        private void TextBox_TextChanged_1(object sender, RoutedEventArgs e)
+        {
+        }
+
+
+        private void Button_Click_DlConsultData(object sender, RoutedEventArgs e)
+        {
+            
+        }
+        private void Button_Click_DlData(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.InitialDirectory = Environment.GetEnvironmentVariable("USERPROFILE");
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                DateTime thisDate = DateTime.Today;
+                CultureInfo format = new CultureInfo("pt-BR");
+                var button = sender as Button;
+                if (button.Name == "DlLogData")
+                {
+                    CSVClass.ExportToCSV(DataBaseManagerClass.LogSQLDataToDatagrid(), dialog.FileName + "\\LogDatabase_" + thisDate.ToString("d", format).Replace("/", "_") + ".csv");
+                }
+                else
+                {
+                    CSVClass.ExportToCSV(DataBaseManagerClass.SQLDataToDatagrid(), dialog.FileName + "\\ExtractUserDatabase__" + thisDate.ToString("d", format).Replace("/", "_") + ".csv");
+                }
+            }
+        }
+           
+
 
         private void AddGetInfosClearText()
         {
@@ -242,6 +253,43 @@ namespace Hubert_Eats_manager
 
             parameterValue = ModifyValue.Text;
             ModifyValue.Clear();
+        }
+
+        private void Button_Click_Create_Usertable(object sender, RoutedEventArgs e)
+        {
+            var resp = SeederClass.CreateUserTable();
+            LogTableState.Text = resp.Item2;
+            if (resp.Item1 == true)
+                UserTableState.Foreground = System.Windows.Media.Brushes.Green;
+            else
+            {
+                UserTableState.Foreground = System.Windows.Media.Brushes.Red;
+            }
+        }
+
+        private void Button_Click_Create_LogTable(object sender, RoutedEventArgs e)
+        {
+            var resp = SeederClass.CreateLogTable();
+            LogTableState.Text = resp.Item2;
+            if (resp.Item1 == true)
+                LogTableState.Foreground = System.Windows.Media.Brushes.Green;
+            else
+            {
+                LogTableState.Foreground = System.Windows.Media.Brushes.Red;
+            }
+        }
+
+        private void Button_Click_Use_Seeder(object sender, RoutedEventArgs e)
+        {
+            var resp = SeederClass.ApplySeeder();
+            LogTableState.Text = resp.Item2;
+            if (resp.Item1 == true)
+                SeederState.Foreground = System.Windows.Media.Brushes.Green;
+            else
+            {
+                SeederState.Foreground = System.Windows.Media.Brushes.Red;
+            }
+
         }
     }
 }

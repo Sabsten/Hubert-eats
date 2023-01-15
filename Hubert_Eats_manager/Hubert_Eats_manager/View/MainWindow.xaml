@@ -8,7 +8,8 @@
         Title="MainWindow" Height="510" Width="800" MaxHeight="510" MaxWidth="800" MinHeight="510" MinWidth="800">
 
     <Window.Resources>
-        <Visibility x:Key="homeVisible">Visible</Visibility>
+        <Visibility x:Key="homeVisible">Hidden</Visibility>
+        <Visibility x:Key="seederVisible">Visible</Visibility>
         <Visibility x:Key="pageSelection">Hidden</Visibility>
     </Window.Resources>
 
@@ -21,11 +22,11 @@
                 materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                 Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="38,0,440,89" Cursor="Hand" Content="Valider" Height="32" VerticalAlignment="Bottom"/>
             <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
-            
+
             <Image
       Source="../assets/Logo_Hubert_Eats.png"
       Stretch="UniformToFill" Margin="10,0,424,323" />
-           
+
             <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
                 x:Name="TextBoxUsername"
                 materialDesign:HintAssist.HelperText=""
@@ -115,6 +116,32 @@
             </materialDesign:Card>
         </Grid>
 
+        <Grid x:Name="seederVisible" Visibility="{DynamicResource seederVisible}">
+            <Button
+                    Margin="80,62,0,0"
+                    materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
+                    Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Create_Usertable" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="356">
+                Creer la table des utilisateurs
+            </Button>
+            <TextBlock x:Name ="UserTableState" Margin="0,48,10,0" Height="93" VerticalAlignment="Top" HorizontalAlignment="Right" Width="332"/>
+            <Button
+                    Margin="80,225,0,0"
+                    materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
+                    Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Create_LogTable" HorizontalAlignment="Left" Width="356" Height="32" VerticalAlignment="Top">
+
+                Creer la table log
+            </Button>
+            <TextBlock x:Name ="LogTableState" Margin="458,197,0,0" HorizontalAlignment="Left" Width="318" Height="76" VerticalAlignment="Top"/>
+            <Button
+                        Margin="80,0,0,77"
+                        materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Use_Seeder" HorizontalAlignment="Left" Width="356" Height="32" VerticalAlignment="Bottom">
+                Appliquer le remplissage automatique
+            </Button>
+            <TextBlock x:Name ="SeederState" Margin="0,343,10,0" HorizontalAlignment="Right" Width="332" Height="141" VerticalAlignment="Top"/>
+        </Grid>
+
+
         <Grid Visibility="{DynamicResource pageSelection}">
             <Grid VerticalAlignment="Center" Width="200">
                 <Grid Margin="-295,-34,-297,-44">
@@ -188,7 +215,7 @@
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Rôle"
                                           materialDesign:HintAssist.HintOpacity=".26"
-                                          IsEditable="False">
+                                          IsEditable="False" Height="43">
                                         <ComboBoxItem
                                             Content="Database Manager" />
                                         <ComboBoxItem
@@ -205,7 +232,6 @@
                                         Click ="Button_Click_ConfirmUserCreation">
                                         Valider
                                     </Button>
-                                    <TextBlock x:Name ="ConnectedAsAdd"/>
                                 </StackPanel>
                             </TabItem>
 
@@ -251,8 +277,8 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
-
-                                    <DataGrid x:Name="ModifyDataGrid"
+                                    <StackPanel>
+                                        <DataGrid x:Name="ModifyDataGrid"
                                           Margin="0,20,0,0"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
@@ -260,6 +286,7 @@
                                           SelectionUnit="Cell" 
                                           Background="LightGreen"
                                           AutoGenerateColumns="True"/>
+                                    </StackPanel>
                                     <ComboBox
                                         x:Name="ModifyCombobox"
                                           Margin="0,20,0,0"
@@ -296,7 +323,6 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Modifier l'utilisateur
                                     </Button>
-                                    <TextBlock x:Name ="ConnectedAsModify"/>
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="DeleteTab">
@@ -358,7 +384,6 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Supprimer l'utilisateur
                                     </Button>
-                                    <TextBlock x:Name ="ConnectedAsDelete" VerticalAlignment="Bottom"/>
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="ConsultationTab">
@@ -383,6 +408,7 @@
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                                     Text="Consultation de la base de donnée"/>
                                     <DataGrid x:Name="myDataGrid"
+                                          Height="350" 
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
@@ -390,7 +416,14 @@
                                           Background="LightGreen"
                                           AutoGenerateColumns="True">
                                     </DataGrid>
-                                    <TextBlock x:Name ="ConnectedAsConsult" Margin="0,100"/>
+                                    <Button
+                                        x:Name="DlConsultData"
+                                        Click="Button_Click_DlConsultData"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,10,0,0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Télécharger un extrait de la base de donnée (.csv)
+                                    </Button>
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="LogTab">
@@ -414,20 +447,28 @@
                                     Margin="0,0,0,8"
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                                     Text="Consultation des logs servers"/>
-                                    <DataGrid x:Name="DataGridLog"
-                                          materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
-                                          CanUserAddRows="False"
-                                          SelectionMode="Extended"
-                                          SelectionUnit="Cell" 
-                                          Background="LightGreen"
-                                          AutoGenerateColumns="True">
+                                    <DataGrid Height="350"  x:Name="DataGridLog"
+                                              materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
+                                              CanUserAddRows="False"
+                                              SelectionMode="Extended"
+                                              SelectionUnit="Cell" 
+                                              Background="LightGreen"
+                                              AutoGenerateColumns="True">
                                     </DataGrid>
-                                    <TextBlock x:Name ="ConnectedAsLoggin"/>
+                                    <Button
+                                        x:Name="DlLogData"
+                                        Click="Button_Click_DlData"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,10,0,0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Télécharger un extrait de la base de donnée (.csv)
+                                    </Button>
                                 </StackPanel>
-        
+
                             </TabItem>
                         </TabControl>
                     </materialDesign:Card>
+                    <TextBlock x:Name ="ConnectedAs" Margin="81,448,396,4"/>
                 </Grid>
             </Grid>
         </Grid>
