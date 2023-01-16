@@ -1,46 +1,64 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/auth';
+import { reactive, ref, type Ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-export default defineComponent({
-  setup() {
-    const routeLocation = useRoute()
-    const router = useRouter()
-    const goToLogin = () => {
-    router.push({ path: `/login` })
+const routeLocation = useRoute()
+const authStore = useAuthStore()
+const router = useRouter()
+const goToCreateAccount = () => {
+  router.push({ path: `/signup` })
+}
+
+let mail: string | undefined;
+let password: string | undefined;
+let accountType: string | undefined;
+let errorMessage: Ref<string | null> = ref(null);
+
+async function tryLogin() {
+  if(accountType === undefined || mail === undefined || password === undefined) {
+    errorMessage.value = "Please fill all fields !"
+    return
+  };
+  errorMessage.value = await authStore.signIn(accountType, mail, password);
+  if(errorMessage.value  !== null){
+    return
   }
-    const goToHome = () => {
-    router.push({ path: `/home` })
+  switch(accountType) {
+    case 'customer':
+      router.push({ path: '/home'});
+      break;
+    case 'courier':
+      router.push({ path: '/courier'});
+      break
+    case 'restaurant':
+      router.push({ path: '/home'});
   }
-    return { goToLogin, goToHome }
-  }
-})
+  return
+}
+
 </script>
-
 
 <template>
     <div class="page">
-        <div class="presentation">
-          <h1>Bonjour !</h1>
-          <input class="sign_in" type="button" value="SIGN IN" @click="goToLogin()">
+      <div class="presentation">
+        <h1>Bienvenue !</h1>
+        <input class="sign_up button" type="button" value="S'ENREGISTRER" @click="goToCreateAccount()">
         </div>
         <div class="rightPart">
           <h2>
-            Créer un compte
+            Connectez vous à votre compte
           </h2>
-            <form class="loginForm" @submit.prevent="goToHome()">
-                <div class="inputs1">
-                    <input class="shadow" type="email" id="email" name="email" placeholder="Entrez un pseudo"/>
-                    <input class="shadow" type="password" id="password" name="password" placeholder="Entrez un pseudo"/>
-                </div>
+            <form class="loginForm" @submit.prevent="tryLogin()">
+                <input v-model="mail" class="shadow" type="email" id="email" name="email" placeholder="Entrez votre email"/>
+                <input v-model="password" class="shadow" type="password" id="password" name="password" placeholder="Entrez votre mot de passe"/>
                 <div class="wrapper">
-                  <input type="radio" name="select" id="option-1" checked>
-                  <input type="radio" name="select" id="option-2">
-                  <input type="radio" name="select" id="option-3">
+                  <input v-model="accountType" value="customer" type="radio" name="select" id="option-1">
+                  <input v-model="accountType" value="restaurant" type="radio" name="select" id="option-2">
+                  <input v-model="accountType" value="courier" type="radio" name="select" id="option-3">
                     <label for="option-1" class="option option-1">
                       <div class="dot"></div>
-                        <span>Customer</span>
+                        <span>Client</span>
                         </label>
                     <label for="option-2" class="option option-2">
                       <div class="dot"></div>
@@ -48,52 +66,30 @@ export default defineComponent({
                     </label>
                     <label for="option-3" class="option option-3">
                       <div class="dot"></div>
-                        <span>Courier</span>
+                        <span>Livreur</span>
                     </label>
                 </div>
-                <div class="inputs1">
-                    <input class="shadow" type="email" id="email" name="email" placeholder="First name"/>
-                    <input class="shadow" type="password" id="password" name="password" placeholder="Last name"/>
-                    <input class="shadow" type="password" id="password" name="password" placeholder="Referent"/>
-                </div>
-                <span class="subtitle">Address :</span>
-                <div class="inputs2">
-                  <div>
-                    <input class="shadow" type="email" id="email" name="email" placeholder="Steet name"/>
-                    <input class="shadow small" type="password" id="password" name="password" placeholder="Numéro de la rue"/>
-                  </div>
-                  <div>
-                    <input class="shadow small" type="password" id="password" name="password" placeholder="City"/>
-                    <input class="shadow small" type="email" id="email" name="email" placeholder="Postal code"/>
-                    <input class="shadow small" type="password" id="password" name="password" placeholder="Country"/>
-                    </div>
-                </div>
-                <button class="sign_up" type="submit">SIGN UP</button>
+                <button class="sign_in button" type="submit">CONNEXION</button>
+                <span v-if="errorMessage !== null" class="error-msg">{{ errorMessage }}</span>
             </form>
-            <div class="connectMessage">
-              <span><br><br>Vous avez déjà un compte?<br>
-              <a href="#" @click="goToLogin()">Se connecter</a></span>
+            <div class="createMessage">
+              <span><br><br>Vou n'avez pas de compte?<br>
+              <a href="#" @click="goToCreateAccount()">Créer un compte</a></span>
             </div>
         </div>
     </div>
 </template>
   
 <style scoped>
-.subtitle{
-  color:black;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
 .page {
   display: flex;
-  flex-direction: row;
   align-items: center;
   height: 100vh;
   width: 100%;
 }
 .presentation{
-  background-color: var(--green);
+  background-color: #3EBC72;
+  color: white;
   height: 100%;
   width: 50%;
   display: flex;
@@ -104,6 +100,7 @@ export default defineComponent({
 }
 .loginForm{
   width: 100%;
+  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -113,7 +110,6 @@ export default defineComponent({
 
 h1{
   font-size: 50px;
-  color: white;
 }
 
 h2{
@@ -121,13 +117,13 @@ h2{
   margin-top: 10%;
   margin: 30px;
   text-align: center;
-  color: var(--green);
+  color: #3EBC72;
   font-weight: bold;
 }
 
-.sign_in{
+.sign_up{
   font-size: 20px;
-  color: var(--green);
+  color: #3EBC72;
   text-align: center;
   border-radius: 30px;
   width: 50%;
@@ -136,10 +132,10 @@ h2{
   border-color: transparent;
 }
 
-.sign_up{
+.sign_in{
   font-size: 20px;
   color: white;
-  background-color: var(--green);
+  background-color: #3EBC72;
   text-align: center;
   border-radius: 30px;
   width: 200px;
@@ -163,43 +159,17 @@ h2{
 .shadow{
   border: 1px solid #DEDEDE;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 5px;
   border-width: 1px;
   border-color: rgb(165, 163, 163);
   width: 200px;
-  height: 30px;;
+  height: 30px;
 }
-
-.small{
-  width: 100px;
-}
-
 
 fieldset{
   border: none;
   color: black;
   font-size: 20px;
-}
-
-.inputs1{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.inputs2{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
-
-.inputs2 input{
-  margin: 0px 20px;
 }
 
 /* Radio button */
@@ -277,12 +247,17 @@ input[type="radio"]{
   color: #fff;
 }
 
-.connectMessage{
+.createMessage{
   display: none;
   text-align: center;
-  margin-top: 30px;
+}
+.button:hover {
+  cursor: pointer;
 }
 
+.error-msg {
+  color:red;
+}
 
 @media screen and (max-width: 700px) {
     .page {
@@ -292,17 +267,11 @@ input[type="radio"]{
       width: 100%;
       height: 200px;
     }
-    .sign_in{
+    .sign_up{
       display: none;
     }
-    .connectMessage{
+    .createMessage{
       display: contents;
-    }
-    .rightPart{
-      max-height: calc(100% - 200px);
-    }
-    .page{
-    min-height: 900px;
     }
 }
 

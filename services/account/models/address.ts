@@ -5,7 +5,7 @@ export interface IAddress {
     street_name: string,
     street_number: number,
     postal_code: number,
-    country: string
+    country?: string
 }
 
 const addressSchema = new Schema<IAddress>({
@@ -13,7 +13,7 @@ const addressSchema = new Schema<IAddress>({
     street_name: {type: String, required: true},
     street_number: {type: Number, required: true},
     postal_code: {type: Number, required: true},
-    country: {type: String, required: true},
+    country: {type: String, required: false},
 }, {_id : false })
 
 export default addressSchema

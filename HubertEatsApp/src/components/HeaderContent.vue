@@ -1,15 +1,35 @@
+<script setup lang="ts">
+import { defineComponent } from 'vue'
+import HeaderLink from './HeaderLinks.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useCartStore } from '@/stores/cart';
+
+defineComponent({
+  HeaderLink,
+})
+const currentUrl = window.location.pathname;
+const homePath = "/home"
+const route = useRoute()
+const router = useRouter()
+const cartStore = useCartStore();
+
+function logout() {
+  router.push('/login');
+  localStorage.removeItem('TOKEN');
+}
+</script>
 <template>
     <div class="content">
       <img src="@/assets/HubertEatsLogo.png" width="200">
       <div class="links">
         <HeaderLink v-if="route.query.cart!='true'" :to="route.fullPath+'?cart=true'">
           <button class="button cart-button" >
-            <i class="fas fa-shopping-cart"></i>   Panier · 0
+            <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
         <HeaderLink v-if="route.query.cart=='true'" to="/home">
           <button class="button cart-button" >
-            <i class="fas fa-shopping-cart"></i>   Panier · 0
+            <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
         <HeaderLink v-if="currentUrl!=homePath" to="/home">
@@ -22,36 +42,18 @@
             <i class="fa-solid fa-user"></i>Compte 
           </button>
         </HeaderLink>
+        <i class="fa-solid fa-right-from-bracket logout" @click="logout()"></i>
       </div>
     </div>
   </template>
   
-  <script lang="ts">
-  import { defineComponent } from 'vue'
-  import HeaderLink from './HeaderLinks.vue'
-  import { useRoute } from 'vue-router'
-  
-  export default defineComponent({
-    components: { HeaderLink },
-    setup() {
-      const currentUrl = window.location.pathname;
-      const homePath = "/home"
-      const route = useRoute()
-      return{
-        currentUrl,
-        homePath,
-        route
-      }
-  }
-  })
-  </script>
-  
-  <style scoped>
+  <style lang="scss" scoped>
   .links{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: right;
+    align-items: center;
     gap: 0px;
   }
 .content{
@@ -59,7 +61,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 96px;
+  background-color: #D8E3E2;
 }
 
 .button {
@@ -69,6 +71,12 @@
   border: none;
   font-size: 15px;
   margin-right: 10px;
+  i{
+    margin-right: 10px;
+  }
+}
+.button:hover {
+    cursor: pointer;
 }
 
 .cart-button {
@@ -80,20 +88,11 @@
   background-color: #000000;
   color: white;
 }
-
-i{
-  margin-right: 10px;
-}
-
-
-
-@media screen and (max-width: 550px) {
-  .content{
-    justify-content: right;
-  }
-  img{
-    display: none;
+.logout {
+  font-size: 24px;
+  margin: 0 20px 0 10px;
+  &:hover {
+    cursor: pointer;
   }
 }
-
   </style>

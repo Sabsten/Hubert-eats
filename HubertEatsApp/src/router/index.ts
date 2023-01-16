@@ -3,12 +3,13 @@ import HomeView from '../views/HomeView.vue'
 import { products } from '@/assets/products'
 import CourierHome from '../views/Courier/CourierHome.vue'
 import CourierAccount from '../views/Courier/CourierAccount.vue'
-import { useAuthStore } from '@/stores/auth'
+import { getAccountType, useAuthStore } from '@/stores/auth'
+import { useCustomerStore } from '@/stores/customer'
+import { useCartStore } from '@/stores/cart'
 
 
 function courierGuard(to: any, from: any, next: any) {
-  const authStore = useAuthStore();
-  if (authStore.getAccountType === 'courier') {
+  if (getAccountType() === 'courier') {
     next();
   } else {
     next('/');
@@ -16,8 +17,7 @@ function courierGuard(to: any, from: any, next: any) {
 }
 
 function redirect(to: any, from: any, next: any) {
-  const authStore = useAuthStore();
-  switch (authStore.getAccountType) {
+  switch (getAccountType()) {
     case 'courier':
       next('/courier')
       break;
@@ -36,7 +36,7 @@ const router = createRouter({
       path: '/',
       name: 'default',
       beforeEnter: redirect,
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/Auth/LoginView.vue')
     },
     {
       path: '/home',
@@ -49,7 +49,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/CreateAccountView.vue')
+      component: () => import('../views/Auth/CreateAccountView.vue')
     },
     {
       path: '/follow-command',
@@ -84,19 +84,10 @@ const router = createRouter({
       component: () => import('../views/RestaurantView.vue'),
       beforeEnter: (to, _, next) => {
         const { id } = to.params
-  
-        if (Array.isArray(id)) {
+        if (id === null || id === undefined) {
           next({ path: '/error' })
           return
         }
-  
-        // Is a valid index number
-        const index = parseInt(id)
-        if (index < 0 || index >= products.length) {
-          next({ path: '/error' })
-          return
-        }
-  
         next()
       }
     },
@@ -160,11 +151,11 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'LoginView',
+      name: 'login',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/Auth/LoginView.vue')
     },
     {
       path: '/accountc',
@@ -188,7 +179,17 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/PaymentView.vue')
+      component: () => import('../views/PaymentView.vue'),
+      beforeEnter: (to, _, next) => {
+        const cartStore = useCartStore();
+        if(cartStore.cart.articles.length > 0) {
+          const customerStore = useCustomerStore();
+          customerStore.getCustomerAccount();
+          next()
+        } else {
+          next({ path: '/' })
+        }
+      }
     },
     {
       path: '/courier',
