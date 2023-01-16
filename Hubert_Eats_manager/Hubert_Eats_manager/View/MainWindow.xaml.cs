@@ -108,7 +108,9 @@ namespace Hubert_Eats_manager
         public void Button_Click_ModifyUser(object sender, RoutedEventArgs e)
         {
             ModifyGetInfosClearText();
-            DataBaseManagerClass.ModifyUser(parameterValue, parameterSelected, inputUsername);
+            VmResponse = DataBaseManagerClass.ModifyUser(parameterValue, parameterSelected, inputUsername);
+            ModifyUserState.Text = VmResponse.Item2;
+            ModifyUserState.Foreground = VmResponse.Item1 ? System.Windows.Media.Brushes.Green : System.Windows.Media.Brushes.Red;
         }
 
         private void Button_Click_FindUser(object sender, RoutedEventArgs e)
@@ -148,7 +150,9 @@ namespace Hubert_Eats_manager
         private void Button_Click_DeleteUser(object sender, RoutedEventArgs e)
         {
             DeleteGetInfosClearText();
-            DataBaseManagerClass.DeleteUser(inputUsername);
+            VmResponse = DataBaseManagerClass.DeleteUser(inputUsername);
+            DeleteUserState.Text = VmResponse.Item2;
+            DeleteUserState.Foreground = VmResponse.Item1 ? System.Windows.Media.Brushes.Green : System.Windows.Media.Brushes.Red;
         }
         public void TabControl_SelectionChanged(object sender, RoutedEventArgs e)
         {
@@ -195,33 +199,9 @@ namespace Hubert_Eats_manager
             else
             {
                 VmResponse = DataBaseManagerClass.AddUser(inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com", inputUsername, inputUserPassword, inputUserRole);
-                while (VmResponse.Item1 == false)
-                {
-                    MessageBox.Show("Un utilisateur ayant le même identifiant est déclaré dans la base \n" +
-                        "Merci de modifier légérement l'identifiant, conformément à la politique de nomage. (p.nom@hubert.com)", "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    //VmResponse = DataBaseManagerClass.FindUser(inputUsername).ToArray()[0];
-                    if (VmResponse.Item1)
-                    {
-                        MessageBox.Show("L'indentifiant associé est : " + inputUsername.Substring(0, 1).ToLower() + "." + inputUsername.Split(" ")[1].ToLower() + "@hubert.com", "Message", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        Resources["addUserPage"] = Visibility.Hidden;
-                        Resources["pageSelection"] = Visibility.Visible;
-                    }
-                }
+                AddUserState.Text = VmResponse.Item2;
+                AddUserState.Foreground = VmResponse.Item1 ? System.Windows.Media.Brushes.Green : System.Windows.Media.Brushes.Red;
             }
-        }
-
-        private void Button_Click_ConfirmUserModification(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void TextBox_TextChanged_1(object sender, RoutedEventArgs e)
-        {
-        }
-
-
-        private void Button_Click_DlConsultData(object sender, RoutedEventArgs e)
-        {
-            
         }
         private void Button_Click_DlData(object sender, RoutedEventArgs e)
         {
@@ -279,8 +259,6 @@ namespace Hubert_Eats_manager
 
             parameterSelected = ModifyCombobox.Text;
 
-            //parameterValue = ModifyValue.Text;
-            //ModifyValue.Clear();
         }
 
         private void Button_Click_Create_Usertable(object sender, RoutedEventArgs e)
@@ -349,18 +327,6 @@ namespace Hubert_Eats_manager
             }
 
         }
-
-        private void ModifyDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-
-        }
-
-        private void DeleteDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void RoleAddUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var Combobox = (ComboBox)sender;

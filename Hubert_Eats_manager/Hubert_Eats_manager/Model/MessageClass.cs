@@ -12,9 +12,9 @@ namespace Hubert_Eats_manager.Model
         //Cree une fonction qui renvoi un dictionnaire de messages de confirmation
         private static readonly Dictionary<string, string> ConfirmationMessages = new()
         {
-            { "UserDeleted", "L'utilisateur a bien été supprimé de la base." },
-            { "UserModified", "L'utilisateur a bien été Modifié de la base." },
-            { "UserAdded", "L'utilisateur a bien été ajouté de la base."},
+            { "UserDeleted", "L'utilisateur à bien été supprimé de la base." },
+            { "UserModified", "L'utilisateur à bien été modifié de la base." },
+            { "UserAdded", "L'utilisateur à bien été ajouté de la base."},
 
         };
         public static string GetConfirmationMessage(string key) => ConfirmationMessages[key];

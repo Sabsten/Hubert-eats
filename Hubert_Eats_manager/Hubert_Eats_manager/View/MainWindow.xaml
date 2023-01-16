@@ -8,9 +8,9 @@
         Title="MainWindow" Height="510" Width="800" MaxHeight="510" MaxWidth="800" MinHeight="510" MinWidth="800">
 
     <Window.Resources>
-        <Visibility x:Key="homeVisible">Visible</Visibility>
+        <Visibility x:Key="homeVisible">Hidden</Visibility>
         <Visibility x:Key="seederVisible">Hidden</Visibility>
-        <Visibility x:Key="pageSelection">Hidden</Visibility>
+        <Visibility x:Key="pageSelection">Visible</Visibility>
     </Window.Resources>
 
 
@@ -24,12 +24,10 @@
             <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
 
             <Image
-      Source="../assets/Logo_Hubert_Eats.png"
-      Stretch="UniformToFill" Margin="10,0,424,323" />
-
-            <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
+              Source="../assets/Logo_Hubert_Eats.png"
+              Stretch="UniformToFill" Margin="10,0,424,323" />  
+            <TextBox  TextWrapping="Wrap"
                 x:Name="TextBoxUsername"
-                materialDesign:HintAssist.HelperText=""
                 materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="40,242,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209">
                 <TextBox.RenderTransform>
                     <TransformGroup>
@@ -233,6 +231,7 @@
                                         Click ="Button_Click_ConfirmUserCreation">
                                         Valider
                                     </Button>
+                                    <TextBlock x:Name="AddUserState"  Margin="0,10,0,0" Height="37" HorizontalAlignment="Left" Width="641"/>
                                 </StackPanel>
                             </TabItem>
 
@@ -284,7 +283,7 @@
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
                                           Background="LightGreen"
-                                          AutoGenerateColumns="True" Width="678" Margin="0,157,0,212" SelectionChanged="ModifyDataGrid_SelectionChanged"/>
+                                          AutoGenerateColumns="True" Width="678" Margin="0,157,0,212"/>
                                     <ComboBox
                                         x:Name="ModifyCombobox"
                                           materialDesign:ComboBoxAssist.MaxLength="2"
@@ -349,6 +348,7 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Modifier l'utilisateur
                                     </Button>
+                                    <TextBlock x:Name="ModifyUserState"  Margin="10,393,0,10" Height="37" HorizontalAlignment="Left" Width="641"/>
                                 </Grid>
                             </TabItem>
                             <TabItem x:Name="DeleteTab">
@@ -400,7 +400,7 @@
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
-                                          Background="PaleGreen" SelectionChanged="DeleteDataGrid_SelectionChanged" Height="65">
+                                          Background="PaleGreen"  Height="65">
                                     </DataGrid>
                                     <Button
                                         x:Name="DeleteUserButton"
@@ -410,6 +410,7 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Supprimer l'utilisateur
                                     </Button>
+                                    <TextBlock x:Name="DeleteUserState" Margin="0,50,0,0" Height="53"  />
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="ConsultationTab">
@@ -444,7 +445,7 @@
                                     </DataGrid>
                                     <Button
                                         x:Name="DlConsultData"
-                                        Click="Button_Click_DlConsultData"
+                                        Click="Button_Click_DlData"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                                         Margin="0,10,0,0"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
