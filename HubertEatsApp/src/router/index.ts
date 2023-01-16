@@ -1,15 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/Customer/HomeView.vue'
 import { products } from '@/assets/products'
 import CourierHome from '../views/Courier/CourierHome.vue'
 import CourierAccount from '../views/Courier/CourierAccount.vue'
 import { getAccountType, useAuthStore } from '@/stores/auth'
 import { useCustomerStore } from '@/stores/customer'
 import { useCartStore } from '@/stores/cart'
+import CustomerAccountVue from '../views/Customer/CustomerAccount.vue'
 
 
 function courierGuard(to: any, from: any, next: any) {
   if (getAccountType() === 'courier') {
+    next();
+  } else {
+    next('/');
+  }
+}
+function customerGuard(to: any, from: any, next: any) {
+  if (getAccountType() === 'customer') {
     next();
   } else {
     next('/');
@@ -22,7 +30,7 @@ function redirect(to: any, from: any, next: any) {
       next('/courier')
       break;
     case 'customer':
-      next('/home')
+      next('/customer')
       break;
     default:
       next('/login')
@@ -39,72 +47,74 @@ const router = createRouter({
       component: () => import('../views/Auth/LoginView.vue')
     },
     {
-      path: '/home',
-      name: 'home',
-      component: HomeView
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/Auth/LoginView.vue')
     },
     {
       path: '/signup',
       name: 'signup',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Auth/CreateAccountView.vue')
+    },
+    /******************* CUSTOMER ROUTER ****************/
+    {
+      path: '/customer',
+      component: () => import('../views/Customer/Customer.vue'),
+      beforeEnter: customerGuard,
+      children: [
+        {
+          path: '',
+          name: 'customer-home',
+          component: HomeView,
+          beforeEnter: customerGuard,
+        },
+        {
+          path: 'account',
+          name: 'customer-account',
+          component: CustomerAccountVue,
+          beforeEnter: customerGuard,
+        },
+        {
+          path: 'restaurant-selection/:id',
+          name: 'restaurant-selection',
+          component: () => import('../views/Customer/RestaurantView.vue'),
+          beforeEnter: customerGuard,
+        },
+        {
+          path: 'payment',
+          name: 'customer-payment',
+          component: () => import('../views/Customer/PaymentView.vue'),
+          beforeEnter: (to, from, next) => {
+            const cartStore = useCartStore();
+            if(cartStore.cart.articles.length > 0) {
+              const customerStore = useCustomerStore();
+              customerStore.getCustomerAccount();
+              customerGuard(to, from, next);
+            } else {
+              next({ path: '/' })
+            }
+          },
+        }
+      ],
     },
     {
       path: '/follow-command',
       name: 'follow-command',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/DeliveryFollowUpView.vue')
     },
     {
       path: '/follow-orders',
       name: 'follow-orders',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/OrdersFollowUpView.vue')
-    },
-    {
-      path: '/tests',
-      name: 'tests',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/HelloWorld.vue')
-    },
-    {
-      path: '/restaurantPage/:id',
-      name: 'restaurantPage',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/RestaurantView.vue'),
-      beforeEnter: (to, _, next) => {
-        const { id } = to.params
-        if (id === null || id === undefined) {
-          next({ path: '/error' })
-          return
-        }
-        next()
-      }
     },
     {
       path: '/edit-menu-products',
       name: 'edit-menu-products',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/EditMenuProducts.vue')
     },
     {
       path: '/edit-menu-products/menu/:id',
       name: 'edit-menu',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/EditMenu.vue'),
       beforeEnter: (to, _, next) => {
         const { id } = to.params
@@ -127,9 +137,6 @@ const router = createRouter({
     {
       path: '/edit-menu-products/starter/:id',
       name: 'edit-starter',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/EditProduct.vue'),
       beforeEnter: (to, _, next) => {
         const { id } = to.params
@@ -150,47 +157,11 @@ const router = createRouter({
       }
     },
     {
-      path: '/login',
-      name: 'login',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/Auth/LoginView.vue')
-    },
-    {
-      path: '/accountc',
-      name: 'CustomerAccount',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/CustomerAccount.vue')
-    },
-    {
       path: '/accountr',
       name: 'RestoratorAccount',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/RestoratorAccount.vue')
     },
-    {
-      path: '/purchase',
-      name: 'Purchase',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/PaymentView.vue'),
-      beforeEnter: (to, _, next) => {
-        const cartStore = useCartStore();
-        if(cartStore.cart.articles.length > 0) {
-          const customerStore = useCustomerStore();
-          customerStore.getCustomerAccount();
-          next()
-        } else {
-          next({ path: '/' })
-        }
-      }
-    },
+    /******************* COURIER ROUTER ****************/
     {
       path: '/courier',
       component: () => import('../views/Courier/Courier.vue'),

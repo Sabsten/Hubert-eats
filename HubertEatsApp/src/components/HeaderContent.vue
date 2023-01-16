@@ -8,7 +8,7 @@ defineComponent({
   HeaderLink,
 })
 const currentUrl = window.location.pathname;
-const homePath = "/home"
+const homePath = "/customer"
 const route = useRoute()
 const router = useRouter()
 const cartStore = useCartStore();
@@ -27,17 +27,17 @@ function logout() {
             <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
-        <HeaderLink v-if="route.query.cart=='true'" to="/home">
+        <HeaderLink v-if="route.query.cart=='true'" to="/customer">
           <button class="button cart-button" >
             <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
-        <HeaderLink v-if="currentUrl!=homePath" to="/home">
+        <HeaderLink v-if="currentUrl!=homePath" to="/customer">
           <button class="button account-button">
             <i class="fa-solid fa-house-user"></i>Accueil 
           </button>
         </HeaderLink>
-        <HeaderLink v-if="currentUrl==homePath" to="/accountc">
+        <HeaderLink v-if="currentUrl==homePath" to="/customer/account">
           <button class="button account-button">
             <i class="fa-solid fa-user"></i>Compte 
           </button>

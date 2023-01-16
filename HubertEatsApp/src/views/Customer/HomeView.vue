@@ -49,11 +49,7 @@ defineComponent({
   Navigation,
   CardRestaurant,
   HeaderContent
-})
-const router = useRouter()
-const goToRestaurant = (id: string) => {
-  router.push({ path: `/restaurantPage/${id}` })
-}
+});
 const restaurantStore = useRestaurantStore();
 const { restaurantsList, error } = storeToRefs(restaurantStore);
 onMounted(async () => {
@@ -95,7 +91,7 @@ let searchValue: string;
   </div>
   <div class="shopsElements">
     <div v-for="(restaurant) in restaurantsList">
-      <router-link :to="{name: 'restaurantPage', params: {id: restaurant._id}}">
+      <router-link :to="{name: 'restaurant-selection', params: {id: restaurant._id}}">
         <CardRestaurant class="card-restaurant" :restaurant=restaurant />
       </router-link>
     </div>
