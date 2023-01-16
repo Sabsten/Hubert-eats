@@ -6,7 +6,6 @@ import CardPayment from '@/components/CardPayment.vue'
 
 export default defineComponent({
   setup() {
-    const routeLocation = useRoute()
     const router = useRouter()
     const goBack = () => {
         router.go(-1)

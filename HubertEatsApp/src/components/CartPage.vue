@@ -1,11 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
-    const routeLocation = useRoute()
     const router = useRouter()
     const goToPurchase = () => {
     router.push({ path: `/purchase` })
@@ -30,7 +28,7 @@ export default defineComponent({
                   <i class="fa-solid fa-plus"></i>
               </div>
               <div class="description">
-                  <div class="name">Nom du menu</div>
+                  <h2 class="name">Nom du menu</h2>
                   <div class="price">10 €</div>
                   <div class="quantity">- Element1</div>
                   <div class="quantity">- Element2</div>
@@ -47,7 +45,7 @@ export default defineComponent({
                   <i class="fa-solid fa-plus"></i>
               </div>
               <div class="description">
-                  <div class="name">Nom du produit</div>
+                  <h2 class="name">Nom du produit</h2>
                   <div class="price">20 €</div>
               </div>
               <div class="image">
@@ -70,7 +68,7 @@ export default defineComponent({
                   <i class="fa-solid fa-plus"></i>
               </div>
               <div class="description">
-                  <div class="name">Nom du produit</div>
+                  <h2 class="name">Nom du produit</h2>
                   <div class="price">20 €</div>
               </div>
               <div class="image">
@@ -96,7 +94,6 @@ flex-direction: row;
 min-height: 90vh;
 justify-content: start;
 align-items: center;
-width: 100%;
 flex-direction: column;
 background-color: var(--green);
 }
@@ -141,5 +138,9 @@ i{
   display:flex;
   flex-direction: column;
   margin-bottom: 20px;
+}
+
+h1, h2{
+  margin-bottom: 0px;
 }
 </style>
