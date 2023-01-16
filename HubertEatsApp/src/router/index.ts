@@ -4,6 +4,8 @@ import { products } from '@/assets/products'
 import CourierHome from '../views/Courier/CourierHome.vue'
 import CourierAccount from '../views/Courier/CourierAccount.vue'
 import { getAccountType, useAuthStore } from '@/stores/auth'
+import { useCustomerStore } from '@/stores/customer'
+import { useCartStore } from '@/stores/cart'
 
 
 function courierGuard(to: any, from: any, next: any) {
@@ -95,7 +97,17 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/PaymentView.vue')
+      component: () => import('../views/PaymentView.vue'),
+      beforeEnter: (to, _, next) => {
+        const cartStore = useCartStore();
+        if(cartStore.cart.articles.length > 0) {
+          const customerStore = useCustomerStore();
+          customerStore.getCustomerAccount();
+          next()
+        } else {
+          next({ path: '/' })
+        }
+      }
     },
     {
       path: '/courier',

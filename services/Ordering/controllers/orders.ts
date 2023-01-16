@@ -34,7 +34,7 @@ export class orderController {
         test.save((err, doc) => {
             return err ?
                 res.status(500).send(err) :
-                res.status(200).send('Order with id : ' + doc.id + ' successfully created !');
+                res.status(200).send(doc);
         });
         
     };

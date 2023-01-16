@@ -3,6 +3,7 @@ import { useAuthStore } from './auth';
 import type { IArticleCart, ICart } from '@/models/cart';
 import { useRestaurantStore } from './restaurant';
 import { useCustomerStore } from './customer';
+import { useCartStore } from './cart';
 
 export const useOrderStore = defineStore({
     id: 'Order',
@@ -17,7 +18,7 @@ export const useOrderStore = defineStore({
     actions: {
         async payOrder(articles: IArticleCart[], restaurant_id: string, customer_id: string, price: number): Promise<boolean> {
             const URL: string = import.meta.env.VITE_ORDERING_SERVICE_URL + '/orders';
-            const restaurantStore = useRestaurantStore();
+            const cartStore = useCartStore();
             const customerStore = useCustomerStore();
             const RES: Response = await fetch(URL, {
                 method: 'POST',
@@ -28,7 +29,7 @@ export const useOrderStore = defineStore({
                 body: JSON.stringify({
                     articles: articles,
                     restaurant_id: restaurant_id,
-                    restaurant_address: restaurantStore.getCurrentRestaurant?.address,
+                    restaurant_address: cartStore.cart.restaurant_address,
                     customer_id: customer_id,
                     customer_address: customerStore?.customerAccount?.address,
                     price: price,

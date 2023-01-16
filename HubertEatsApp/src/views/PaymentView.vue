@@ -23,8 +23,15 @@ const cartStore = useCartStore();
 let { cart, totalPrice } = storeToRefs(cartStore);
 const orderStore = useOrderStore();
 
-function pay() {
-    orderStore.payOrder(cart.value.articles, getAccountId()!, cart.value.restaurant_id, totalPrice.value)
+let errorMessage: Ref<string | null> = ref(null);
+
+async function pay() {
+    let isOk: boolean = await orderStore.payOrder(cart.value.articles, getAccountId()!, cart.value.restaurant_id, totalPrice.value)
+    if(!isOk){
+        errorMessage.value = 'Problème au niveau de paiement'
+    } else {
+        router.push('/');
+    }
 }
 onMounted(async () => {
     customerStore.getCustomerAccount();
@@ -50,6 +57,7 @@ onMounted(async () => {
             </div>
             <CardPayment></CardPayment>
             <input class="confirm" type="button" :value="'Payer '+totalPrice+' €'" @click="pay()">
+            <span v-if="errorMessage">{{ errorMessage }}</span>
         </div>
     </div>
     <div class="right-part">
