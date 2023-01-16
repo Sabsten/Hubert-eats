@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
-import HeaderContent from '@/components/HeaderContent.vue'
+import HeaderContent from '@/components/HeaderContentRestorator.vue'
 import CardPayment from '@/components/CardPayment.vue'
 
 export default defineComponent({
