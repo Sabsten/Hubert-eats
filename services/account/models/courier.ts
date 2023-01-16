@@ -21,7 +21,7 @@ const courierSchema = new Schema<ICourier>({
     lastname: {type: String, required: true},
     address: {type: addressSchema, required: true},
     balance: { type: Number, required: true},
-    rating: { type: Number, required: false}
+    rating: { type: [Number], required: false}
 }, { versionKey: false, timestamps: true });
 
 // Create a Model.

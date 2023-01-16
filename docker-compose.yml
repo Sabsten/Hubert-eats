@@ -4,7 +4,7 @@ services:
     build: ./services/account
     restart: always
     ports:
-      - "3001:3000"
+      - "3001:3001"
     networks:
       - reseau
     profiles: ["backend"]
