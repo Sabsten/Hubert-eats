@@ -1,13 +1,43 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { products } from '@/assets/products'
-import Courier from '../views/Courier/Courier.vue'
 import CourierHome from '../views/Courier/CourierHome.vue'
 import CourierAccount from '../views/Courier/CourierAccount.vue'
+import { getAccountType, useAuthStore } from '@/stores/auth'
+import { useCustomerStore } from '@/stores/customer'
+import { useCartStore } from '@/stores/cart'
+
+
+function courierGuard(to: any, from: any, next: any) {
+  if (getAccountType() === 'courier') {
+    next();
+  } else {
+    next('/');
+  }
+}
+
+function redirect(to: any, from: any, next: any) {
+  switch (getAccountType()) {
+    case 'courier':
+      next('/courier')
+      break;
+    case 'customer':
+      next('/home')
+      break;
+    default:
+      next('/login')
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      name: 'default',
+      beforeEnter: redirect,
+      component: () => import('../views/Auth/LoginView.vue')
+    },
     {
       path: '/home',
       name: 'home',
@@ -19,7 +49,23 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/CreateAccountView.vue')
+      component: () => import('../views/Auth/CreateAccountView.vue')
+    },
+    {
+      path: '/follow-command',
+      name: 'follow-command',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/DeliveryFollowUpView.vue')
+    },
+    {
+      path: '/follow-orders',
+      name: 'follow-orders',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/OrdersFollowUpView.vue')
     },
     {
       path: '/tests',
@@ -36,6 +82,55 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/RestaurantView.vue'),
+      beforeEnter: (to, _, next) => {
+        const { id } = to.params
+        if (id === null || id === undefined) {
+          next({ path: '/error' })
+          return
+        }
+        next()
+      }
+    },
+    {
+      path: '/edit-menu-products',
+      name: 'edit-menu-products',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/EditMenuProducts.vue')
+    },
+    {
+      path: '/edit-menu-products/menu/:id',
+      name: 'edit-menu',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/EditMenu.vue'),
+      beforeEnter: (to, _, next) => {
+        const { id } = to.params
+  
+        if (Array.isArray(id)) {
+          next({ path: '/error' })
+          return
+        }
+  
+        // Is a valid index number
+        const index = parseInt(id)
+        if (index < 0 || index >= products.length) {
+          next({ path: '/error' })
+          return
+        }
+  
+        next()
+      }
+    },
+    {
+      path: '/edit-menu-products/starter/:id',
+      name: 'edit-starter',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/EditProduct.vue'),
       beforeEnter: (to, _, next) => {
         const { id } = to.params
   
@@ -56,11 +151,11 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'LoginView',
+      name: 'login',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/Auth/LoginView.vue')
     },
     {
       path: '/accountc',
@@ -71,18 +166,47 @@ const router = createRouter({
       component: () => import('../views/CustomerAccount.vue')
     },
     {
-      path: '/livreur',
+      path: '/accountr',
+      name: 'RestoratorAccount',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/RestoratorAccount.vue')
+    },
+    {
+      path: '/purchase',
+      name: 'Purchase',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/PaymentView.vue'),
+      beforeEnter: (to, _, next) => {
+        const cartStore = useCartStore();
+        if(cartStore.cart.articles.length > 0) {
+          const customerStore = useCustomerStore();
+          customerStore.getCustomerAccount();
+          next()
+        } else {
+          next({ path: '/' })
+        }
+      }
+    },
+    {
+      path: '/courier',
       component: () => import('../views/Courier/Courier.vue'),
+      beforeEnter: courierGuard,
       children: [
         {
-          path: '/livreur',
-          name: 'accueil',
-          component: CourierHome
+          path: '/courier',
+          name: 'courier',
+          component: CourierHome,
+          beforeEnter: courierGuard,
         },
         {
-          path: '/livreur/compte',
-          name: 'compte',
-          component: CourierAccount
+          path: '/courier/account',
+          name: 'courierAccount',
+          component: CourierAccount,
+          beforeEnter: courierGuard,
         }
       ],
     }

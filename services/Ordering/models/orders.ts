@@ -1,67 +1,36 @@
 import { Double } from 'mongodb';
 import { Schema, model, connect, Types } from 'mongoose';
-import { IArticles } from './articles';
-import { IAddress } from './IAddress';
+import { IArticleCart, articleCartSchema } from './articles';
+import addressSchema, { IAddress } from './IAddress';
 import { IMenu } from './menu';
 
 // Create an interface representing a document in MongoDB.
-interface IOrders {
+export interface IOrders {
     _id?: Types.ObjectId;
     customer_id: Types.ObjectId;
     restaurant_id: Types.ObjectId;
+    customer_address: IAddress;
     restaurant_address: IAddress;
-    menu : IMenu;
-    articles : IArticles;
+    articles : [IArticleCart];
     price : number;
     status: string;
-   
-  
-   
 }
+
+export enum OrderStatus {
+  paid = "paid",
+  in_preparation = "in_preparation",
+  finish = "finish",
+}
+
 // Create a Schema corresponding to the document interface.
 const ordersSchema = new Schema<IOrders>({
   customer_id: {  type: Schema.Types.ObjectId, required: true },
   restaurant_id: {  type: Schema.Types.ObjectId, required: true },
-  restaurant_address: { 
-    type: {
-      city: String,
-      street_name: String,
-      street_number: Number,
-      postal_code: Number,
-      country: String
-    },
-    required: true
-  },
-  menu: { 
-    type: {
-      restaurant_id : Types.ObjectId,
-      composition_id : Types.ObjectId,
-      article: {
-       restaurant_id : Types.ObjectId,
-       description : String,
-       name : String,
-       quantity : Number,
-       type : String,
-       price : Number
-      }
-    },
-  },
-  articles: { 
-    type: {
-    restaurant_id : Types.ObjectId,
-    description : String,
-    name : String,
-    quantity : Number,
-    type : String,
-    price : Number
-    },
-    
-  },
-
+  customer_address: { type: addressSchema , required: true},
+  restaurant_address: { type: addressSchema , required: true},
+  articles: { type: [articleCartSchema], required: true},
   price: { type: Number, required: true },
   status: { type: String, required: true },
-
-  
 }, { versionKey: false, timestamps: true });
 
 // Create a Model.

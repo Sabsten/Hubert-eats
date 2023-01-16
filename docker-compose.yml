@@ -3,38 +3,27 @@ services:
   account-service:
     build: ./services/account
     restart: always
-    ports:
-      - "3001:3000"
-    networks:
-      - reseau
-  components-service:
-    build: ./services/components
-    restart: always
-    ports:
-      - "3002:3000"
-    networks:
-      - reseau
+    # profiles: ["backend"]
+  
   inventory-service:
     build: ./services/inventory
     restart: always
-    ports:
-      - "3003:3000"
-    networks:
-      - reseau
+    
+  components-service:
+    build: ./services/components
+    restart: always
+    
   ordering-service:
     build: ./services/ordering
     restart: always
-    ports:
-      - "3004:3000"
-    networks:
-      - reseau
-  front-end:
-    build: ./HubertEatsApp
-    restart: always
-    ports:
-      - "80:80"
-    networks:
-      - reseau
 
-networks:
-  reseau:
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt

@@ -1,64 +1,98 @@
+<script setup lang="ts">
+import { defineComponent } from 'vue'
+import HeaderLink from './HeaderLinks.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useCartStore } from '@/stores/cart';
+
+defineComponent({
+  HeaderLink,
+})
+const currentUrl = window.location.pathname;
+const homePath = "/home"
+const route = useRoute()
+const router = useRouter()
+const cartStore = useCartStore();
+
+function logout() {
+  router.push('/login');
+  localStorage.removeItem('TOKEN');
+}
+</script>
 <template>
     <div class="content">
-      <img src="@/assets/HubertEatsLogo.png" width="150">
+      <img src="@/assets/HubertEatsLogo.png" width="200">
       <div class="links">
-        <HeaderLink to="/tests"> <input class="basket" type="button" value="Panier . 1" width="40" height="40"> </HeaderLink>
-        <HeaderLink to="/basket"> <input class="account" type="button" value="Compte" width="40" height="40"> </HeaderLink>
+        <HeaderLink v-if="route.query.cart!='true'" :to="route.fullPath+'?cart=true'">
+          <button class="button cart-button" >
+            <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
+          </button>
+        </HeaderLink>
+        <HeaderLink v-if="route.query.cart=='true'" to="/home">
+          <button class="button cart-button" >
+            <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
+          </button>
+        </HeaderLink>
+        <HeaderLink v-if="currentUrl!=homePath" to="/home">
+          <button class="button account-button">
+            <i class="fa-solid fa-house-user"></i>Accueil 
+          </button>
+        </HeaderLink>
+        <HeaderLink v-if="currentUrl==homePath" to="/accountc">
+          <button class="button account-button">
+            <i class="fa-solid fa-user"></i>Compte 
+          </button>
+        </HeaderLink>
+        <i class="fa-solid fa-right-from-bracket logout" @click="logout()"></i>
       </div>
     </div>
   </template>
   
-  <script lang="ts">
-  import { defineComponent } from 'vue'
-  import HeaderLink from './HeaderLinks.vue'
-  
-  export default defineComponent({
-    components: { HeaderLink }
-  })
-  </script>
-  
-  <style scoped>
+  <style lang="scss" scoped>
   .links{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-around;
+    justify-content: right;
     align-items: center;
-    text-align: center;
-    gap: 30px;
-    /* border: 2px solid black;
-    background: black */
+    gap: 0px;
   }
-  .content{
+.content{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px 10px 10px;
+  background-color: #D8E3E2;
 }
 
-input{
+.button {
+  padding: 13px 40px;
+  border-radius: 20px;
+  font-size: 15px;
+  border: none;
+  font-size: 15px;
+  margin-right: 10px;
+  i{
+    margin-right: 10px;
+  }
+}
+.button:hover {
+    cursor: pointer;
+}
+
+.cart-button {
+  background-color: #3EBC72;
   color: white;
-  border-radius: 10px;
-  padding: 5px 10px 5px 35px;
-  background-image: url("https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=768,574");
-  background-position: left;
-  background-position-x: 5px;
-  background-repeat: no-repeat;
-  background-size: 20px 20px;
-  font-weight: bold;
-  font-size: 16px;
-  font-family: 'Roboto';
-  font-size: 17px;
-  border-color: transparent;
 }
 
-.account{
-  background: black;
+.account-button {
+  background-color: #000000;
+  color: white;
 }
-
-.basket{
-    background-color: #3EBC72;
+.logout {
+  font-size: 24px;
+  margin: 0 20px 0 10px;
+  &:hover {
+    cursor: pointer;
+  }
 }
-  
   </style>

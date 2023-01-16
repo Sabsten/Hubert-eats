@@ -1,76 +1,119 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { ref } from "vue";
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { defineComponent, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { products } from '@/assets/products'
 import { computed } from 'vue'
 import CardProduct from '@/components/CardProduct.vue'
 import HeaderContent from '@/components/HeaderContent.vue'
+import { useInventoryStore } from '@/stores/inventory.js';
+import { useRestaurantStore } from '@/stores/restaurant';
+import { useCartStore } from '@/stores/cart'
 
-export default defineComponent({
-  setup() {
-    const router = useRouter()
-    let input = ref("");
-    const factId = computed(() => useRoute().params.id)
-    return { products, input, factId}
-  },
-  computed: {
-    cssVars() {
-      return {
-        '--fact-image': `url(${products[parseInt(useRoute().params.id[0])].image})`
-      }
-    }
-  },
-  components: {
-    CardProduct,
-    HeaderContent
+defineComponent({
+  CardProduct,
+  HeaderContent
+});
+const restaurantID: string = useRoute().params.id.toString();
+const inventoryStore = useInventoryStore();
+const restaurantStore = useRestaurantStore();
+const cartStore = useCartStore();
+// const { restaurantsList, error } = storeToRefs(restaurantStore);
+
+let cssVars = computed(() => {
+  return {
+    '--fact-image': `url(${restaurantStore.getCurrentRestaurant?.image})`
   }
-})
+});
+
+onMounted(async () => {
+  if (restaurantStore.$state.restaurantsList = []) {
+    await restaurantStore.getRestaurants('');
+  }
+  inventoryStore.getInventory(restaurantID);
+});
+
+function scrollTo(anchor: string) {
+  console.log("test ")
+  const el = document.getElementById(anchor);
+  el && el.scrollIntoView();
+}
 
 </script>
 
 <template>
-  <div class="page">
-      <div class="top" z-index="200">
-        <HeaderContent/>
-        <div class="headerRestaurant">
-            <div class="top-part-img" :style="cssVars" style="max-width:100%; height: 200px; min-width: 100%;"></div>
-            <div class="top-part-text">
-              <div class="restaurantTitle_grade">
-                <h1>
-                  {{products[parseInt(factId[0])].text}}
-                </h1>
-                <div class="restaurantRate">{{ products[parseInt(factId[0])].grade }}</div>
-              </div>
-              <p>
-                {{products[parseInt(factId[0])].text}}
-              </p>
-            </div>
+  <HeaderContent class="header"/>
+  <div class="top">
+    <div class="headerRestaurant">
+        <div class="top-part-img" :style="cssVars"></div>
+        <div class="top-part-text">
+          <div class="restaurantTitle_grade">
+            <h1>
+              {{restaurantStore.getCurrentRestaurant?.name}}
+            </h1>
+            <div class="restaurantRate">{{ restaurantStore.getAverageRating(restaurantStore.getCurrentRestaurant?.rating) }}</div>
+          </div>
+          <h4>{{restaurantStore.getCurrentRestaurant?.address.street_number}}
+            &nbsp;{{restaurantStore.getCurrentRestaurant?.address.street_name}}
+            ,&nbsp;{{restaurantStore.getCurrentRestaurant?.address.city}}</h4>
+        </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="nav-section">
+      <div @click="scrollTo('starters')">Entrées</div>
+      <div @click="scrollTo('mains')">Plats</div>
+      <div @click="scrollTo('desserts')">Desserts</div>
+      <div @click="scrollTo('drinks')">Boissons</div>
+    </div>
+    <div class="articles-section">
+      <div id="starters" class="articles-type" v-if="inventoryStore.getStarters">
+        <h2>Entrée</h2>
+        <div class="shopsElements">
+          <div class="element" v-for="product in inventoryStore.getStarters">
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
+            <CardProduct :article=product />
+          </div>
         </div>
       </div>
-      <div class="bottom">
-        <h2>Menus</h2>
-        <div class="shopsElements" cellspacing="10" cellpadding="0">
-          <div class="element" v-for="(product, i) in products" :key="i" @click="">
-            <CardProduct :element=product />
+      <div id="mains" class="articles-type" v-if="inventoryStore.getMains">
+        <h2>Plats</h2>
+        <div class="shopsElements">
+          <div class="element" v-for="product in inventoryStore.getMains">
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
+            <CardProduct :article=product />
           </div>
         </div>
-        <h2>Entrées</h2>
-        <div class="shopsElements" cellspacing="10" cellpadding="0">
-          <div class="element" v-for="(product, i) in products" :key="i" @click="">
-            <CardProduct :element=product />
+      </div>
+      <div id="desserts" class="articles-type" v-if="inventoryStore.getDesserts">
+        <h2>Desserts</h2>
+        <div class="shopsElements">
+          <div class="element" v-for="product in inventoryStore.getDesserts">
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
+            <CardProduct :article=product />
           </div>
         </div>
+      </div>
+      <div id="drinks" class="articles-type" v-if="inventoryStore.getDrinks">
+        <h2>Boissons</h2>
+        <div class="shopsElements">
+          <div class="element" v-for="product in inventoryStore.getDrinks">
+            <i class="fa-solid fa-circle-plus" @click="cartStore.addToCart(product, restaurantStore.getCurrentRestaurant!)"></i>
+            <CardProduct :article=product />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
   *{
     color: black;
   }
 
+  .header{
+    position: sticky; top: 0;
+    z-index: 1;
+  }
   .restaurantTitle_grade{
     display: flex;
     flex-direction: row;
@@ -82,7 +125,8 @@ export default defineComponent({
   }
 
   .top-part-img{
-  width:100%;
+  width:80%;
+  height: 200px;
   background-image: var(--fact-image);
   background-position: center;
   background-repeat: no-repeat;
@@ -93,17 +137,6 @@ export default defineComponent({
   position: relative;
   top: -20px;
 }
-
-  .page{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: calc(100% - 150px);
-    flex-direction: column;
-    background-color: #D8E3E2;
-  }
 
   h1{
     font-family: 'Roboto';
@@ -120,23 +153,38 @@ export default defineComponent({
     font-family: 'Roboto';
   }
 
-  .bottom{
+  .main{
     background-color: white;
     width: 100%;
     height: calc(100% - 150px);
     margin-top: 40px;
-    padding-top: 180px;
+    padding-top: 200px;
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      row-gap: 25px;
+      align-items: center;
+      position: sticky;
+      div:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      div {
+        font-size: 22px;
+      }
+    }
   }
-
 
   .top{
     width: 100%;
-    height: 150px;
+    height: 120px;
     margin-bottom: 40px;
-    z-index: 200;
     display: flex;
     flex-direction: column;
     text-align: center;
+    background-color: #D8E3E2;
   }
 
 .personnal{
@@ -166,12 +214,22 @@ export default defineComponent({
 
 .shopsElements{
   display: flex;
-  flex-direction: row;
-  gap: 40px;
-  justify-content: center;
-  margin: 20px;
-  align-items: center;
   flex-wrap: wrap;
+  gap: 40px;
+}
+.element {
+  width:300px;
+  position: relative;
+  i {
+    font-size: xx-large;
+    top:0;
+    right:0;
+    margin: 10px 10px 0 0;
+    position: absolute;
+  }
+  i:hover {
+      cursor: pointer;
+    }
 }
 
 .restaurantName{
@@ -192,13 +250,13 @@ export default defineComponent({
   font-weight: bold;
 }
 
-.element:hover{
-  cursor: pointer;
-  transform: scale(1.1);
+.articles-type {
+  margin-bottom: 50px;
 }
-
-h2{
-  margin-left: 70px;
+.articles-section {
+  h2 {
+    margin-top:0;
+  }
 }
 
 </style>

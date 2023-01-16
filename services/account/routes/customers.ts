@@ -8,6 +8,7 @@ const customersRouter = express.Router();
 customersRouter.get('/', customersController.getCustomers);
 customersRouter.get('/:id', customersController.getCustomersById);
 customersRouter.get('/account/:id', customerAccess, customersController.getCustomersAccountById);
+customersRouter.patch('/account/:id', customerAccess, customersController.updateCustomerAccount)
 
 export default customersRouter;
 

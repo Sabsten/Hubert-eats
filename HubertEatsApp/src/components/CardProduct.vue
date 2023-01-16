@@ -1,64 +1,52 @@
-<script lang="ts">
-import { computed, defineComponent, useCssVars } from 'vue'
+<script setup lang="ts">
+import { computed, defineComponent, ref, useCssVars, type Ref } from 'vue'
 import { products } from '@/assets/products'
+import type { IArticle } from '@/models/inventaire';
 
+let showDescription: Ref<boolean> = ref(false);
 
-type CardRestaurantProps = { element: any }
+const props = defineProps<{
+  article: IArticle,
+}>();
 
-export default defineComponent({
-  props: {
-    element: {
-      required: true
-    }
-  },
-  setup(props: CardRestaurantProps) {
-    //const restaurant = computed(() => products[props.factId])
-    const restaurant = props.element
-    return { restaurant }
-  },
-  computed: {
-    cssVars(props: CardRestaurantProps) {
-    }
-  }
+function toggleDescription(){
+  return showDescription.value ? showDescription.value = false : showDescription.value = true
 }
-)
-
 </script>
 
 <template>
     <div class="table-wrapper">
-        <img :src="restaurant.image" width="150" height="150" class="pic" />
-        <div>
-            <div class="descriptionRow">
-                <div class="productName">{{ restaurant.text }}</div>
-                <div class="productPrice">{{ restaurant.grade }} €</div>
-                <div>{{ restaurant.address }}</div>
-            </div>
-        </div>
+        <img :src="props.article.image" width="150" height="150" class="pic" />
+        <div class="productName">{{ props.article.name }}&nbsp;<i class="fa-solid fa-circle-info" @click="toggleDescription()"></i></div>
+        <div class="productPrice">{{ props.article.price }} €</div>
+        <div v-if="showDescription" class="product-description">{{ props.article.description }}</div>
     </div>
 </template>
 
 <style scoped>
 
-.productName{
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
+.table-wrapper {
+  /* border:2px red solid; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(180deg, #FFFFFF 0%, #D0DCC5 0.01%, rgba(236, 250, 213, 0) 100%);
 }
 
-.productPrice{
-  font-family: 'Roboto';
-  font-style: normal;
+.productName, .productPrice{
   font-weight: 700;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .descriptionRow{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: left;
+  justify-content: center;
+  align-items: center;
 }
-
+.product-description {
+  text-align: justify;
+}
 </style>
