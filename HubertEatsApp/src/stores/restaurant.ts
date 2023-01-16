@@ -24,7 +24,7 @@ export const useRestaurantStore = defineStore({
             const RES: Response = await fetch(URL, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer: ' + authStore.getToken!
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
                 },
             });
             const data: IRestaurant[] = await RES.json();
@@ -46,6 +46,6 @@ export const useRestaurantStore = defineStore({
                 somme += r;
             });
             return Math.round(somme/total * 10)/ 10;
-        }
+        },
     }
 })

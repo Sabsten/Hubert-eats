@@ -14,7 +14,8 @@ const goToPurchase = () => {
 }
 const restaurantStore = useRestaurantStore();
 const cartStore = useCartStore();
-let { cart } = storeToRefs(cartStore);
+let { cart, totalPrice } = storeToRefs(cartStore);
+
 </script>
 
 <template>
@@ -31,7 +32,7 @@ let { cart } = storeToRefs(cartStore);
                 </div>
                 <div class="description">
                     <div class="name">{{ article.name }}</div>
-                    <div class="price">{{ article.price }}&nbsp;€</div>
+                    <div class="price">{{ article.price * article.quantity }}&nbsp;€</div>
                 </div>
                 <div class="image">
                     <img width="100px" :src="article.image">
@@ -39,7 +40,7 @@ let { cart } = storeToRefs(cartStore);
             </div>
             <hr size="1" color="white" width="100%">
           </div>
-          <input type="button" @click="goToPurchase()" class="confirm" value="Commander . 16€"> 
+          <input type="button" @click="goToPurchase()" class="confirm pointer" :value="'Commander · '+totalPrice.toString()+'€'"> 
       </div>
     </div>
   </div>

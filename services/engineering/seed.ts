@@ -40,8 +40,8 @@ function createRestaurants(): Document[] {
             address: {
                 city: faker.address.cityName(),
                 street_name: faker.address.street(),
-                street_number: faker.datatype.number(),
-                postal_code: faker.datatype.number(),
+                street_number: faker.datatype.number({min: 1, max: 200}),
+                postal_code: faker.datatype.number({min: 10000, max: 99000}),
                 country: faker.address.country(),
             },
             image: faker.image.food(300, 300, true),
@@ -67,8 +67,8 @@ function createCustomers(): Document[] {
             address: {
                 city: faker.address.cityName(),
                 street_name: faker.address.street(),
-                street_number: faker.datatype.number(),
-                postal_code: faker.datatype.number(),
+                street_number: faker.datatype.number({min: 1, max: 200}),
+                postal_code: faker.datatype.number({min: 10000, max: 99000}),
                 country: faker.address.country(),
             },
         });
@@ -91,8 +91,8 @@ function createCouriers(): Document[] {
             address: {
                 city: faker.address.cityName(),
                 street_name: faker.address.street(),
-                street_number: faker.datatype.number(),
-                postal_code: faker.datatype.number(),
+                street_number: faker.datatype.number({min: 1, max: 200}),
+                postal_code: faker.datatype.number({min: 10000, max: 99000}),
                 country: faker.address.country(),
             },
             balance: faker.datatype.number({min: 0, max: 500, precision: 0.1}),
@@ -119,7 +119,7 @@ function createArticles(): Document[] {
                     description : faker.commerce.productDescription(),
                     quantity : faker.datatype.number(),
                     type : faker.helpers.arrayElement([ArticleType.main, ArticleType.starter, ArticleType.dessert, ArticleType.drink]),
-                    price : faker.datatype.number(),
+                    price : faker.datatype.number({min: 1, max: 20}),
                     image : faker.image.food(200,200, true),
                 })
             );

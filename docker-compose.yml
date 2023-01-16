@@ -13,7 +13,7 @@ services:
     build: ./services/inventory
     restart: always
     ports:
-      - "3003:3002"
+      - "3002:3002"
     networks:
       - reseau
     profiles: ["backend"]
@@ -22,7 +22,7 @@ services:
     build: ./services/components
     restart: always
     ports:
-      - "3002:3000"
+      - "3004:3000"
     networks:
       - reseau
     profiles: ["backend"]
@@ -31,7 +31,7 @@ services:
     build: ./services/ordering
     restart: always
     ports:
-      - "3004:3000"
+      - "3003:3003"
     networks:
       - reseau
     profiles: ["backend"]
@@ -43,6 +43,7 @@ services:
       - "80:80"
     networks:
       - reseau
+    profiles: ["frontend"]
 
 networks:
   reseau:

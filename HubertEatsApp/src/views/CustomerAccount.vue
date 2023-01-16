@@ -45,31 +45,31 @@ async function updateCustomerAcount() {
             </div>
             <div class="info-line">
               <span>Nom : </span>
-              <input type="text" :value="customerAccount!.lastname" class="inputForm">
+              <input type="text" v-model="customerAccount!.lastname" class="inputForm">
             </div>
             <div class="info-line">
               <span>Email : </span>
-              <input type="email" :value="customerAccount!.account.mail" class="inputForm">
+              <input type="email" v-model="customerAccount!.account.mail" class="inputForm">
             </div>
             <div class="info-line">
               <span>Mot de passe : </span>
-              <input type="password" :value="customerAccount!.account.password" class="inputForm">
+              <input type="password" v-model="customerAccount!.account.password" class="inputForm">
             </div>
             <div class="info-line">
               <span>Nom de la rue : </span>
-              <input type="text" :value="customerAccount!.address.street_name" class="inputForm">
+              <input type="text" v-model="customerAccount!.address.street_name" class="inputForm">
             </div>
             <div class="info-line">
               <span>N° de rue : </span>
-              <input type="number" :value="customerAccount!.address.street_number" class="inputForm">
+              <input type="number" v-model="customerAccount!.address.street_number" class="inputForm">
             </div>
             <div class="info-line">
               <span>Code postal : </span>
-              <input type="text" :value="customerAccount!.address.postal_code" class="inputForm">
+              <input type="text" v-model="customerAccount!.address.postal_code" class="inputForm">
             </div>
             <div class="info-line">
               <span>Ville : </span>
-              <input type="text" :value="customerAccount!.address.city" class="inputForm">
+              <input type="text" v-model="customerAccount!.address.city" class="inputForm">
             </div>
             <div>
               <button class="form-button modif-button" type="submit">Modifier</button>
@@ -78,12 +78,12 @@ async function updateCustomerAcount() {
           </div>
         </form>
 
-        <div class="payment">
+        <!-- <div class="payment">
           <div class="name">
             Mode de Paiement <i class="fa-solid fa-pen-to-square"></i>
           </div>
           <CardPayment/>
-        </div>
+        </div> -->
 
     </div> 
       

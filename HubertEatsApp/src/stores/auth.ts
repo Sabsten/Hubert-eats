@@ -7,6 +7,13 @@ export type TokenPayload = {
     accountId: string,
 }
 
+export function getAccountId(): string | undefined{
+    return getTokenPayload()?.accountId;
+}
+export function getAccountType(): string | undefined{
+    return getTokenPayload()?.type;
+}
+
 function getTokenPayload(): TokenPayload | null {
     const token = localStorage.getItem('TOKEN');
     if(token === null) {
@@ -17,19 +24,6 @@ function getTokenPayload(): TokenPayload | null {
 
 export const useAuthStore = defineStore({
     id: 'Auth',
-    getters: {
-        getAccountId: (): string | null => {
-            const payload = getTokenPayload();
-            return payload === null ? null : payload.accountId;
-        },
-        getAccountType: (): string | null => {
-            const payload = getTokenPayload();
-            return payload === null ? null : payload.type;
-        },
-        getToken: (): string | null => {
-            return localStorage.getItem('TOKEN');
-        }
-    },
     actions: {
         async signIn(type: string, mail: string, password: string): Promise<string | null> {
             const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/signin/' + type;
@@ -43,6 +37,11 @@ export const useAuthStore = defineStore({
                 return data.error;
             }
             localStorage.setItem('TOKEN',data.token);
+            let payload = getTokenPayload();
+            this.$patch({
+                customerAccountID: payload?.accountId,
+                customerAccountType: payload?.type
+            })
             console.log('Request successful');
             return null
         },
@@ -58,6 +57,11 @@ export const useAuthStore = defineStore({
                 return RES.status === 409 ? "⛔️ Email déjà existante !" : "Erreur Serveur";
             }
             localStorage.setItem('TOKEN',data.token);
+            let payload = getTokenPayload();
+            this.$patch({
+                customerAccountID: payload?.accountId,
+                customerAccountType: payload?.type
+            })
             return null;
         },
     }

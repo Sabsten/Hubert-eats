@@ -3,12 +3,11 @@ import HomeView from '../views/HomeView.vue'
 import { products } from '@/assets/products'
 import CourierHome from '../views/Courier/CourierHome.vue'
 import CourierAccount from '../views/Courier/CourierAccount.vue'
-import { useAuthStore } from '@/stores/auth'
+import { getAccountType, useAuthStore } from '@/stores/auth'
 
 
 function courierGuard(to: any, from: any, next: any) {
-  const authStore = useAuthStore();
-  if (authStore.getAccountType === 'courier') {
+  if (getAccountType() === 'courier') {
     next();
   } else {
     next('/');
@@ -16,8 +15,7 @@ function courierGuard(to: any, from: any, next: any) {
 }
 
 function redirect(to: any, from: any, next: any) {
-  const authStore = useAuthStore();
-  switch (authStore.getAccountType) {
+  switch (getAccountType()) {
     case 'courier':
       next('/courier')
       break;
@@ -77,7 +75,7 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'LoginView',
+      name: 'login',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.

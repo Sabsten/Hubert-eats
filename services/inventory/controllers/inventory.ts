@@ -4,6 +4,7 @@ import { IInventory } from "../models/inventory";
 
 export class InventoryController {
     public async getInventoryByRestaurant(req: Request, res: Response){
+        console.log(req.params.restaurant_id)
         let inventory: IInventory = {};
         let articles: IArticle[] = []
         articles = await Article.find<IArticle>({restaurant_id: req.params.restaurant_id});

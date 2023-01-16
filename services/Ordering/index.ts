@@ -3,18 +3,19 @@ import dotenv from 'dotenv';
 import routes from "./routes/router";
 import { db } from "./config/db";
 import { Seeder } from './config/seed';
-
+import morgan from "morgan";
+import cors from "cors";
 dotenv.config();
 
+
 const app: Express = express();
-const port = 3000;
+const port = 3003;
 const database = new db()
-const seeder = new Seeder()
 
 database.dbConnect();
 
-//seeder.seedorder()
-//seeder.seeddeliver()
+app.use(morgan('tiny'));
+app.use(cors());
 app.use(json());
 app.use(routes);
 

@@ -34,7 +34,7 @@ export const useInventoryStore = defineStore({
             const RES: Response = await fetch(URL, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer: ' + authStore.getToken!
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
                 },
             });
             const data: IInventory = await RES.json();

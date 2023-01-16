@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useAuthStore } from './auth';
+import { getAccountId, useAuthStore } from './auth';
 import type { ICourier } from '@/models/couriers';
 import type { ICustomerForm, ICustomer } from '@/models/customers';
 
@@ -28,11 +28,12 @@ export const useCustomerStore = defineStore({
     actions: {
         async getCustomerAccount() {
             const authStore = useAuthStore();
-            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/customers/account/' + authStore.getAccountId!;
+            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/customers/account/' + getAccountId()!;
+            console.log(URL);
             const RES: Response = await fetch(URL, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer: ' + authStore.getToken!
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
                 },
             });
             const data: ICustomer = await RES.json();
@@ -47,12 +48,12 @@ export const useCustomerStore = defineStore({
         async updateCustomerAcount() {
             const authStore = useAuthStore();
             console.log(this.customerAccount?.firstname)
-            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/customers/account/' + authStore.getAccountId!;
+            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/customers/account/' + getAccountId()!;
             const RES: Response = await fetch(URL, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer: ' + authStore.getToken!
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
                 },
                 body: JSON.stringify(this.getCustomerForm)
             });
