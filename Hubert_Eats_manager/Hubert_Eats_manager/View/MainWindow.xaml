@@ -8,8 +8,8 @@
         Title="MainWindow" Height="510" Width="800" MaxHeight="510" MaxWidth="800" MinHeight="510" MinWidth="800">
 
     <Window.Resources>
-        <Visibility x:Key="homeVisible">Hidden</Visibility>
-        <Visibility x:Key="seederVisible">Visible</Visibility>
+        <Visibility x:Key="homeVisible">Visible</Visibility>
+        <Visibility x:Key="seederVisible">Hidden</Visibility>
         <Visibility x:Key="pageSelection">Hidden</Visibility>
     </Window.Resources>
 
@@ -118,12 +118,12 @@
 
         <Grid x:Name="seederVisible" Visibility="{DynamicResource seederVisible}">
             <Button
-                    Margin="80,62,0,0"
+                    Margin="80,76,0,0"
                     materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
                     Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Create_Usertable" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="356">
                 Creer la table des utilisateurs
             </Button>
-            <TextBlock x:Name ="UserTableState" Margin="0,48,10,0" Height="93" VerticalAlignment="Top" HorizontalAlignment="Right" Width="332"/>
+            <TextBlock x:Name ="UserTableState" Margin="0,48,10,0" Height="89" VerticalAlignment="Top" HorizontalAlignment="Right" Width="332"/>
             <Button
                     Margin="80,225,0,0"
                     materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
@@ -138,7 +138,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Use_Seeder" HorizontalAlignment="Left" Width="356" Height="32" VerticalAlignment="Bottom">
                 Appliquer le remplissage automatique
             </Button>
-            <TextBlock x:Name ="SeederState" Margin="0,343,10,0" HorizontalAlignment="Right" Width="332" Height="141" VerticalAlignment="Top"/>
+            <TextBlock x:Name ="SeederState" Margin="451,0,0,10" Height="141" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="332"/>
         </Grid>
 
 
@@ -215,7 +215,7 @@
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Rôle"
                                           materialDesign:HintAssist.HintOpacity=".26"
-                                          IsEditable="False" Height="43">
+                                          IsEditable="False" Height="43" SelectionChanged="RoleAddUser_SelectionChanged">
                                         <ComboBoxItem
                                             Content="Database Manager" />
                                         <ComboBoxItem
@@ -226,6 +226,7 @@
                                             Content="Developpeur Tier" />
                                     </ComboBox>
                                     <Button
+                                        x:Name="AddUserButton"
                                         Margin="0,40,0,0"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand"
@@ -250,16 +251,16 @@
                                         Text="Modifier" />
                                     </StackPanel>
                                 </TabItem.Header>
-                                <StackPanel
+                                <Grid
                                     Margin="16">
                                     <TextBlock
-                                    Margin="0,0,0,8"
+                                    Margin="-2,0,0,8"
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                                     Text="Modifier un utilisateur" />
                                     <TextBox
                                             x:Name="UsernameTextBoxModifyTab"
                                             VerticalAlignment="Top"
-                                            Margin="0,10,0,0"
+                                            Margin="-2,51,2,0"
                                             materialDesign:HintAssist.Hint="Nom d'utilisateur (@hubert.com)"
                                             Style="{StaticResource MaterialDesignFilledTextBox}">
                                         <TextBox.Text>
@@ -273,27 +274,23 @@
                                         x:Name="FindUserButtonModifyTab"
                                         Click="Button_Click_FindUser"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                        Margin="0,20,0,0"
+                                        Margin="-2,108,2,300"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
-                                    <StackPanel>
-                                        <DataGrid x:Name="ModifyDataGrid"
-                                          Margin="0,20,0,0"
+                                    <DataGrid x:Name="ModifyDataGrid"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
                                           Background="LightGreen"
-                                          AutoGenerateColumns="True"/>
-                                    </StackPanel>
+                                          AutoGenerateColumns="True" Width="678" Margin="0,157,0,212" SelectionChanged="ModifyDataGrid_SelectionChanged"/>
                                     <ComboBox
                                         x:Name="ModifyCombobox"
-                                          Margin="0,20,0,0"
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Champ à modifier"
                                           materialDesign:HintAssist.HintOpacity=".26"
-                                          IsEditable="False">
+                                          IsEditable="False" Height="31" Margin="0,233,0,0" VerticalAlignment="Top" SelectionChanged="ModifyCombobox_SelectionChanged">
                                         <ComboBoxItem
                                             Content="Identifiant" />
                                         <ComboBoxItem
@@ -302,13 +299,14 @@
                                             Content="Mot de passe" />
                                         <ComboBoxItem
                                             Content="Rôle" />
+                                        <ComboBoxItem
+                                            Content="Compte actif ?" />
                                     </ComboBox>
                                     <TextBox
-                                            x:Name="ModifyValue"
-                                            VerticalAlignment="Top"
-                                            Margin="0,20,0,0"
+                                            x:Name="ChoixValue"
+                                            Margin="0,276,0,122"
                                             materialDesign:HintAssist.Hint="Nouvelle valeur"
-                                            Style="{StaticResource MaterialDesignFilledTextBox}">
+                                            Style="{StaticResource MaterialDesignFilledTextBox}" Height="42">
                                         <TextBox.Text>
                                             <Binding
                                                 Path="Text1"
@@ -316,14 +314,42 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
+                                    <ComboBox
+                                        x:Name="ChoixRoleCombobox"
+                                          materialDesign:ComboBoxAssist.MaxLength="2"
+                                          materialDesign:HintAssist.Hint="Merci de choisir un élement"
+                                          materialDesign:HintAssist.HintOpacity=".26"
+                                          IsEditable="False" Height="32" Margin="-2,286,2,0" VerticalAlignment="Top">
+                                        <ComboBoxItem
+                                            Content="Database Manager" />
+                                        <ComboBoxItem
+                                            Content="Commercial" />
+                                        <ComboBoxItem
+                                            Content="Technique" />
+                                        <ComboBoxItem
+                                            Content="Developpeur Tier" />
+                                    </ComboBox>
+                                    <ComboBox
+                                        x:Name="ChoixActifCombobox"
+                                          Margin="0,289,0,0"
+                                          materialDesign:ComboBoxAssist.MaxLength="2"
+                                          materialDesign:HintAssist.Hint="Merci de choisir un élement"
+                                          materialDesign:HintAssist.HintOpacity=".26"
+                                          IsEditable="False" VerticalAlignment="Top" Height="28">
+                                        <ComboBoxItem
+                                            Content="Activer le compte" />
+                                        <ComboBoxItem
+                                            Content="Désactiver le compte" />
+                                    </ComboBox>
                                     <Button
+                                        x:Name="ModifyButton"
                                         Click="Button_Click_ModifyUser"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                        Margin="0,20,0,0"
+                                        Margin="0,347,0,61"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Modifier l'utilisateur
                                     </Button>
-                                </StackPanel>
+                                </Grid>
                             </TabItem>
                             <TabItem x:Name="DeleteTab">
                                 <TabItem.Header>
@@ -374,7 +400,7 @@
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
-                                          Background="PaleGreen">
+                                          Background="PaleGreen" SelectionChanged="DeleteDataGrid_SelectionChanged" Height="65">
                                     </DataGrid>
                                     <Button
                                         x:Name="DeleteUserButton"

@@ -91,7 +91,7 @@ namespace Model
 
         public static string DeleteUserSQLString(Dictionary<string, string> UserData)
         {
-            return "DELETE FROM " + SQLDatabase.UserTable + " WHERE identifiant = " + UserData["identifiant"];
+            return "DELETE FROM " + SQLDatabase.UserTable + " WHERE identifiant = " + UserData["Identifiant"];
         }
 
         public static MySqlCommand FillTable(Dictionary<string, string> UserData)

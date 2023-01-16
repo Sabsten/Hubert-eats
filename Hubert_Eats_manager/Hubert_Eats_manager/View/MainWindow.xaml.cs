@@ -44,6 +44,7 @@ namespace Hubert_Eats_manager
 
         private void Button_Click_Login(object sender, RoutedEventArgs e)
         {
+            Form_Initialize();
             try
             {
                 userName = TextBoxUsername.Text.Trim();
@@ -114,14 +115,33 @@ namespace Hubert_Eats_manager
         {
             if ((sender as Button).Name == "FindUserButtonModifyTab")
             {
-                ModifyDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(inputUsername);
+                ModifyDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(UsernameTextBoxModifyTab.Text);
                 ModifyDataGrid.Items.Refresh();
+                if (ModifyDataGrid.Items.Count != 0)
+                {
+                    ModifyCombobox.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    ChoixActifCombobox.Visibility = Visibility.Collapsed;
+                    ChoixRoleCombobox.Visibility = Visibility.Collapsed;
+                    ChoixValue.Visibility = Visibility.Collapsed;
+                    ModifyCombobox.Visibility = Visibility.Collapsed;
+                }
             }
             else
             {
                 DeleteGetInfosClearText();
                 DeleteDataGrid.ItemsSource = DataBaseManagerClass.FindUserr(inputUsername);
                 DeleteDataGrid.Items.Refresh();
+                if (DeleteDataGrid.Items.Count == 1)
+                {
+                    DeleteUserButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    DeleteUserButton.Visibility = Visibility.Hidden;
+                }
             }
         }
 
@@ -223,9 +243,17 @@ namespace Hubert_Eats_manager
                 }
             }
         }
-           
-
-
+        
+        private void Form_Initialize()
+        {
+            AddUserButton.Visibility = Visibility.Hidden;
+            ModifyCombobox.Visibility = Visibility.Hidden;
+            ChoixValue.Visibility = Visibility.Hidden;
+            ChoixRoleCombobox.Visibility = Visibility.Hidden;
+            ChoixActifCombobox.Visibility = Visibility.Hidden;
+            ModifyButton.Visibility = Visibility.Hidden;
+            DeleteUserButton.Visibility = Visibility.Hidden;
+        }
         private void AddGetInfosClearText()
         {
             inputUsername = UsernameAddUser.Text;
@@ -251,14 +279,14 @@ namespace Hubert_Eats_manager
 
             parameterSelected = ModifyCombobox.Text;
 
-            parameterValue = ModifyValue.Text;
-            ModifyValue.Clear();
+            //parameterValue = ModifyValue.Text;
+            //ModifyValue.Clear();
         }
 
         private void Button_Click_Create_Usertable(object sender, RoutedEventArgs e)
         {
             var resp = SeederClass.CreateUserTable();
-            LogTableState.Text = resp.Item2;
+            UserTableState.Text = resp.Item2;
             if (resp.Item1 == true)
                 UserTableState.Foreground = System.Windows.Media.Brushes.Green;
             else
@@ -282,7 +310,7 @@ namespace Hubert_Eats_manager
         private void Button_Click_Use_Seeder(object sender, RoutedEventArgs e)
         {
             var resp = SeederClass.ApplySeeder();
-            LogTableState.Text = resp.Item2;
+            SeederState.Text = resp.Item2;
             if (resp.Item1 == true)
                 SeederState.Foreground = System.Windows.Media.Brushes.Green;
             else
@@ -290,6 +318,61 @@ namespace Hubert_Eats_manager
                 SeederState.Foreground = System.Windows.Media.Brushes.Red;
             }
 
+        }
+
+        private void ModifyCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Combobox = (ComboBox)sender;
+            var selectedItem = (ComboBoxItem)Combobox.SelectedItem;
+            switch (selectedItem.Content.ToString())
+            {
+                case "Identifiant":
+                case "Nom Prénom":
+                case "Mot de passe":
+                    ChoixActifCombobox.Visibility = Visibility.Collapsed;
+                    ChoixRoleCombobox.Visibility = Visibility.Collapsed;
+                    ChoixValue.Visibility = Visibility.Visible;
+                    break;
+                case "Rôle":
+                    ChoixActifCombobox.Visibility = Visibility.Collapsed;
+                    ChoixValue.Clear();
+                    ChoixValue.Visibility = Visibility.Collapsed;
+                    ChoixRoleCombobox.Visibility = Visibility.Visible;
+                    break;
+                case "Compte actif ?":
+                    ChoixRoleCombobox.Text = "";
+                    ChoixRoleCombobox.Visibility = Visibility.Collapsed;
+                    ChoixValue.Clear();
+                    ChoixValue.Visibility = Visibility.Collapsed;
+                    ChoixActifCombobox.Visibility = Visibility.Visible;
+                    break;
+            }
+
+        }
+
+        private void ModifyDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+
+        }
+
+        private void DeleteDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void RoleAddUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Combobox = (ComboBox)sender;
+            var selectedItem = (ComboBoxItem)Combobox.SelectedItem;
+            if (UsernameAddUser.Text != "" && PasswordAddUser.Text != "" && PasswordConfirmationAddUser.Text != "" && selectedItem.Content.ToString() != "")
+            {
+                AddUserButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddUserButton.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

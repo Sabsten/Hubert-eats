@@ -20,8 +20,8 @@ namespace ViewModel
                 { "nom", Username },
                 { "password", Password },
                 { "role", Role },
-                {"createdBy", UserLoggedClass.UserName == "" ? "root" : UserLoggedClass.UserName },
-                {"modifiedby", UserLoggedClass.UserName == "" ? "root" : UserLoggedClass.UserName },
+                {"createdBy", UserLoggedClass.UserName == "" || UserLoggedClass.UserName == null  ? "root" : UserLoggedClass.UserName },
+                {"modifiedby", UserLoggedClass.UserName == "" || UserLoggedClass.UserName == null ? "root" : UserLoggedClass.UserName },
             };
             try
             {
