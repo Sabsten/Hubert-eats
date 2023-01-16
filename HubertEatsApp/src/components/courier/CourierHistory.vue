@@ -46,7 +46,7 @@ const parseDistance = (): [km: number, m: number] => {
     </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .courierHistory {
     width:100%;
     height: 100px;

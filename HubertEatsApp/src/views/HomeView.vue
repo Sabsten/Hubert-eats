@@ -83,9 +83,9 @@ export default defineComponent({
               <div class="searchBarInputArea">
                 <div class="localisation">
                   <i class="fa-solid fa-location-dot fa-xl"></i>
-                  <input value="" placeholder="Localisation">
+                  <input value="" placeholder="Localisez-vous">
                 </div>
-                <input class="inputSearch" type="email" id="email" name="email" placeholder="Which dishes are you looking for ?"/>
+                <input class="inputSearch" type="email" id="email" name="email" placeholder="Quels plats recherchez vous ?"/>
               </div>
               <input class="searchButton" type="button" value="Search">
           </div>
@@ -207,6 +207,7 @@ h1{
     border-color: rgb(165, 163, 163);
     width: 220px;
     height: 30px;
+    padding-left: 10px;
   }
 
   .searchBarInputArea{

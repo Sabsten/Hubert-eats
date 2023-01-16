@@ -52,6 +52,22 @@ const router = createRouter({
       component: () => import('../views/CreateAccountView.vue')
     },
     {
+      path: '/follow-command',
+      name: 'follow-command',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/DeliveryFollowUpView.vue')
+    },
+    {
+      path: '/follow-orders',
+      name: 'follow-orders',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/OrdersFollowUpView.vue')
+    },
+    {
       path: '/tests',
       name: 'tests',
       // route level code-splitting
@@ -85,6 +101,64 @@ const router = createRouter({
       }
     },
     {
+      path: '/edit-menu-products',
+      name: 'edit-menu-products',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/EditMenuProducts.vue')
+    },
+    {
+      path: '/edit-menu-products/menu/:id',
+      name: 'edit-menu',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/EditMenu.vue'),
+      beforeEnter: (to, _, next) => {
+        const { id } = to.params
+  
+        if (Array.isArray(id)) {
+          next({ path: '/error' })
+          return
+        }
+  
+        // Is a valid index number
+        const index = parseInt(id)
+        if (index < 0 || index >= products.length) {
+          next({ path: '/error' })
+          return
+        }
+  
+        next()
+      }
+    },
+    {
+      path: '/edit-menu-products/starter/:id',
+      name: 'edit-starter',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/EditProduct.vue'),
+      beforeEnter: (to, _, next) => {
+        const { id } = to.params
+  
+        if (Array.isArray(id)) {
+          next({ path: '/error' })
+          return
+        }
+  
+        // Is a valid index number
+        const index = parseInt(id)
+        if (index < 0 || index >= products.length) {
+          next({ path: '/error' })
+          return
+        }
+  
+        next()
+      }
+    },
+    {
       path: '/login',
       name: 'LoginView',
       // route level code-splitting
@@ -99,6 +173,14 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/CustomerAccount.vue')
+    },
+    {
+      path: '/accountr',
+      name: 'RestoratorAccount',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/RestoratorAccount.vue')
     },
     {
       path: '/purchase',

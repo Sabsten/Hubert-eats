@@ -2,22 +2,17 @@
     <div class="content">
       <img src="@/assets/HubertEatsLogo.png" width="200">
       <div class="links">
-        <HeaderLink v-if="route.query.cart!='true'" :to="route.fullPath+'?cart=true'">
-          <button class="button cart-button" >
-            <i class="fas fa-shopping-cart"></i>   Panier · 0
+        <HeaderLink v-if="currentUrl!='/edit-menu-products'" to="/edit-menu-products">
+          <button class="button myProducts-button">
+            <i class="fa-solid fa-burger-soda"></i>Mes produits 
           </button>
         </HeaderLink>
-        <HeaderLink v-if="route.query.cart=='true'" to="/home">
-          <button class="button cart-button" >
-            <i class="fas fa-shopping-cart"></i>   Panier · 0
-          </button>
-        </HeaderLink>
-        <HeaderLink v-if="currentUrl!=homePath" to="/home">
+        <HeaderLink v-if="currentUrl!=homePath" to="/follow-orders">
           <button class="button account-button">
             <i class="fa-solid fa-house-user"></i>Accueil 
           </button>
         </HeaderLink>
-        <HeaderLink v-if="currentUrl==homePath" to="/accountc">
+        <HeaderLink v-if="currentUrl==homePath" to="/accountr">
           <button class="button account-button">
             <i class="fa-solid fa-user"></i>Compte 
           </button>
@@ -35,7 +30,7 @@
     components: { HeaderLink },
     setup() {
       const currentUrl = window.location.pathname;
-      const homePath = "/home"
+      const homePath = "/follow-orders"
       const route = useRoute()
       return{
         currentUrl,
@@ -71,13 +66,14 @@
   margin-right: 10px;
 }
 
-.cart-button {
-  background-color: #3EBC72;
-  color: white;
-}
 
 .account-button {
   background-color: #000000;
+  color: white;
+}
+
+.myProducts-button{
+    background-color: #55289E;
   color: white;
 }
 
