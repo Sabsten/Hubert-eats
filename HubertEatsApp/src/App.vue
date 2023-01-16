@@ -84,7 +84,7 @@ body {
   left: 50%;
   transform: translate(-50%, 0);
   overflow: auto;
-  width: 50vw;
+  min-width: 450px;
   height: 50vh;
   z-index: 101;
   border-radius: 10px;

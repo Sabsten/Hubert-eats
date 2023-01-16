@@ -186,6 +186,7 @@ h1{
     border-color: rgb(165, 163, 163);
     width: 220px;
     height: 30px;
+    padding-left: 10px;
   }
 
   .searchBarInputArea{

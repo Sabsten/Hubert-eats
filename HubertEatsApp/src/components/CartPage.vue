@@ -57,7 +57,6 @@ flex-direction: row;
 min-height: 90vh;
 justify-content: start;
 align-items: center;
-width: 100%;
 flex-direction: column;
 background-color: var(--green);
 }
@@ -104,5 +103,9 @@ i{
   display:flex;
   flex-direction: column;
   margin-bottom: 20px;
+}
+
+h1, h2{
+  margin-bottom: 0px;
 }
 </style>

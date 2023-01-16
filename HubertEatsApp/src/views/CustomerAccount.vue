@@ -23,7 +23,7 @@ async function updateCustomerAcount() {
 
 <template>
    <div class="page">
-    <HeaderContent/> 
+    <HeaderContent class="header"/> 
     <div class="content_">
       <div class="left-part">
         <form class="personalInformationsForm" @submit="updateCustomerAcount()">
@@ -102,10 +102,14 @@ async function updateCustomerAcount() {
   
 <style scoped>
 
+.header{
+  background-color: var(--light-green);
+  margin-bottom: 50px;
+}
+
 .page{
     min-height: 100vh;
     width: 100%;
-    background-color: var(--light-green);
     display: flex;
     flex-direction: column;
 }
@@ -141,6 +145,7 @@ async function updateCustomerAcount() {
   font-size: 25px;
   display: flex;
   column-gap: 30px;
+  font-weight: 700;
 }
 
 .personalInformationsForm{

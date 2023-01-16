@@ -15,7 +15,7 @@ const props = withDefaults(
     </div>
 </template>
 
-<style lang="scss">
+<style scroped lang="scss">
 .courierHeader {
     width:100%;
     height: fit-content;
