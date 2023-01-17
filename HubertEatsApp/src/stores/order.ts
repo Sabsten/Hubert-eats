@@ -24,12 +24,14 @@ export const useOrderStore = defineStore({
             return state.orders.filter((order) => order.status === OrderStatus.in_preparation);
         },
         getRestaurantOrdersHistory: (state): IOrders[] | undefined => {
-            console.log("test");
             return state.orders.filter((order) => {
                 if(order.status !== OrderStatus.in_preparation && order.status !== OrderStatus.paid){
                     return order
                 }
             });
+        },
+        getCurrentOrder: (state): IOrders | undefined => {
+            return state.orders.find((order) => order.status !== OrderStatus.delivered);
         }
     },
     actions: {
@@ -47,6 +49,7 @@ export const useOrderStore = defineStore({
                     articles: articles,
                     restaurant_id: restaurant_id,
                     restaurant_address: cartStore.cart.restaurant_address,
+                    restaurant_name: cartStore.cart.restaurant_name,
                     customer_id: customer_id,
                     customer_address: customerStore?.customerAccount?.address,
                     price: price,
@@ -71,7 +74,24 @@ export const useOrderStore = defineStore({
                 },
             });
             const data: IOrders[] = await RES.json();
-            console.log(restaurant_id);
+            if (!RES.ok) {
+                this.$patch({ error: RES.statusText });
+                return false
+            } else {
+                this.$patch({ orders: data });
+                return true
+            };
+        },
+        async getOrdersByCustomer(customerID: string){
+            const URL: string = import.meta.env.VITE_ORDERING_SERVICE_URL + '/orders/customer/' + customerID;
+            const RES: Response = await fetch(URL, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
+                },
+            });
+            const data: IOrders[] = await RES.json();
             if (!RES.ok) {
                 this.$patch({ error: RES.statusText });
                 return false
@@ -92,12 +112,12 @@ export const useOrderStore = defineStore({
                     status: status,
                 })
             });
-            const data: {} = await RES.json();
+            const data: IOrders = await RES.json();
             if (!RES.ok) {
                 this.$patch({ error: RES.statusText });
                 return false
             } else {
-                this.$patch({ order: data });
+                this.$state.orders.push(data);
                 return true
             };
         }

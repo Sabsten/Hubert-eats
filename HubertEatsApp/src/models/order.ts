@@ -8,6 +8,7 @@ export interface IOrders {
     courier_id?: string;
     customer_address: IAddress;
     restaurant_address: IAddress;
+    restaurant_name: String;
     articles : [IArticleCart];
     price : number;
     status: string;
@@ -16,7 +17,6 @@ export interface IOrders {
 export enum OrderStatus {
     paid = "paid",
     in_preparation = "in_preparation",
-    to_retrieve = "to_retrieve",
     in_delivery = "in_delivery",
     delivered = "delivered",
     refused = "refused"

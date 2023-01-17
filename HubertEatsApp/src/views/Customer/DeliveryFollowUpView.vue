@@ -1,13 +1,29 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineComponent, onMounted } from 'vue'
 import HeaderContent from '@/components/HeaderContent.vue'
-
-export default defineComponent({
-  setup() {
-  },
-  components: {
+import { useCustomerStore } from '@/stores/customer';
+import { io } from "socket.io-client";
+import { useCartStore } from '@/stores/cart';
+import { storeToRefs } from 'pinia';
+import { useOrderStore } from '@/stores/order';
+import { getAccountId } from '@/stores/auth';
+import { OrderStatus } from '@/models/order';
+const customerStore = useCustomerStore();
+const orderStore = useOrderStore();
+const {order} = storeToRefs(orderStore);
+defineComponent({
     HeaderContent
-  }
+});
+
+onMounted(async () => {
+    await customerStore.getCustomerAccount();
+    await orderStore.getOrdersByCustomer(getAccountId()!);
+    // const socket = io("http://localhost:4000");
+    // socket.on('ORDER-'+orderStore.getCurrentOrder?._id, (data) => {
+    //     console.log("socket");
+    //     orderStore.$patch({order: data});
+    // })
+    console.log(order.value.status)
 })
 </script>
 
@@ -44,24 +60,39 @@ export default defineComponent({
         
         <div class="progressionMessage">Progression:</div>
         <div class="bottom">
-            <div>
+            <div class="grey" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.paid && orderStore.getCurrentOrder?.status !== OrderStatus.in_preparation
+            && orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
                 <i class="fa-solid fa-file-circle-check fa-2xl"></i>
-                <span>Commande acceptée</span>
+                <span>Commande payé</span>
             </div>
-            <hr size="2" color="black" width="10%">
-            <div>
+            <div class="green" v-if="orderStore.getCurrentOrder?.status === OrderStatus.paid || orderStore.getCurrentOrder?.status === OrderStatus.in_preparation
+            || orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+                <i class="fa-solid fa-file-circle-check fa-2xl"></i>
+                <span>Commande payé</span>
+            </div>
+
+            <hr size="3" color="grey" width="50%" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_preparation && orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
+            <hr size="3" color="#3EBC72" width="50%" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_preparation || orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+
+            <div class="grey" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_preparation && orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
                 <i class="fa-solid fa-utensils fa-2xl"></i>
-                <span>Commande prête</span>
-            </div> 
-            <hr size="2" color="black" width="10%">
-            <div>
+                <span>Commande en préparation</span>
+            </div>
+            <div class="green" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_preparation || orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+                <i class="fa-solid fa-utensils fa-2xl"></i>
+                <span>Commande en préparation</span>
+            </div>
+
+            <hr size="3" color="grey" width="50%" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
+            <hr size="3" color="#3EBC72" width="50%" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+
+            <div class="grey" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
                 <i class="fa-sharp fa-solid fa-person-biking fa-2xl"></i>
                 <span>Livraison en cours</span>
-            </div> 
-            <hr size="2" color="black" width="10%">
-            <div>
-                <i class="fa-sharp fa-solid fa-circle-check  fa-2xl"></i>
-                <span>Repas livré</span>
+            </div>
+            <div class="green" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+                <i class="fa-sharp fa-solid fa-person-biking fa-2xl"></i>
+                <span>Livraison en cours</span>
             </div> 
         </div>
         <div class="support2">
@@ -71,7 +102,7 @@ export default defineComponent({
     </div>
 </template>
 
-<style scoped> 
+<style lang="scss" scoped> 
 .header{
     background-color: var(--light-green);
 }
@@ -85,7 +116,7 @@ export default defineComponent({
 .bottom{
     display: flex;
     flex-direction: row;
-    width: calc(100vw - 80px);
+    margin: 0 50px;
     align-items: center;
     justify-content: center;
     height: 10vh;
@@ -98,7 +129,22 @@ i{
     height: 40px;
     margin-bottom: 0px;
 }
-
+.green{
+    i {
+        color:#3EBC72;
+    }
+    span {
+        color: #3EBC72;
+    }
+}
+.grey{
+    i {
+        color:grey;
+    }
+    span {
+        color:grey;
+    }
+}
 .bottom div{
     display: flex;
     flex-direction: column;

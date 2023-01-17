@@ -13,6 +13,7 @@ export class orderController {
             restaurant_id: req.body.restaurant_id,
             customer_address: req.body.customer_address,
             restaurant_address: req.body.restaurant_address,
+            restaurant_name: req.body.restaurant_name,
             price: req.body.price,
             status: OrderStatus.paid,
         });
@@ -46,32 +47,50 @@ export class orderController {
     public updateOrder(req: Request, res: Response) {
         switch(req.body.status){
             case OrderStatus.in_preparation: {
-                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: Document) => {
-                    return err ?
-                        res.status(500).send(err) :
-                        res.status(200).json(doc);
-                }); 
-                break;
-            }
-            case OrderStatus.to_retrieve: {
-                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: Document) => {
-                    return err ?
-                        res.status(500).send(err) :
-                        res.status(200).json(doc);
+                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: IOrders) => {
+                    if (err) {
+                        return res.status(500).send(err)
+                    } else {
+                        let io: Server = req.app.get('io');
+                        io.emit('ORDER-'+doc._id , doc);
+                        return res.status(200).json(doc);
+                    };
                 }); 
                 break;
             }
             case OrderStatus.in_delivery:{
+                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: Document) => {
+                    if (err) {
+                        return res.status(500).send(err)
+                    } else {
+                        let io: Server = req.app.get('io');
+                        io.emit('ORDER-'+doc._id , doc);
+                        return res.status(200).json(doc);
+                    };
+                }); 
                 break;
             }
             case OrderStatus.delivered:{
+                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: Document) => {
+                    if (err) {
+                        return res.status(500).send(err)
+                    } else {
+                        let io: Server = req.app.get('io');
+                        io.emit('ORDER-'+doc._id , doc);
+                        return res.status(200).json(doc);
+                    };
+                }); 
                 break;
             }
             case OrderStatus.refused: {
                 orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: Document) => {
-                    return err ?
-                        res.status(500).send(err) :
-                        res.status(200).json(doc);
+                    if (err) {
+                        return res.status(500).send(err)
+                    } else {
+                        let io: Server = req.app.get('io');
+                        io.emit('ORDER-'+doc._id , doc);
+                        return res.status(200).json(doc);
+                    };
                 }); 
                 break;
             }

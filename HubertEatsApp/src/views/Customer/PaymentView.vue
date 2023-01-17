@@ -31,7 +31,7 @@ async function pay() {
         errorMessage.value = 'Problème au niveau de paiement'
     } else {
         cartStore.$reset();
-        router.push('/');
+        router.push('/customer/delivery');
     }
 }
 onMounted(async () => {

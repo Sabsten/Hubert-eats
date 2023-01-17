@@ -12,6 +12,7 @@ export interface IOrders {
     courier_id?: Types.ObjectId;
     customer_address: IAddress;
     restaurant_address: IAddress;
+    restaurant_name: String;
     articles : [IArticleCart];
     price : number;
     status: string;
@@ -20,7 +21,6 @@ export interface IOrders {
 export enum OrderStatus {
   paid = "paid",
   in_preparation = "in_preparation",
-  to_retrieve = "to_retrieve",
   in_delivery = "in_delivery",
   delivered = "delivered",
   refused = "refused"
@@ -33,6 +33,7 @@ const ordersSchema = new Schema<IOrders>({
   courier_id: {  type: Schema.Types.ObjectId, required: false },
   customer_address: { type: addressSchema , required: true},
   restaurant_address: { type: addressSchema , required: true},
+  restaurant_name: { type: String, required: true},
   articles: { type: [articleCartSchema], required: true},
   price: { type: Number, required: true },
   status: { type: String, required: true },
