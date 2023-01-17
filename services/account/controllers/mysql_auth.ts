@@ -9,19 +9,17 @@ export class MySqlAuthController {
     public signIn = async (req: Request, res: Response) => {
         const {identifiant, password} = req.body;
         const connection = dbMysql.getConnection();
-        var rows = await (await connection).query(
+        const rows: any = await (await connection).query(
             'SELECT role FROM InternalUserTable WHERE identifiant = ? AND password = ?',
-            [identifiant, this.hashSHA256(password)]
+            [identifiant, this.hashSHA256(password)],
         );
-        if (rows[0].length === 0) {
-            res.status(401).send('Invalid credentials');
 
+        if (rows[0][0].role.length === 0) {
+            return res.status(404).json({error: "Identifiants incorrect, aucun compte n'a été trouvé"});
         }
-        console.log(rows[0]);
-        const token = jwt.sign({role: rows[0].toString(), identifiant: identifiant},process.env.JWT_SECRET as string);
-        res.send({token: token});
-    }
-
+        const accessToken = jwt.sign({identifiant: identifiant, role: rows[0][0].role}, process.env.PRIVATE_TOKEN_KEY!);
+        return res.status(200).json({token: accessToken});
+    };
 
     private hashSHA256(password: string): string {
         const sha256 = createHash('sha256');

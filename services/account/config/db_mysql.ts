@@ -5,7 +5,7 @@ export class dbMysql {
         host: "db4free.net",
         user: "hubert",
         password: "cesihubert",
-        database: "huberteats"
+        database: "huberteats",
     });
 
     public static getConnection() {
