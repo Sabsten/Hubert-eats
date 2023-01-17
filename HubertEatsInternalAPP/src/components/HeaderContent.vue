@@ -1,0 +1,49 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+})
+</script>
+
+
+<template>
+    <div class="content">
+      <img src="@/assets/HubertEatsLogov2.png" width="200">
+      <div class="title">
+        Service commercial
+      </div>
+    </div>
+</template>
+
+  
+  <style scoped>
+.content{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  height: 96px;
+  gap: 50px;
+  background-color: var(--green);
+}
+
+.title{
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--white);
+    margin-left: 20px;
+}
+
+
+
+
+@media screen and (max-width: 550px) {
+  .content{
+    justify-content: right;
+  }
+  img{
+    display: none;
+  }
+}
+
+  </style>
