@@ -26,10 +26,11 @@ const orderStore = useOrderStore();
 let errorMessage: Ref<string | null> = ref(null);
 
 async function pay() {
-    let isOk: boolean = await orderStore.payOrder(cart.value.articles, getAccountId()!, cart.value.restaurant_id, totalPrice.value)
+    let isOk: boolean = await orderStore.payOrder(cart.value.articles, cart.value.restaurant_id, getAccountId()!, totalPrice.value)
     if(!isOk){
         errorMessage.value = 'Problème au niveau de paiement'
     } else {
+        cartStore.$reset();
         router.push('/');
     }
 }

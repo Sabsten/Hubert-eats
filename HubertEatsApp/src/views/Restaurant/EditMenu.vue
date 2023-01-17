@@ -59,7 +59,7 @@ export default defineComponent({
             <div class="shopsElements" cellspacing="10" cellpadding="0">
                 <div class="element" v-for="(product, i) in products" :key="i" @click="">
                     <button value="0" v-on:click="">
-                        <CardProduct :element=product />    
+                        <!-- <CardProduct :element=product />   -->
                     </button>
                 </div>
             </div>
@@ -67,7 +67,7 @@ export default defineComponent({
             <div class="shopsElements" cellspacing="10" cellpadding="0">
                 <div class="element" v-for="(product, i) in products" :key="i" @click="">
                     <button value="1" v-on:click="">
-                        <CardProduct :element=product />
+                        <!-- <CardProduct :element=product /> -->
                     </button>
                 </div>
             </div>

@@ -9,6 +9,7 @@ export interface IOrders {
     _id?: Types.ObjectId;
     customer_id: Types.ObjectId;
     restaurant_id: Types.ObjectId;
+    courier_id?: Types.ObjectId;
     customer_address: IAddress;
     restaurant_address: IAddress;
     articles : [IArticleCart];
@@ -19,13 +20,17 @@ export interface IOrders {
 export enum OrderStatus {
   paid = "paid",
   in_preparation = "in_preparation",
-  finish = "finish",
+  to_retrieve = "to_retrieve",
+  in_delivery = "in_delivery",
+  delivered = "delivered",
+  refused = "refused"
 }
 
 // Create a Schema corresponding to the document interface.
 const ordersSchema = new Schema<IOrders>({
   customer_id: {  type: Schema.Types.ObjectId, required: true },
   restaurant_id: {  type: Schema.Types.ObjectId, required: true },
+  courier_id: {  type: Schema.Types.ObjectId, required: false },
   customer_address: { type: addressSchema , required: true},
   restaurant_address: { type: addressSchema , required: true},
   articles: { type: [articleCartSchema], required: true},

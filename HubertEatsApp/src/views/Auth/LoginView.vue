@@ -32,7 +32,7 @@ async function tryLogin() {
       router.push({ path: '/courier'});
       break
     case 'restaurant':
-      router.push({ path: '/home'});
+      router.push({ path: '/restaurant'});
   }
   return
 }

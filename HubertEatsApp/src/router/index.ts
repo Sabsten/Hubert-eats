@@ -23,6 +23,13 @@ function customerGuard(to: any, from: any, next: any) {
     next('/');
   }
 }
+function restaurantGuard(to: any, from: any, next: any) {
+  if (getAccountType() === 'restaurant') {
+    next();
+  } else {
+    next('/');
+  }
+}
 
 function redirect(to: any, from: any, next: any) {
   switch (getAccountType()) {
@@ -33,7 +40,7 @@ function redirect(to: any, from: any, next: any) {
       next('/customer')
       break;
     default:
-      next('/login')
+      next('/restaurant')
   }
 }
 
@@ -94,72 +101,56 @@ const router = createRouter({
               next({ path: '/' })
             }
           },
+        },
+        {
+          path: 'delivery',
+          name: 'customer-delivery',
+          component: () => import('../views/Customer/DeliveryFollowUpView.vue'),
+          beforeEnter: (to, from, next) => {
+            const customerStore = useCustomerStore();
+            customerStore.getCustomerAccount();
+            customerGuard(to, from, next);
+          }
         }
       ],
     },
+    /******************* RESTAURANT ROUTER ****************/
     {
-      path: '/follow-command',
-      name: 'follow-command',
-      component: () => import('../views/DeliveryFollowUpView.vue')
-    },
-    {
-      path: '/follow-orders',
-      name: 'follow-orders',
-      component: () => import('../views/OrdersFollowUpView.vue')
-    },
-    {
-      path: '/edit-menu-products',
-      name: 'edit-menu-products',
-      component: () => import('../views/EditMenuProducts.vue')
-    },
-    {
-      path: '/edit-menu-products/menu/:id',
-      name: 'edit-menu',
-      component: () => import('../views/EditMenu.vue'),
-      beforeEnter: (to, _, next) => {
-        const { id } = to.params
-  
-        if (Array.isArray(id)) {
-          next({ path: '/error' })
-          return
-        }
-  
-        // Is a valid index number
-        const index = parseInt(id)
-        if (index < 0 || index >= products.length) {
-          next({ path: '/error' })
-          return
-        }
-  
-        next()
-      }
-    },
-    {
-      path: '/edit-menu-products/starter/:id',
-      name: 'edit-starter',
-      component: () => import('../views/EditProduct.vue'),
-      beforeEnter: (to, _, next) => {
-        const { id } = to.params
-  
-        if (Array.isArray(id)) {
-          next({ path: '/error' })
-          return
-        }
-  
-        // Is a valid index number
-        const index = parseInt(id)
-        if (index < 0 || index >= products.length) {
-          next({ path: '/error' })
-          return
-        }
-  
-        next()
-      }
-    },
-    {
-      path: '/accountr',
-      name: 'RestoratorAccount',
-      component: () => import('../views/RestoratorAccount.vue')
+      path: '/restaurant',
+      component: () => import('../views/Restaurant/restaurant.vue'),
+      beforeEnter: restaurantGuard,
+      children: [
+        {
+          path: '',
+          name: 'restaurant-home',
+          component: () => import('../views/Restaurant/RestaurantHome.vue'),
+          beforeEnter: restaurantGuard,
+        },
+        {
+          path: 'account',
+          name: 'restaurant-account',
+          component: () => import('../views/Restaurant/RestoratorAccount.vue'),
+          beforeEnter: restaurantGuard,
+        },
+        {
+          path: 'edit-menu-products',
+          name: 'edit-menu-products',
+          component: () => import('../views/Restaurant/EditMenuProducts.vue'),
+          beforeEnter: restaurantGuard,
+        },
+        {
+          path: 'edit-menu-products/menu/:id',
+          name: 'edit-menu',
+          component: () => import('../views/Restaurant/EditMenu.vue'),
+          beforeEnter: restaurantGuard,
+        },
+        {
+          path: 'edit-menu-products/starter/:id',
+          name: 'edit-starter',
+          component: () => import('../views/Restaurant/EditProduct.vue'),
+          beforeEnter: restaurantGuard
+        },
+      ]
     },
     /******************* COURIER ROUTER ****************/
     {

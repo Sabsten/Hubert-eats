@@ -46,12 +46,12 @@ export default defineComponent({
         <div class="bottom">
             <div>
                 <i class="fa-solid fa-file-circle-check fa-2xl"></i>
-                <span>Demande acceptée</span>
+                <span>Commande acceptée</span>
             </div>
             <hr size="2" color="black" width="10%">
             <div>
                 <i class="fa-solid fa-utensils fa-2xl"></i>
-                <span>Demande prête</span>
+                <span>Commande prête</span>
             </div> 
             <hr size="2" color="black" width="10%">
             <div>

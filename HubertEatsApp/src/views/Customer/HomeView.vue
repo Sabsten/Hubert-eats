@@ -72,9 +72,9 @@ let searchValue: string;
               <i class="fa-solid fa-location-dot fa-xl"></i>
               <input value="" placeholder="Localisation">
             </div>
-            <input v-model="searchValue" class="inputSearch" type="text" placeholder="Which dishes are you looking for ?"/>
+            <input v-model="searchValue" class="inputSearch" type="text" placeholder="Rechercher un restaurant ..."/>
           </div>
-          <input class="searchButton" type="button" value="Search" @click="restaurantStore.getRestaurants('?name='+searchValue)">
+          <input class="searchButton" type="button" value="Chercher" @click="restaurantStore.getRestaurants('?name='+searchValue)">
       </div>
       <Carousel class="carousel" :settings="carouselSettings" :breakpoints="carouselBreakPoints">
       <Slide v-for="(product, i) in products" :key="i">
