@@ -17,7 +17,7 @@ export class MySqlAuthController {
         if (rows[0][0].role.length === 0) {
             return res.status(404).json({error: "Identifiants incorrect, aucun compte n'a été trouvé"});
         }
-        const accessToken = jwt.sign({identifiant: identifiant, role: rows[0][0].role}, process.env.PRIVATE_TOKEN_KEY!);
+        const accessToken = jwt.sign({identifiant: identifiant, role: rows[0][0].role}, "AZERTYUIOP");
         return res.status(200).json({token: accessToken});
     };
 

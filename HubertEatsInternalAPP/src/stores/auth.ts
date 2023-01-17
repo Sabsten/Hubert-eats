@@ -6,6 +6,13 @@ export type TokenPayload = {
     identifiant: string,
 }
 
+export function getIdentifiant(): string | undefined{
+    return getTokenPayload()?.identifiant
+}
+export function getRole(): string | undefined{
+    return getTokenPayload()?.role;
+}
+
 function getTokenPayload(): TokenPayload | null {
     const token = localStorage.getItem('TOKEN');
     if(token === null) {
@@ -14,18 +21,9 @@ function getTokenPayload(): TokenPayload | null {
     return jwt_decode<TokenPayload>(token);
 }
 
+
 export const useAuthStore = defineStore({
     id: 'Auth',
-    getters: {
-        getRole: (): string | null => {
-            const payload = getTokenPayload();
-            return payload === null ? null : payload.identifiant;
-        },
-        getIdentifiant: (): string | null => {
-            const payload = getTokenPayload();
-            return payload === null ? null : payload.role;
-        }
-    },
     actions: {
         async signIn(identifiant: string, password: string): Promise<string | null> {
             const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + 'internal/signin';

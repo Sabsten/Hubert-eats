@@ -2,7 +2,22 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import Commercial from '../views/CommercialView.vue'
 import DevTiers from '../views/CommercialView.vue'
+import { getRole } from '../stores/auth'
 
+
+
+function redirect(to: any, from: any, next: any) {
+  switch ( getRole()) {
+    case 'Developpeur':
+      next('/dev')
+    case 'Commercial':
+      next('/commercial')
+    case 'Technicien':
+      next('/tech')
+    default:
+      next('/')
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +31,7 @@ const router = createRouter({
       path: '/dev',
       name: 'dev',
       component: DevTiers
+      
     },
     {
       path: '/commercial',
@@ -32,5 +48,7 @@ const router = createRouter({
     },
   ]
 })
+
+
 
 export default router
