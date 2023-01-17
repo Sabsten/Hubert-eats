@@ -4,7 +4,7 @@ import { ArticlesController } from "../controllers/articles";
 const articlesController = new ArticlesController();
 const articlesRouter = express.Router();
 articlesRouter.get('/', articlesController.getAllArticles);
-articlesRouter.get('/:id', articlesController.getArticleById);
+articlesRouter.get('/:restaurant_id', articlesController.getArticlesByRestaurantId);
 articlesRouter.post('/', articlesController.addArticle);
 articlesRouter.delete('/:id', articlesController.deleteArticleById);
 

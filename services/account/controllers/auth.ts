@@ -32,13 +32,12 @@ export class AuthController {
         if (document === null) {
             return res.status(404).json({error: "Identifiants incorrect, aucun compte n'a été trouvé"});
         };
-        const accessToken = jwt.sign({accountId: document._id, type: accountType}, process.env.PRIVATE_TOKEN_KEY! ,{
-            expiresIn: "24h",
-        });
+        const accessToken = jwt.sign({accountId: document._id, type: accountType}, process.env.PRIVATE_TOKEN_KEY!);
         return res.status(200).json({token: accessToken});
     };
 
     public async signUp(req: Request, res: Response) {
+        console.log(req.body)
         const accountType: UserType = req.params.accountType as UserType;
         if (!(accountType in UserType)) {
             return res.status(500).json({error: "Missing request.body.type please retry ..."});
@@ -55,7 +54,11 @@ export class AuthController {
                     document = await newRestaurant.save()
                 } catch (err) {
                     const error = err as mongodb.MongoError
-                    return res.status(500).json({error: error.message});
+                    if (error.code === 11000) {
+                        return res.status(409).json({error: "Email already exist !"})
+                    } else {
+                        return res.status(500).json({error: error});
+                    }
                 }
                 break;
             }
@@ -70,7 +73,11 @@ export class AuthController {
                     document = await newCustomer.save()
                 } catch (err) {
                     const error = err as mongodb.MongoError
-                    return res.status(500).json({error: error.message});
+                    if (error.code === 11000) {
+                        return res.status(409).json({error: "Email already exist !"})
+                    } else {
+                        return res.status(500).json({error: error});
+                    }
                 }
                 break;
             }
@@ -86,7 +93,11 @@ export class AuthController {
                     document = await newCourier.save()
                 } catch (err) {
                     const error = err as mongodb.MongoError
-                    return res.status(500).json({error: error.message});
+                    if (error.code === 11000) {
+                        return res.status(409).json({error: "Email already exist !"})
+                    } else {
+                        return res.status(500).json({error: error});
+                    }
                 }
                 break;
             }
@@ -94,9 +105,7 @@ export class AuthController {
         if (document === null) {
             return res.status(500).json({error: "document null"});
         };
-        const accessToken = jwt.sign({accountId: document._id, type: accountType}, process.env.PRIVATE_TOKEN_KEY! ,{
-            expiresIn: "24h",
-        });
+        const accessToken = jwt.sign({accountId: document._id, type: accountType}, process.env.PRIVATE_TOKEN_KEY!);
         return res.status(200).json({token: accessToken});
     }
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Article from "../models/articles";
+import Article, { IArticle } from "../models/articles";
 import { CallbackError, Document } from "mongoose";
 
 export class ArticlesController {
@@ -12,8 +12,12 @@ export class ArticlesController {
         })
     };
 
-    public getArticleById(req: Request, res: Response){
-        return res.send("GET ARTICLE WITH ID : " + req.params.id +" SUCCESS !");
+    public getArticlesByRestaurantId(req: Request, res: Response){
+        Article.find({restaurant_id: req.params.restaurant_id}, (err: CallbackError, docs: Document) => {
+            return err ?
+            res.status(500).send(err) :
+            res.status(200).json(docs);
+        })
     };
     
     public deleteArticleById(req: Request, res: Response){

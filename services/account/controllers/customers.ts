@@ -37,4 +37,21 @@ export class CustomersController {
         });
     };
 
+    public updateCustomerAccount(req: Request, res: Response) {
+        Customer.findByIdAndUpdate(req.params.id, {
+            'account.mail': req.body.mail,
+            'account.password': req.body.password,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            'address.city': req.body.city,
+            'address.street_name': req.body.street_name,
+            'address.street_number': req.body.street_number,
+            'address.postal_code': req.body.postal_code,
+        }, (err: CallbackError, doc: ICustomer) => {
+            return err ?
+            res.status(500).send(err) :
+            res.status(200).send(doc);
+        });
+    };
+
 }

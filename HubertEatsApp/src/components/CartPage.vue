@@ -1,86 +1,47 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { useCartStore } from '@/stores/cart';
+import { useRestaurantStore } from '@/stores/restaurant';
+import { defineStore } from 'pinia';
+import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
-export default defineComponent({
-  setup() {
-    const routeLocation = useRoute()
-    const router = useRouter()
-    const goToPurchase = () => {
-    router.push({ path: `/purchase` })
-  }
-    return { goToPurchase }
-  }
-})
+const routeLocation = useRoute()
+const router = useRouter()
+const goToPurchase = () => {
+  router.push({ path: `/purchase` })
+}
+const restaurantStore = useRestaurantStore();
+const cartStore = useCartStore();
+let { cart, totalPrice } = storeToRefs(cartStore);
+
 </script>
 
 <template>
   <div class="pageComponent">
     <div class="listOrder">
       <div class="element">
-          
-          <h1>Krousty</h1>
-          <p>12 boulevard des platanes,<br>
-31000 Toulouse</p>
-          <div class="elementInfo">
-              <div class="add-sub">
-                  <i class="fa-solid fa-minus"></i>
-                  <span>10</span>
-                  <i class="fa-solid fa-plus"></i>
-              </div>
-              <div class="description">
-                  <div class="name">Nom du menu</div>
-                  <div class="price">10 €</div>
-                  <div class="quantity">- Element1</div>
-                  <div class="quantity">- Element2</div>
-              </div>
-              <div class="image">
-                  <img width="100px" src="https://media.istockphoto.com/id/495204032/fr/photo/frais-savoureux-hamburger.jpg?s=612x612&w=0&k=20&c=1fXLZOBtqU_AHj-v-IH6rV6BL5vr3d95P_BGr69KC3E=">
-              </div>
+          <h1>{{ cart.restaurant_name }}</h1>
+          <div v-for="article in cart.articles">
+            <div class="elementInfo">
+                <div class="add-sub">
+                    <i class="fa-solid fa-minus pointer" @click="cartStore.removeToCart(article)"></i>
+                    <span>{{article.quantity}}</span>
+                    <i class="fa-solid fa-plus pointer" @click="cartStore.addQuantity(article)"></i>
+                </div>
+                <div class="description">
+                    <div class="name">{{ article.name }}</div>
+                    <div class="price">{{ article.price * article.quantity }}&nbsp;€</div>
+                </div>
+                <div class="image">
+                    <img width="100px" :src="article.image">
+                </div>
+            </div>
+            <hr size="1" color="white" width="100%">
           </div>
-          <hr size="1" color="white" width="100%">
-          <div class="elementInfo">
-              <div class="add-sub">
-                  <i class="fa-solid fa-minus"></i>
-                  <span>10</span>
-                  <i class="fa-solid fa-plus"></i>
-              </div>
-              <div class="description">
-                  <div class="name">Nom du produit</div>
-                  <div class="price">20 €</div>
-              </div>
-              <div class="image">
-                  <img width="100px" src="https://media.istockphoto.com/id/495204032/fr/photo/frais-savoureux-hamburger.jpg?s=612x612&w=0&k=20&c=1fXLZOBtqU_AHj-v-IH6rV6BL5vr3d95P_BGr69KC3E=">
-              </div>
-          </div>  
-          <hr size="1" color="white" width="100%">
-          <input type="button" @click="goToPurchase()" class="confirm" value="Commander . 16€"> 
+          <input type="button" @click="goToPurchase()" class="confirm pointer" :value="'Commander · '+totalPrice.toString()+'€'"> 
       </div>
-
-      <div class="element">
-          
-          <h1>McDO</h1>
-          <p>12 boulevard des platanes,<br>
-31000 Toulouse</p>
-          <div class="elementInfo">
-              <div class="add-sub">
-                  <i class="fa-solid fa-minus"></i>
-                  <span>10</span>
-                  <i class="fa-solid fa-plus"></i>
-              </div>
-              <div class="description">
-                  <div class="name">Nom du produit</div>
-                  <div class="price">20 €</div>
-              </div>
-              <div class="image">
-                  <img width="100px" src="https://media.istockphoto.com/id/495204032/fr/photo/frais-savoureux-hamburger.jpg?s=612x612&w=0&k=20&c=1fXLZOBtqU_AHj-v-IH6rV6BL5vr3d95P_BGr69KC3E=">
-              </div>
-          </div> 
-          <hr size="1" color="white" width="100%"> 
-          <input type="button" @click="goToPurchase()" class="confirm" value="Commander . 16€"> 
-      </div>
-      
     </div>
   </div>
 </template>
@@ -96,12 +57,13 @@ flex-direction: row;
 min-height: 90vh;
 justify-content: start;
 align-items: center;
-width: 100%;
 flex-direction: column;
 background-color: var(--green);
 }
 
-
+.pointer:hover {
+  cursor: pointer;
+}
 .listOrder{
   display:flex;
   flex-direction: column;
@@ -141,5 +103,9 @@ i{
   display:flex;
   flex-direction: column;
   margin-bottom: 20px;
+}
+
+h1, h2{
+  margin-bottom: 0px;
 }
 </style>

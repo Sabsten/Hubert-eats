@@ -1,25 +1,12 @@
-<script lang="ts">
-import { computed, defineComponent, useCssVars } from 'vue'
-import { products } from '@/assets/products'
-
-
-type CardRestaurantProps = { element: any }
-
-export default defineComponent({
-}
-)
-
-</script>
-
 <template>
     <div class="payment">
       <div class="rectangle">
         <div class="subName">Carte de Crédit</div>
-            <input placeholder="Numéro de carte" class="inputPaymentNumCard">
+            <input type="number" placeholder="Numéro de carte" class="inputPaymentNumCard">
             <div class="inputs">
-                <input placeholder="Nom du Titulaire" class="inputPaymentOther">
-                <input placeholder="Date d'expiration" class="inputPaymentOther">
-                <input placeholder="CVV" class="inputPaymentOther">
+                <input type="text" placeholder="Nom du Titulaire" class="inputPaymentOther">
+                <input type="text" placeholder="Date d'expiration" class="inputPaymentOther">
+                <input type="text" placeholder="CVV" class="inputPaymentOther">
             </div>
         </div>
       </div>

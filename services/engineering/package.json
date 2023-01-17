@@ -1,0 +1,25 @@
+{
+  "name": "seeder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "seed": "ts-node seed.ts",
+    "unseed": "ts-node unseed.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "faker-js": "^1.0.0",
+    "mongoose": "^6.8.3",
+    "seedgoose": "^2.0.2",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "typescript": "^4.9.4"
+  }
+}
