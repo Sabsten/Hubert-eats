@@ -2,8 +2,8 @@ import { defineStore } from 'pinia';
 import jwt_decode from 'jwt-decode';
 
 export type TokenPayload = {
-    type: string,
-    accountId: string,
+    role: string,
+    identifiant: string,
 }
 
 function getTokenPayload(): TokenPayload | null {
@@ -17,25 +17,22 @@ function getTokenPayload(): TokenPayload | null {
 export const useAuthStore = defineStore({
     id: 'Auth',
     getters: {
-        getAccountId: (): string | null => {
+        getRole: (): string | null => {
             const payload = getTokenPayload();
-            return payload === null ? null : payload.accountId;
+            return payload === null ? null : payload.identifiant;
         },
-        getAccountType: (): string | null => {
+        getIdentifiant: (): string | null => {
             const payload = getTokenPayload();
-            return payload === null ? null : payload.type;
-        },
-        getToken: (): string | null => {
-            return localStorage.getItem('TOKEN');
+            return payload === null ? null : payload.role;
         }
     },
     actions: {
-        async signIn(type: string, mail: string, password: string): Promise<string | null> {
-            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/signin/' + type;
+        async signIn(identifiant: string, password: string): Promise<string | null> {
+            const URL: string = import.meta.env.VITE_INTERNAL_SERVICE_URL + '/signin/internal';
             const RES: Response = await fetch(URL, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({mail: mail, password: password})
+                body: JSON.stringify({identifiant: identifiant, password: password})
             });
             const data = await RES.json();
             if (!RES.ok) {
