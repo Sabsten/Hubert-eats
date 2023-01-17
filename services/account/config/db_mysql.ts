@@ -1,12 +1,14 @@
-import mysql from "mysql2";
+import mysql from "mysql2/promise";
 
 export class dbMysql {
-
-    private connection = mysql.createConnection({
+    private static connection = mysql.createConnection({
         host: "db4free.net",
         user: "hubert",
         password: "cesihubert",
-        database: "huberteats"
+        database: "huberteats",
     });
-    static connection: mysql.Connection;
+
+    public static getConnection() {
+        return this.connection;
+    }
 }

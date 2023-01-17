@@ -22,8 +22,8 @@ const router = createRouter({
       component: DevTiers
     },
     {
-      path: '/commercials',
-      name: 'commercials',
+      path: '/commercial',
+      name: 'commercial',
       component: Commercial
     }
   ]

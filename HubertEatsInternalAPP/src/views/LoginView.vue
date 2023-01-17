@@ -12,26 +12,31 @@ const goToCreateAccount = () => {
 
 let mail: string | undefined;
 let password: string | undefined;
-let accountType: string | undefined;
+let Role: string | null;
 let errorMessage: Ref<string | null> = ref(null);
 
 async function tryLogin() {
-  if(accountType === undefined || mail === undefined || password === undefined) {
+  if(mail === undefined || password === undefined) {
     errorMessage.value = "Merci de remplir tous les champs !"
     return
   };
-  errorMessage.value = await authStore.signIn(accountType, mail, password);
+  errorMessage.value = await authStore.signIn( mail, password);
   if(errorMessage.value  !== null){
     return
   }
-  switch(accountType) {
-    case 'customer':
-      router.push({ path: '/home'});
-      break;
-    case 'courier':
-      router.push({ path: '/courier'});
+  else
+  {
+    Role = authStore.getRole
+    if(Role === "developpeur"){
+      return await router.push({ path: '/dev'});
+    }
+    else if(Role === "commercial"){
+      return await router.push({ path: '/commercial'});
+    }
+    else if(Role === "tech"){
+      return await router.push({ path: '/tech'});
+    }
   }
-  return
 }
 
 </script>
