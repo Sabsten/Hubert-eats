@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useAuthStore } from './auth';
+import { getAccountId, useAuthStore } from './auth';
 import type { IArticleCart, ICart } from '@/models/cart';
 import { useRestaurantStore } from './restaurant';
 import { useCustomerStore } from './customer';
@@ -101,7 +101,26 @@ export const useOrderStore = defineStore({
                 return true
             };
         },
-        async changeOrderStatus(order_id: string, status: OrderStatus){
+        async getOrdersByCourier(courierID: string){
+            const URL: string = import.meta.env.VITE_ORDERING_SERVICE_URL + '/orders/courier/' + courierID;
+            const RES: Response = await fetch(URL, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
+                },
+            });
+            const data: IOrders[] = await RES.json();
+            if (!RES.ok) {
+                this.$patch({ error: RES.statusText });
+                return false
+            } else {
+                this.$patch({ orders: data });
+                this.$patch({order: this.getCurrentOrder});
+                return true
+            };
+        },
+        async changeOrderStatus(order_id: string, status: OrderStatus, code?: number){
             const URL: string = import.meta.env.VITE_ORDERING_SERVICE_URL + '/orders/' + order_id;
             const RES: Response = await fetch(URL, {
                 method: 'PATCH',
@@ -111,6 +130,7 @@ export const useOrderStore = defineStore({
                 },
                 body: JSON.stringify({
                     status: status,
+                    code: code,
                 })
             });
             const data: IOrders = await RES.json();
@@ -118,7 +138,26 @@ export const useOrderStore = defineStore({
                 this.$patch({ error: RES.statusText });
                 return false
             } else {
-                this.$state.orders.push(data);
+                this.$state.order = data;
+                // this.$state.orders.push(data);
+                return true
+            };
+        },
+        async assignOrder(order_id: string){
+            const URL: string = import.meta.env.VITE_ORDERING_SERVICE_URL + '/orders/' + order_id + '/courier/' + getAccountId()!;
+            const RES: Response = await fetch(URL, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!,
+                },
+            });
+            const data: IOrders = await RES.json();
+            if (!RES.ok) {
+                this.$patch({ error: RES.statusText });
+                return false
+            } else {
+                this.$state.order = data;
                 return true
             };
         }

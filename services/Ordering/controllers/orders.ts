@@ -45,6 +45,14 @@ export class orderController {
         })
      };
 
+     public getCourierOrders(req: Request, res: Response) {
+        orderSchema.find<IOrders>({courier_id: req.params.id},(err: CallbackError, docs: IOrders[]) => {
+         return err ?
+             res.status(500).send(err) :
+             res.status(200).json(docs);
+        })
+     };
+
     public assignOrder(req: Request, res: Response) {
         orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {courier_id: req.params.courier_id}, (err: ErrorCallback, doc: IOrders) => {
             if (err) {
@@ -84,7 +92,7 @@ export class orderController {
                 break;
             }
             case OrderStatus.delivered:{
-                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: Document) => {
+                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status, code: req.body.code}, (err: ErrorCallback, doc: Document) => {
                     if (err) {
                         return res.status(500).send(err)
                     } else {

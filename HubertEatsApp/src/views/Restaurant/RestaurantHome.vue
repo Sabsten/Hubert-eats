@@ -48,7 +48,7 @@ async function updateOrder(orderID: string, status: OrderStatus) {
         </div>
         <div class="order-to-prepare" v-for="order in getOrdersToPrepare">
           <Order :order="order"></Order>
-          <i class="fa-solid fa-check-circle fa-2xl" style="color:#44795A" @click="updateOrder(order._id!, OrderStatus.in_delivery)"></i>
+          <!-- <i class="fa-solid fa-check-circle fa-2xl" style="color:#44795A" @click="updateOrder(order._id!, OrderStatus.in_delivery)"></i> -->
         </div>
       </div>
     <div class="commandsInPending">

@@ -169,7 +169,7 @@ const router = createRouter({
           name: 'courierAccount',
           component: CourierAccount,
           beforeEnter: courierGuard,
-        }
+        },
       ],
     }
   ]
