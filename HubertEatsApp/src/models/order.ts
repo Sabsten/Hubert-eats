@@ -11,6 +11,7 @@ export interface IOrders {
     restaurant_name: String;
     articles : [IArticleCart];
     price : number;
+    validation_code: number;
     status: string;
 }
 

@@ -15,6 +15,7 @@ export interface IOrders {
     restaurant_name: String;
     articles : [IArticleCart];
     price : number;
+    validation_code: number; 
     status: string;
 }
 
@@ -36,6 +37,7 @@ const ordersSchema = new Schema<IOrders>({
   restaurant_name: { type: String, required: true},
   articles: { type: [articleCartSchema], required: true},
   price: { type: Number, required: true },
+  validation_code: {type: Number, required: true},
   status: { type: String, required: true },
 }, { versionKey: false, timestamps: true });
 

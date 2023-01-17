@@ -97,6 +97,7 @@ export const useOrderStore = defineStore({
                 return false
             } else {
                 this.$patch({ orders: data });
+                this.$patch({order: this.getCurrentOrder});
                 return true
             };
         },

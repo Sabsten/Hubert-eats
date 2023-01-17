@@ -13,21 +13,21 @@ function courierGuard(to: any, from: any, next: any) {
   if (getAccountType() === 'courier') {
     next();
   } else {
-    next('/');
+    next('/login');
   }
 }
 function customerGuard(to: any, from: any, next: any) {
   if (getAccountType() === 'customer') {
     next();
   } else {
-    next('/');
+    next('/login');
   }
 }
 function restaurantGuard(to: any, from: any, next: any) {
   if (getAccountType() === 'restaurant') {
     next();
   } else {
-    next('/');
+    next('/login');
   }
 }
 

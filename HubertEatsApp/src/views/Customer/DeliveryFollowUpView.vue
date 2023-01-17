@@ -7,7 +7,7 @@ import { useCartStore } from '@/stores/cart';
 import { storeToRefs } from 'pinia';
 import { useOrderStore } from '@/stores/order';
 import { getAccountId } from '@/stores/auth';
-import { OrderStatus } from '@/models/order';
+import { OrderStatus, type IOrders } from '@/models/order';
 const customerStore = useCustomerStore();
 const orderStore = useOrderStore();
 const {order} = storeToRefs(orderStore);
@@ -18,12 +18,16 @@ defineComponent({
 onMounted(async () => {
     await customerStore.getCustomerAccount();
     await orderStore.getOrdersByCustomer(getAccountId()!);
-    // const socket = io("http://localhost:4000");
-    // socket.on('ORDER-'+orderStore.getCurrentOrder?._id, (data) => {
-    //     console.log("socket");
-    //     orderStore.$patch({order: data});
-    // })
-    console.log(order.value.status)
+    const socket = io("http://localhost:4000");
+    socket.on('ORDER-'+orderStore.getCurrentOrder?._id, (status: OrderStatus) => {
+        order.value.status = status;
+        if(status === OrderStatus.in_preparation) {
+            new window.Notification('Commande en préparation par le restaurant ' + order.value.restaurant_name, {vibrate: 500, image:"https://img.freepik.com/free-vector/chef-concept-illustration_114360-1219.jpg?w=360"});
+        }
+        if (status === OrderStatus.in_delivery) {
+            new window.Notification('Commande prise en charge par notre livreur', {vibrate: 500, image:"https://img.freepik.com/vecteurs-libre/paquet-expedition-par-messagerie-plat-illustration-cyclomoteur_74855-5227.jpg?w=2000"});
+        }
+    })
 })
 </script>
 
@@ -44,12 +48,11 @@ onMounted(async () => {
                 <hr size="1" color="black" width="80%">
                 <div class="txtConfirm">Code de confirmation</div>
                 <div class="code">
-                    <input id="code1" maxlength="1" type="number">
-                    <input id="code2" maxlength="1" type="number">
-                    <input id="code3" maxlength="1" type="number">
-                    <input id="code4" maxlength="1" type="number">
+                    <input id="code1" maxlength="1" type="number" :value="[...order.validation_code+''][0]" readonly>
+                    <input id="code2" maxlength="1" type="number" :value="[...order.validation_code+''][1]" readonly>
+                    <input id="code3" maxlength="1" type="number" :value="[...order.validation_code+''][2]" readonly>
+                    <input id="code4" maxlength="1" type="number" :value="[...order.validation_code+''][3]" readonly>
                 </div>
-                
                 <hr size="1" color="black" width="80%">
                 <div class="support">
                     <span>Un problème avec votre demande ?</span>
@@ -60,37 +63,37 @@ onMounted(async () => {
         
         <div class="progressionMessage">Progression:</div>
         <div class="bottom">
-            <div class="grey" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.paid && orderStore.getCurrentOrder?.status !== OrderStatus.in_preparation
-            && orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
+            <div class="grey" v-if="order.status !== OrderStatus.paid && order.status !== OrderStatus.in_preparation
+            && order.status !== OrderStatus.in_delivery">
                 <i class="fa-solid fa-file-circle-check fa-2xl"></i>
                 <span>Commande payé</span>
             </div>
-            <div class="green" v-if="orderStore.getCurrentOrder?.status === OrderStatus.paid || orderStore.getCurrentOrder?.status === OrderStatus.in_preparation
-            || orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+            <div class="green" v-if="order.status === OrderStatus.paid || order.status === OrderStatus.in_preparation
+            || order.status === OrderStatus.in_delivery">
                 <i class="fa-solid fa-file-circle-check fa-2xl"></i>
                 <span>Commande payé</span>
             </div>
 
-            <hr size="3" color="grey" width="50%" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_preparation && orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
-            <hr size="3" color="#3EBC72" width="50%" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_preparation || orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+            <hr size="3" color="grey" width="50%" v-if="order.status !== OrderStatus.in_preparation && order.status !== OrderStatus.in_delivery">
+            <hr size="3" color="#3EBC72" width="50%" v-if="order.status === OrderStatus.in_preparation || order.status === OrderStatus.in_delivery">
 
-            <div class="grey" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_preparation && orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
+            <div class="grey" v-if="order.status !== OrderStatus.in_preparation && order.status !== OrderStatus.in_delivery">
                 <i class="fa-solid fa-utensils fa-2xl"></i>
                 <span>Commande en préparation</span>
             </div>
-            <div class="green" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_preparation || orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+            <div class="green" v-if="order.status === OrderStatus.in_preparation || order.status === OrderStatus.in_delivery">
                 <i class="fa-solid fa-utensils fa-2xl"></i>
                 <span>Commande en préparation</span>
             </div>
 
-            <hr size="3" color="grey" width="50%" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
-            <hr size="3" color="#3EBC72" width="50%" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+            <hr size="3" color="grey" width="50%" v-if="order.status !== OrderStatus.in_delivery">
+            <hr size="3" color="#3EBC72" width="50%" v-if="order.status === OrderStatus.in_delivery">
 
-            <div class="grey" v-if="orderStore.getCurrentOrder?.status !== OrderStatus.in_delivery">
+            <div class="grey" v-if="order.status !== OrderStatus.in_delivery">
                 <i class="fa-sharp fa-solid fa-person-biking fa-2xl"></i>
                 <span>Livraison en cours</span>
             </div>
-            <div class="green" v-if="orderStore.getCurrentOrder?.status === OrderStatus.in_delivery">
+            <div class="green" v-if="order.status === OrderStatus.in_delivery">
                 <i class="fa-sharp fa-solid fa-person-biking fa-2xl"></i>
                 <span>Livraison en cours</span>
             </div> 
