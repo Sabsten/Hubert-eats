@@ -8,9 +8,9 @@
         Title="MainWindow" Height="510" Width="800" MaxHeight="510" MaxWidth="800" MinHeight="510" MinWidth="800">
 
     <Window.Resources>
-        <Visibility x:Key="homeVisible">Hidden</Visibility>
+        <Visibility x:Key="homeVisible">Visible</Visibility>
         <Visibility x:Key="seederVisible">Hidden</Visibility>
-        <Visibility x:Key="pageSelection">Visible</Visibility>
+        <Visibility x:Key="pageSelection">Hidden</Visibility>
     </Window.Resources>
 
 
