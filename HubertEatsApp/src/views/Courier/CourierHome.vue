@@ -31,7 +31,7 @@ function constructCode(): number {
 onMounted(async () => {
     await orderStore.getOrdersByCourier(getAccountId()!);
     const socket = io("http://localhost:4000");
-    if(!getCurrentOrder) {
+    if(!getCurrentOrder.value) {
         socket.on('NEW_ORDER', (order: IOrders) => {
         new window.Notification('Nouvelle livraison disponible !', {vibrate: 500, image:"https://cdn.dribbble.com/users/791530/screenshots/6322090/ouch_illustration_animation_icons8.gif"});
         newOrder.value = order;
@@ -43,10 +43,15 @@ function refuseOrder() {
     newOrder.value = undefined;
 }
 async function acceptOrder(orderID: string) {
-    await orderStore.assignOrder(orderID);
-    let accountId = getAccountId();
-    if(accountId !== undefined) {
-        await orderStore.getOrdersByCourier(accountId);
+    const bool:boolean = await orderStore.assignOrder(orderID);
+    if (bool === true){
+        let accountId = getAccountId();
+        if(accountId !== undefined) {
+            let b = await orderStore.getOrdersByCourier(accountId);
+            if(b === true) {
+                newOrder.value = undefined;
+            }
+        }
     }
 }
 async function updateOrder(orderID: string, status: OrderStatus) {
@@ -83,7 +88,7 @@ async function closeOrder(orderID: string, status: OrderStatus, code: number) {
     </div>
     <div class="courierBottom">
         <div v-if="!getCurrentOrder" class="tinderButton close" @click="refuseOrder()"><i class="fa-solid fa-xmark"></i></div>
-        <div v-if="!getCurrentOrder" class="tinderButton bike" @click="acceptOrder(order._id!)"><i class="fa-solid fa-bicycle"></i></div>
+        <div v-if="!getCurrentOrder" class="tinderButton bike" @click="acceptOrder(newOrder?._id!)"><i class="fa-solid fa-bicycle"></i></div>
         <div v-if="getCurrentOrder?.status === OrderStatus.in_preparation" class="retrieveButton" @click="updateOrder(order._id!, OrderStatus.in_delivery)">Commande récupérée</div>
        <form v-if="getCurrentOrder?.status === OrderStatus.in_delivery" @submit.prevent="closeOrder(order._id!, OrderStatus.delivered, constructCode())">
             <div class="code">

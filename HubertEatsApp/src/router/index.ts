@@ -161,7 +161,7 @@ const router = createRouter({
         {
           path: '/courier',
           name: 'courier',
-          component: CourierHome,
+          component:  () => import('../views/Courier/CourierHome.vue'),
           beforeEnter: courierGuard,
         },
         {
