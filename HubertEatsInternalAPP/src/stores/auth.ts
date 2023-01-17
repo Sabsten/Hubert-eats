@@ -28,7 +28,7 @@ export const useAuthStore = defineStore({
     },
     actions: {
         async signIn(identifiant: string, password: string): Promise<string | null> {
-            const URL: string = import.meta.env.VITE_INTERNAL_SERVICE_URL + '/signin/internal';
+            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + 'internal/signin';
             const RES: Response = await fetch(URL, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
