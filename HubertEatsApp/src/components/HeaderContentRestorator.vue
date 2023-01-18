@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { defineComponent } from 'vue'
+import HeaderLink from './HeaderLinks.vue'
+import { useRoute } from 'vue-router'
+import router from '@/router';
+
+defineComponent({HeaderLink});
+const currentUrl = window.location.pathname;
+const homePath = "/restaurant"
+const route = useRoute();
+
+function logout() {
+  router.push('/login');
+  localStorage.removeItem('TOKEN');
+}
+</script>
+
 <template>
     <div class="content">
       <img src="@/assets/HubertEatsLogo.png" width="200">
@@ -7,46 +24,28 @@
             <i class="fa-solid fa-burger-soda"></i>Mes produits 
           </button>
         </HeaderLink>
-        <HeaderLink v-if="currentUrl!=homePath" to="/follow-orders">
+        <HeaderLink v-if="currentUrl!=homePath" to="/restaurant">
           <button class="button account-button">
             <i class="fa-solid fa-house-user"></i>Accueil 
           </button>
         </HeaderLink>
-        <HeaderLink v-if="currentUrl==homePath" to="/accountr">
+        <HeaderLink v-if="currentUrl==homePath" to="/restaurant/account">
           <button class="button account-button">
             <i class="fa-solid fa-user"></i>Compte 
           </button>
         </HeaderLink>
+        <i class="fa-solid fa-right-from-bracket logout" @click="logout()"></i>
       </div>
     </div>
   </template>
   
-  <script lang="ts">
-  import { defineComponent } from 'vue'
-  import HeaderLink from './HeaderLinks.vue'
-  import { useRoute } from 'vue-router'
-  
-  export default defineComponent({
-    components: { HeaderLink },
-    setup() {
-      const currentUrl = window.location.pathname;
-      const homePath = "/follow-orders"
-      const route = useRoute()
-      return{
-        currentUrl,
-        homePath,
-        route
-      }
-  }
-  })
-  </script>
-  
-  <style scoped>
+  <style lang="scss" scoped>
   .links{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: right;
+    align-items: center;
     gap: 0px;
   }
 .content{
@@ -81,7 +80,13 @@ i{
   margin-right: 10px;
 }
 
-
+.logout {
+  font-size: 24px;
+  margin: 0 20px 0 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}
 
 @media screen and (max-width: 550px) {
   .content{

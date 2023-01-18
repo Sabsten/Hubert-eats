@@ -10,7 +10,7 @@ import { storeToRefs } from 'pinia';
 const routeLocation = useRoute()
 const router = useRouter()
 const goToPurchase = () => {
-  router.push({ path: `/purchase` })
+  router.push({ path: `/customer/payment` })
 }
 const restaurantStore = useRestaurantStore();
 const cartStore = useCartStore();

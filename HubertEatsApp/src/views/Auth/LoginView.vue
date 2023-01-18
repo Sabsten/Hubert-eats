@@ -26,13 +26,13 @@ async function tryLogin() {
   }
   switch(accountType) {
     case 'customer':
-      router.push({ path: '/home'});
+      router.push({ path: '/customer'});
       break;
     case 'courier':
       router.push({ path: '/courier'});
       break
     case 'restaurant':
-      router.push({ path: '/home'});
+      router.push({ path: '/restaurant'});
   }
   return
 }

@@ -11,9 +11,6 @@ const router = useRouter();
 const goToLogin = () => {
   router.push({ path: `/login` });
 };
-const goToHome = () => {
-  router.push({ path: `/home` });
-};
 let err: Ref<string | null> = ref(null);
 
 let mail: string | undefined;
@@ -49,7 +46,7 @@ async function createAccount(){
   if (err.value === null){
     switch(accountType.value) {
       case 'customer':
-        router.push({ path: '/home'});
+        router.push({ path: '/customer'});
         break;
       case 'courier':
         router.push({ path: '/courier'});

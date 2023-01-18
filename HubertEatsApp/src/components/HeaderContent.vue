@@ -1,43 +1,58 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import HeaderLink from './HeaderLinks.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart';
+import { useOrderStore } from '@/stores/order';
+import { getAccountId } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
 
 defineComponent({
   HeaderLink,
 })
 const currentUrl = window.location.pathname;
-const homePath = "/home"
+const homePath = "/customer"
 const route = useRoute()
 const router = useRouter()
 const cartStore = useCartStore();
+const orderStore = useOrderStore();
+const {getCurrentOrder} = storeToRefs(orderStore);
 
 function logout() {
   router.push('/login');
   localStorage.removeItem('TOKEN');
 }
+
+onMounted(async () => {
+  await orderStore.getOrdersByCustomer(getAccountId()!);
+});
+
 </script>
 <template>
     <div class="content">
       <img src="@/assets/HubertEatsLogo.png" width="200">
       <div class="links">
-        <HeaderLink v-if="route.query.cart!='true'" :to="route.fullPath+'?cart=true'">
+        <HeaderLink v-if="route.query.cart!='true' && !getCurrentOrder" :to="route.fullPath+'?cart=true'">
           <button class="button cart-button" >
             <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
-        <HeaderLink v-if="route.query.cart=='true'" to="/home">
+        <HeaderLink v-if="route.query.cart=='true' && !getCurrentOrder" to="/customer">
           <button class="button cart-button" >
             <i class="fas fa-shopping-cart"></i>   Panier · <span>{{ cartStore.getArticlesNumber }}</span>
           </button>
         </HeaderLink>
-        <HeaderLink v-if="currentUrl!=homePath" to="/home">
+        <HeaderLink v-if="getCurrentOrder" to="/customer/delivery">
+          <button class="button cart-button" >
+            <i class="fa-solid fa-bicycle"></i>Livraison
+          </button>
+        </HeaderLink>
+        <HeaderLink v-if="currentUrl!=homePath" to="/customer">
           <button class="button account-button">
             <i class="fa-solid fa-house-user"></i>Accueil 
           </button>
         </HeaderLink>
-        <HeaderLink v-if="currentUrl==homePath" to="/accountc">
+        <HeaderLink v-if="currentUrl==homePath" to="/customer/account">
           <button class="button account-button">
             <i class="fa-solid fa-user"></i>Compte 
           </button>
