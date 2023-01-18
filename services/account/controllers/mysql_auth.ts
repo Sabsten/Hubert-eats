@@ -9,15 +9,15 @@ export class MySqlAuthController {
     public signIn = async (req: Request, res: Response) => {
         const {identifiant, password} = req.body;
         const connection = dbMysql.getConnection();
-        const rows: any = await (await connection).query(
+        const rows : any = await (await connection).query(
             'SELECT role FROM InternalUserTable WHERE identifiant = ? AND password = ?',
             [identifiant, this.hashSHA256(password)],
         );
-
         if (rows[0][0].role.length === 0) {
             return res.status(404).json({error: "Identifiants incorrect, aucun compte n'a été trouvé"});
         }
-        const accessToken = jwt.sign({identifiant: identifiant, role: rows[0][0].role}, process.env.PRIVATE_TOKEN_KEY!);
+        const accessToken = jwt.sign({identifiant: identifiant, role: rows[0][0].role}, "AZERTYUIOP");
+
         return res.status(200).json({token: accessToken});
     };
 

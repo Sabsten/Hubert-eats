@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '../stores/auth';
 import { reactive, ref, type Ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { getRole, isAuthentified } from '../stores/auth'
 
 const routeLocation = useRoute()
 const authStore = useAuthStore()
 const router = useRouter()
-const goToCreateAccount = () => {
-  router.push({ path: `/signup` })
-}
+
 
 let mail: string | undefined;
 let password: string | undefined;
-let Role: string | null;
+let Role: string | undefined;
 let errorMessage: Ref<string | null> = ref(null);
 
 async function tryLogin() {
@@ -20,21 +19,25 @@ async function tryLogin() {
     errorMessage.value = "Merci de remplir tous les champs !"
     return
   };
-  errorMessage.value = await authStore.signIn( mail, password);
+  errorMessage.value = await authStore.signIn(mail, password);
   if(errorMessage.value  !== null){
     return
   }
   else
   {
-    Role = authStore.getRole
-    if(Role === "developpeur"){
-      return await router.push({ path: '/dev'});
-    }
-    else if(Role === "commercial"){
-      return await router.push({ path: '/commercial'});
-    }
-    else if(Role === "tech"){
-      return await router.push({ path: '/tech'});
+    console.warn("Login successfull");
+    Role = getRole();
+    console.log(Role);
+    if (isAuthentified()){
+      if(Role === "Developpeur"){
+        return await router.push({ path: '/dev'});
+      }
+      else if(Role === "Commercial"){
+        return await router.push({ path: '/commercial'});
+      }
+      else if(Role === "Technicien"){
+        return await router.push({ path: '/tech'});
+      }
     }
   }
 }
@@ -44,7 +47,7 @@ async function tryLogin() {
 <template>
     <div class="page">
       <div class="presentation">
-        <h1>Porte d'accès au services internes à Hubert-Eats</h1>
+        <h1>Porte d'accès aux services internes à Hubert-Eats</h1>
         </div>
         <div class="rightPart">
           <h2>
@@ -57,10 +60,7 @@ async function tryLogin() {
                 <button class="sign_in" type="submit">SIGN IN</button>
                 <span v-if="errorMessage !== null" class="error-msg">{{ errorMessage }}</span>
             </form>
-            <div class="createMessage">
-              <span><br><br>Vou n'avez pas de compte?<br>
-              <a href="#" @click="goToCreateAccount()">Connexion</a></span>
-            </div>
+          
         </div>
     </div>
 </template>

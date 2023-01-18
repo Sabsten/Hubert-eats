@@ -6,6 +6,17 @@ export type TokenPayload = {
     identifiant: string,
 }
 
+export function getIdentifiant(): string | undefined{
+    return getTokenPayload()?.identifiant
+}
+export function getRole(): string | undefined{
+    return getTokenPayload()?.role;
+}
+
+export function isAuthentified(): boolean {
+    return getTokenPayload() !== null ? true : false;
+}
+
 function getTokenPayload(): TokenPayload | null {
     const token = localStorage.getItem('TOKEN');
     if(token === null) {
@@ -14,18 +25,10 @@ function getTokenPayload(): TokenPayload | null {
     return jwt_decode<TokenPayload>(token);
 }
 
+
+
 export const useAuthStore = defineStore({
     id: 'Auth',
-    getters: {
-        getRole: (): string | null => {
-            const payload = getTokenPayload();
-            return payload === null ? null : payload.identifiant;
-        },
-        getIdentifiant: (): string | null => {
-            const payload = getTokenPayload();
-            return payload === null ? null : payload.role;
-        }
-    },
     actions: {
         async signIn(identifiant: string, password: string): Promise<string | null> {
             const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + 'internal/signin';
@@ -38,7 +41,13 @@ export const useAuthStore = defineStore({
             if (!RES.ok) {
                 return data.error;
             }
-            localStorage.setItem('TOKEN',data.token)
+            if (localStorage.getItem(identifiant) === null) {
+                localStorage.setItem(identifiant,data.token)
+            } else if (localStorage.getItem(identifiant) !== data.token) {
+                localStorage.setItem(identifiant,data.token)
+            } else {
+                console.log('Token already exist');
+            }
             console.log('Request successful');
             return null
         },

@@ -10,7 +10,7 @@ namespace Hubert_Eats_manager.Model
     {
         private static readonly Dictionary<string, List<string>> RolePermissions = new()
         {
-            {"Database Manager", new List<string>{"Add", "Delete", "Modify", "Consult"}},
+            {"BDDManager", new List<string>{"Add", "Delete", "Modify", "Consult"}},
             {"Commercial", new List<string>{"Consult"}},
             {"Technique", new List<string>{"Modify", "Consult"}},
             {"Developpeur", new List<string>{}}
