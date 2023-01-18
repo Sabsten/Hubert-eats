@@ -273,6 +273,21 @@ input[type="radio"]{
     .createMessage{
       display: contents;
     }
+
+    .wrapper{
+      display: inline-flex;
+      flex-direction: column;
+      height: 85px;
+      width: 150px;
+      align-items: center;
+      justify-content: space-evenly;
+      border-radius: 5px;
+      padding: 0px 15px;
+    }
+
+    .wrapper .option{
+      justify-content: left;
+    }
 }
 
 </style>

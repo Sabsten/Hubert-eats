@@ -18,7 +18,7 @@ const carouselSettings = {
 const carouselBreakPoints = {
   // 200 and up
   200: {
-    itemsToShow: 2,
+    itemsToShow: 3,
     snapAlign: 'center',
   },
   // 400 and up
@@ -66,9 +66,9 @@ let searchValue: string;
 <template>
   <HeaderContent class="header"/>
     <div class="top">
-      <div class="title">
+      <div>
         <h1 class="title">Enjoy a good meal</h1>
-        <img class="vegetables" src="@/assets/freshVegetable.png" width="170px" style="position:relative; left:10px; bottom:20px;">
+        <img class="vegetables" alt="vegetables" src="@/assets/freshVegetable.png" width="170px" style="position:relative; left:10px; bottom:20px;"/>
       </div>
       <div class="searchBar">
           <div class="searchBarInputArea">
@@ -279,6 +279,21 @@ h1{
   margin-bottom: 30px;
 }
 
+
+}
+
+@media screen and (max-width: 500px) {
+  .searchBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: space-between;
+    flex-wrap: wrap;
+    bottom: 25px;
+    left: 30px;
+    gap: 20px;
+    width: calc(100% - 30px)
+  }
 }
 
 </style>

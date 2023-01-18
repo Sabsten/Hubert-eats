@@ -258,5 +258,16 @@ export default defineComponent({
 
 }
 
+@media screen and (max-width: 700px) {
+ .commandsInProgress{
+  width: 90%;
+  min-width: 0px;
+ }
+.commandsInPending{
+  width: 90%;
+  min-width: 0px;
+}
+}
+
 </style>
   

@@ -55,6 +55,7 @@
   justify-content: space-between;
   align-items: center;
   height: 96px;
+  padding-right: 10px;
 }
 
 .button {
