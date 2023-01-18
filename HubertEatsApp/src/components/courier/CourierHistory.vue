@@ -42,7 +42,7 @@ const parseDistance = (): [km: number, m: number] => {
             <div class="columnTitle">Gain</div>
             <div class="columnContent gain">{{ props.gain }} €</div>
         </div>
-        <div class="date">{{ props.date.toLocaleString("fr-FR", {month: 'long', day:'numeric', year: 'numeric'})}}</div>
+        <div class="date">{{ props.date.toLocaleString("fr-FR", {month: 'long', day:'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})}}</div>
     </div>
 </template>
 

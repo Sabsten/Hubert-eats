@@ -18,7 +18,7 @@ defineComponent({
 onMounted(async () => {
     await customerStore.getCustomerAccount();
     await orderStore.getOrdersByCustomer(getAccountId()!);
-    const socket = io("http://localhost:4000");
+    const socket = io(import.meta.env.VITE_ORDER_SOCKET_URL);
     socket.on('ORDER-'+orderStore.getCurrentOrder?._id, (status: OrderStatus) => {
         order.value.status = status;
         if(status === OrderStatus.in_preparation) {
@@ -38,6 +38,7 @@ onMounted(async () => {
         <div class="top">
             <div class="map">
                 <div class="map__container">
+                    <iframe frameborder="0" width="100%" height="360px" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=1.4372348785400393%2C43.550292439442046%2C1.5175724029541016%2C43.59127323815584&amp;layer=mapnik&amp;marker=43.57078632436008%2C1.4774036407470703" style="border: 1px solid black"></iframe>
                 </div>
             </div>
             <div class="profile">

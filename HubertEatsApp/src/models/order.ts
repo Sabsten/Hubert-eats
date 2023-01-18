@@ -13,6 +13,7 @@ export interface IOrders {
     price : number;
     validation_code: number;
     status: string;
+    createdAt?: Date;
 }
 
 export enum OrderStatus {

@@ -6,6 +6,7 @@ import { useCustomerStore } from './customer';
 import { useCartStore } from './cart';
 import { OrderStatus} from '@/models/order';
 import type {IOrders} from '@/models/order';
+import type { IAddress } from '@/models/IAddress';
 
 export const useOrderStore = defineStore({
     id: 'Order',
@@ -23,7 +24,7 @@ export const useOrderStore = defineStore({
         getOrdersToPrepare: (state): IOrders[] | undefined => {
             return state.orders.filter((order) => order.status === OrderStatus.in_preparation);
         },
-        getRestaurantOrdersHistory: (state): IOrders[] | undefined => {
+        getOrdersHistory: (state): IOrders[] | undefined => {
             return state.orders.filter((order) => {
                 if(order.status !== OrderStatus.in_preparation && order.status !== OrderStatus.paid){
                     return order
@@ -32,7 +33,7 @@ export const useOrderStore = defineStore({
         },
         getCurrentOrder: (state): IOrders | undefined => {
             return state.orders.find((order) => order.status !== OrderStatus.delivered);
-        }
+        },
     },
     actions: {
         async payOrder(articles: IArticleCart[], restaurant_id: string, customer_id: string, price: number): Promise<boolean> {
@@ -160,6 +161,13 @@ export const useOrderStore = defineStore({
                 this.$state.order = data;
                 return true
             };
-        }
+        }, 
+        async getOrderLocation(a: IAddress){
+            let address = a.street_number + ' ' + a.street_name + ' ' +
+            a.city + ' ' + a.postal_code;
+            address = address.split(' ').join('+');
+            let res: Response = await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+ address);
+            return await res.json();
+        },
     }
 })
