@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '../stores/auth';
 import { reactive, ref, type Ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { getRole, isAuthentified } from '../stores/auth'
 
 const routeLocation = useRoute()
 const authStore = useAuthStore()
@@ -10,32 +11,33 @@ const router = useRouter()
 
 let mail: string | undefined;
 let password: string | undefined;
-let Role: string | null;
+let Role: string | undefined;
 let errorMessage: Ref<string | null> = ref(null);
 
 async function tryLogin() {
-  console.log("test1");
   if(mail === undefined || password === undefined) {
     errorMessage.value = "Merci de remplir tous les champs !"
     return
   };
   errorMessage.value = await authStore.signIn(mail, password);
-  console.log("test2");
   if(errorMessage.value  !== null){
     return
   }
   else
   {
-    Role = authStore.getIdentifiant
+    console.warn("Login successfull");
+    Role = getRole();
     console.log(Role);
-    if(Role === "Developpeur"){
-      return await router.push({ path: '/dev'});
-    }
-    else if(Role === "Commercial"){
-      return await router.push({ path: '/commercial'});
-    }
-    else if(Role === "Technicien"){
-      return await router.push({ path: '/tech'});
+    if (isAuthentified()){
+      if(Role === "Developpeur"){
+        return await router.push({ path: '/dev'});
+      }
+      else if(Role === "Commercial"){
+        return await router.push({ path: '/commercial'});
+      }
+      else if(Role === "Technicien"){
+        return await router.push({ path: '/tech'});
+      }
     }
   }
 }
