@@ -50,6 +50,6 @@ routes.use('/couriers', couriersRouter);
 routes.post('/signin/:accountType', authController.signIn);
 routes.post('/signup/:accountType', authController.signUp);
 
-routes.post('/signin/intern', mysqlAuthController.signIn);
+routes.post('/internal/signin', mysqlAuthController.signIn);
 
 export default routes;

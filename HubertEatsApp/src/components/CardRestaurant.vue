@@ -35,7 +35,6 @@ function getRating(ratings: number[] | undefined): number | null {
 </template>
 
 <style lang="scss" scoped>
-
 .table-wrapper {
   /* border:2px red solid; */
   display: flex;

@@ -1,23 +1,39 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineComponent, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import HeaderContent from '@/components/HeaderContentRestorator.vue'
 import CardPayment from '@/components/CardPayment.vue'
+import { useOrderStore } from '@/stores/order'
+import { useRestaurantStore } from '@/stores/restaurant'
+import { storeToRefs } from 'pinia'
+import Order from '@/components/restaurant/Order.vue'
+import { getAccountId } from '@/stores/auth'
 
-export default defineComponent({
-  setup() {
-    const routeLocation = useRoute()
-    const router = useRouter()
-    const goToCreateAccount = () => {
-    router.push({ path: `/signup` })
-    }
-  },
-  components: {
-    HeaderContent,
-    CardPayment
+defineComponent({
+  HeaderContent,
+    CardPayment,
+    Order,
+});
+const routeLocation = useRoute()
+const router = useRouter()
+const goToCreateAccount = () => {
+  router.push({ path: `/signup` })
+}
+
+const orderStore = useOrderStore();
+const { orders, getRestaurantOrdersHistory} = storeToRefs(orderStore);
+const restaurantStore = useRestaurantStore();
+const { restaurantAccount} = storeToRefs(restaurantStore);
+
+onMounted(async () => {
+  let accountId = getAccountId();
+  if(accountId !== undefined) {
+    await orderStore.getOrdersByRestaurant(accountId);
+    await restaurantStore.getRestaurantAccount(accountId);
   }
-})
+});
+
 </script>
 
 <template>
@@ -35,23 +51,15 @@ export default defineComponent({
           <input placeholder="Parrainage" class="inputForm">
         </form>
 
-        <div class="payment">
-          <div class="name">
-            Mode de Paiement <i class="fa-solid fa-pen-to-square"></i>
-          </div>
-          <CardPayment/>
-        </div>
-
     </div> 
       
       <div class="commandsHistory">
         <div class="name">
           Historique des commandes <i class="fa-solid fa-receipt"></i>
         </div>
-        <input placeholder="Commande 1" class="inputHistory">
-        <input placeholder="Commande 2" class="inputHistory">
-        <input placeholder="Commande 3" class="inputHistory">
-        <input placeholder="Commande 4" class="inputHistory">
+        <div v-for="order in getRestaurantOrdersHistory">
+          <Order :order="order"></Order>
+        </div>
       </div>
     </div> 
   </div>

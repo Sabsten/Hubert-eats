@@ -1,19 +1,39 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineComponent, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import HeaderContent from '@/components/HeaderContentRestorator.vue'
+import Order from '@/components/restaurant/Order.vue'
+import { useOrderStore } from '@/stores/order';
+import { storeToRefs } from 'pinia';
+import { getAccountId, useAuthStore } from '@/stores/auth';
+import { useRestaurantStore } from '@/stores/restaurant';
+import { OrderStatus } from '@/models/order';
 
-export default defineComponent({
-  setup() {
-    const router = useRouter()
-    const goToCreateAccount = () => {
-    router.push({ path: `/signup` })
-    }
-  },
-  components: {
-    HeaderContent
+defineComponent({
+  HeaderContent,
+  Order,
+});
+
+const orderStore = useOrderStore();
+const { orders, getOrdersToAccept, getOrdersToPrepare } = storeToRefs(orderStore);
+const restaurantStore = useRestaurantStore();
+const { restaurantAccount} = storeToRefs(restaurantStore);
+
+onMounted(async () => {
+  let accountId = getAccountId();
+  if(accountId !== undefined) {
+    await orderStore.getOrdersByRestaurant(accountId);
+    await restaurantStore.getRestaurantAccount(accountId);
   }
-})
+});
+
+async function updateOrder(orderID: string, status: OrderStatus) {
+  await orderStore.changeOrderStatus(orderID, status);
+  let accountId = getAccountId();
+  if(accountId !== undefined) {
+    await orderStore.getOrdersByRestaurant(accountId);
+  }
+}
 </script>
 
 <template>
@@ -26,22 +46,19 @@ export default defineComponent({
            Commandes en cours
            <hr size="2" color="#3EBC72" width="200px">
         </div>
-        <input placeholder="Commande 1" class="inputHistory">
-        <input placeholder="Commande 2" class="inputHistory">
-        <input placeholder="Commande 3" class="inputHistory">
-        <input placeholder="Commande 4" class="inputHistory">
+        <div class="order-to-prepare" v-for="order in getOrdersToPrepare">
+          <Order :order="order"></Order>
+          <!-- <i class="fa-solid fa-check-circle fa-2xl" style="color:#44795A" @click="updateOrder(order._id!, OrderStatus.in_delivery)"></i> -->
+        </div>
       </div>
-
     <div class="commandsInPending">
         <div class="restaurantStatus">
             <div class="bubble">
                 <div style="font-size:18px; font-weight: 600;">
-                    Nom du restaurant
+                   {{ restaurantAccount.name }}
                 </div>
-                <div class="rate"> 4.4 </div>
+                <div class="rate"> {{restaurantStore.getAverageRating(restaurantAccount.rating)}} </div>
             </div>
-            <div style="width:200px; text-align:center; font-size:25px; font-weight: 700;">John Doe</div>
-            <div><hr size="2" color="black" width="200px"></div>
         </div>
         <div class="validateCommand">
           <div class="headerElementPending">
@@ -49,34 +66,11 @@ export default defineComponent({
             <i class="fa-solid fa-sheet-plastic fa-xl" style="color:#44795A; height:5px"></i>
           </div>
           <div class="elementsValidationPending">
-            <div class="element">
-                <div class="elementDescription">
-                    Menu/arcile - Nom Livreur<br>
-                    Nom client
-                </div>
+            <div class="element" v-for="order in getOrdersToAccept">
+                <Order :order="order"></Order>
                 <div class="choiceCommandButtons">
-                    <i class="fa-solid fa-check-circle fa-2xl" style="color:#44795A"></i>
-                    <i class="fa-solid fa-times-circle fa-2xl" style="color:red"></i>
-                </div>
-            </div>
-            <div class="element">
-                <div class="elementDescription">
-                    Menu/arcile - Nom Livreur<br>
-                    Nom client
-                </div>
-                <div class="choiceCommandButtons">
-                    <i class="fa-solid fa-check-circle fa-2xl" style="color:#44795A"></i>
-                    <i class="fa-solid fa-times-circle fa-2xl" style="color:red"></i>
-                </div>
-            </div>
-            <div class="element">
-                <div class="elementDescription">
-                    Menu/arcile - Nom Livreur<br>
-                    Nom client
-                </div>
-                <div class="choiceCommandButtons">
-                    <i class="fa-solid fa-check-circle fa-2xl" style="color:#44795A"></i>
-                    <i class="fa-solid fa-times-circle fa-2xl" style="color:red"></i>
+                    <i class="fa-solid fa-check-circle fa-2xl" style="color:#44795A" @click="updateOrder(order._id!, OrderStatus.in_preparation)"></i>
+                    <i class="fa-solid fa-times-circle fa-2xl" style="color:red" @click="updateOrder(order._id!, OrderStatus.refused)"></i>
                 </div>
             </div>
           </div>
@@ -100,7 +94,11 @@ export default defineComponent({
     flex-direction: column;
     margin-bottom: 15px;
 }
-
+.order-to-prepare {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
 .content_{
   justify-content: space-around;
   gap: 30px;

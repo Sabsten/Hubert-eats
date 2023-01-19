@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './auth';
-import type { IRestaurant } from '@/models/restaurants';
+import type { IRestaurant, IRestaurantAccount } from '@/models/restaurants';
 import { useRoute } from 'vue-router';
 
 export const useRestaurantStore = defineStore({
@@ -8,7 +8,8 @@ export const useRestaurantStore = defineStore({
     state: () => {
         return {
             restaurantsList: [] as IRestaurant[],
-            error: null as string | null
+            error: null as string | null,
+            restaurantAccount: {} as IRestaurantAccount,
         }
     },
     getters: {
@@ -47,5 +48,22 @@ export const useRestaurantStore = defineStore({
             });
             return Math.round(somme/total * 10)/ 10;
         },
+        async getRestaurantAccount(id: string){
+            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/restaurants/' + id;
+            const RES: Response = await fetch(URL, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
+                },
+            });
+            const data: IRestaurantAccount = await RES.json();
+            if (!RES.ok) {
+                this.$patch({ error: RES.statusText });
+                return
+            } else {
+                this.$patch({ restaurantAccount: data });
+                return
+            };
+        }
     }
 })

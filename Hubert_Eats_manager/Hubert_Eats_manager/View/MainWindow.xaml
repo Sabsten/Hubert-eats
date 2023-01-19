@@ -8,8 +8,8 @@
         Title="MainWindow" Height="500" Width="800">
 
     <Window.Resources>
-        <Visibility x:Key="homeVisible">Visible</Visibility>
-        <Visibility x:Key="pageSelection">Hidden</Visibility>
+        <Visibility x:Key="homeVisible">Hidden</Visibility>
+        <Visibility x:Key="pageSelection">Visible</Visibility>
     </Window.Resources>
 
 
@@ -389,9 +389,5 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Button
-                Click="Button_Click_Login"
-                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="38,0,440,89" Cursor="Hand" Content="Valider" Height="32" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

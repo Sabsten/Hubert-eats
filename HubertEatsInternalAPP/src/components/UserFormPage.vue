@@ -98,4 +98,8 @@ input{
   border: none;
 }
 
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> main

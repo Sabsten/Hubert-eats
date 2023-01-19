@@ -85,3 +85,27 @@ export function customerAccess(req: Request, res: Response, next: NextFunction) 
         }
     })
 }
+
+export function InternAccess(req: Request, res: Response, next: NextFunction) {
+    const token = getToken(req);
+      // Présence d'un token
+      if (!token) {
+        return res.status(401).json({ message: 'Error. Need a token' })
+    }
+
+    // Véracité du token
+    jwt.verify(token, process.env.PRIVATE_TOKEN_KEY!, (err, decodedToken) => {
+        if (err) {
+           return res.status(401).json({ message: 'Error. Bad token' })
+        }
+        const payload = decodedToken as tokenPayload;
+        if (payload.type === UserType.admin) {
+            return next();
+        } else if (payload.type === UserType.customer && payload.accountId === req.params.id){
+            return next();
+        }
+        else {
+            return res.status(403).json({ message: 'Account not authorized' });
+        }
+    })
+}

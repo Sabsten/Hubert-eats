@@ -53,13 +53,13 @@ export default defineComponent({
         <h2>Menus</h2>
         <div class="shopsElements" cellspacing="10" cellpadding="0">
           <div class="element" v-for="(product, i) in products" :key="i" @click="goToFact(i,'menu')">
-            <CardProduct :element=product />
+            <!-- <CardProduct :element=product /> -->
           </div>
         </div>
         <h2>Entrées</h2>
         <div class="shopsElements" cellspacing="10" cellpadding="0">
           <div class="element" v-for="(product, i) in products" :key="i" @click="goToFact(i,'starter')">
-            <CardProduct :element=product />
+            <!-- <CardProduct :element=product /> -->
           </div>
         </div>
     </div>
