@@ -1,6 +1,8 @@
 {
   "Host": "db4free.net",
   "Database": "huberteats",
+  "TableUtilisateur": "UserTable",
+  "TableLog": "LogTable",
   "Port": "3306",
   "Username": "hubert",
   "Password": "Y2VzaWh1YmVydA=="

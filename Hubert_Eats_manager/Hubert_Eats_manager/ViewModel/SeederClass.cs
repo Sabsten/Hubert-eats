@@ -1,81 +1,99 @@
 ﻿using Model;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace ViewModel
 {
     class SeederClass
     {
-        private static void CreateTable()
+        private static Tuple<bool, string> CreateTable(string TableName, Dictionary<string, string> TableShape)
         {
-            DataBaseManagerClass.DataBaseConnection.Open();
-            Dictionary<string, string> test = new(Usertable.GetUserTable());
-
-            string sql = "CREATE TABLE `" + SQLDatabase.Shema + "`.`" + SQLDatabase.UserTable + "` (";
-            foreach (var item in test)
+            try
             {
-                sql = sql + item.Key + " " + item.Value + " ";
+                DataBaseManagerClass.DataBaseConnection.Open();
+                Dictionary<string, string> test = new(TableShape);
+
+                string sql = "CREATE TABLE " + TableName + " (";
+                foreach (var item in test)
+                {
+                    sql = sql + item.Key + " " + item.Value + " ";
+                }
+                sql = sql.Substring(0, sql.Length - 1) + ");";
+                MySqlCommand cmd = DataBaseManagerClass.DataBaseConnection.CreateCommand();
+
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+                DataBaseManagerClass.DataBaseConnection.Close();
+                return (true, "La table " + TableName + " a été créée avec succès").ToTuple();
             }
-            sql = sql.Substring(0, sql.Length - 1) + ");";
-            MySqlCommand cmd = DataBaseManagerClass.DataBaseConnection.CreateCommand();
+            catch (MySqlException e)
+            {
+                DataBaseManagerClass.DataBaseConnection.Close();
+                return (false, e.Message).ToTuple();
 
-            cmd.CommandText = sql;
-            cmd.ExecuteNonQuery();
-            DataBaseManagerClass.DataBaseConnection.Close();
+            }
         }
 
-        public void InitDb()
+        public static Tuple<bool, string> CreateLogTable()
         {
-            //CreateTable();
-            Seeder();
+            return CreateTable(SQLDatabase.LogTable, Usertable.Seeder_GetLogTable());
         }
-        public void Seeder()
+
+        public static Tuple<bool, string> CreateUserTable()
         {
+            return CreateTable(SQLDatabase.UserTable, Usertable.Seeder_GetUserTable());
+        }
 
-            Dictionary<string, string> Info = new();
-            Info.Add("identifiant", "m.galos@hubert.com");
-            Info.Add("nom", "Mélissa GALOS");
-            Info.Add("password", "MGALOS");
-            Info.Add("role", DataBaseManagerClass.Role.BddManager.ToString());
-            Info.Add("createdBy", "root");
-            Info.Add("modifiedBy", "root");
-            DataBaseManagerClass.FillTable(Info);
+        public static Tuple<bool, string> ApplySeeder()
+        {
+            try
+            {
+                AddUserClass userToAdd1 = new();
+                userToAdd1.Identifiant = "m.galos@hubert.com";
+                userToAdd1.Username = "Melissa Galos";
+                userToAdd1.Password = "MGALOS";
+                userToAdd1.Role = DataBaseManagerClass.Role.BddManager.ToString();
+                userToAdd1.AddUser();
 
-            Info.Clear();
-            Info.Add("identifiant", "p.pierre@hubert.com");
-            Info.Add("nom", "Paul PIERRE");
-            Info.Add("password", "PPIERRE");
-            Info.Add("createdBy", "root");
-            Info.Add("modifiedBy", "root");
-            Info.Add("role", DataBaseManagerClass.Role.BddManager.ToString());
-            DataBaseManagerClass.FillTable(Info);
 
-            Info.Clear();
-            Info.Add("identifiant", "j.lafond@hubert.com");
-            Info.Add("nom", "Jacques LAFOND");
-            Info.Add("password", "JLAFOND");
-            Info.Add("createdBy", "root");
-            Info.Add("modifiedBy", "root");
-            Info.Add("role", DataBaseManagerClass.Role.Technique.ToString());
-            DataBaseManagerClass.FillTable(Info);
+                AddUserClass userToAdd2 = new();
+                userToAdd2.Identifiant = "p.pierre@hubert.com";
+                userToAdd2.Username = "Paul PIERRE";
+                userToAdd2.Password = "PPIERRE";
+                userToAdd2.Role = DataBaseManagerClass.Role.BddManager.ToString();
+                userToAdd2.AddUser();
 
-            Info.Clear();
-            Info.Add("identifiant", "a.miller@hubert.com");
-            Info.Add("nom", "Albert MILLER");
-            Info.Add("password", "AMILLER");
-            Info.Add("role", DataBaseManagerClass.Role.Developpeur.ToString());
-            Info.Add("createdBy", "root");
-            Info.Add("modifiedBy", "root");
-            DataBaseManagerClass.FillTable(Info);
+                AddUserClass userToAdd3 = new();
+                userToAdd3.Identifiant = "j.lafond@hubert.com";
+                userToAdd3.Username = "Jacques LAFOND";
+                userToAdd3.Password = "JLAFOND";
+                userToAdd3.Role = DataBaseManagerClass.Role.Technique.ToString();
+                userToAdd3.AddUser();
 
-            Info.Clear();
-            Info.Add("identifiant", "t.tometnana@hubert.com");
-            Info.Add("nom", "Tom TOMETNANA");
-            Info.Add("password", "TTOMETNANA");
-            Info.Add("role", DataBaseManagerClass.Role.Commercial.ToString());
-            Info.Add("createdBy", "root");
-            Info.Add("modifiedBy", "root");
-            DataBaseManagerClass.FillTable(Info);
+                AddUserClass userToAdd4 = new();
+                userToAdd4.Identifiant = "a.miller@hubert.com";
+                userToAdd4.Username = "Albert MILLER";
+                userToAdd4.Password = "AMILLER";
+                userToAdd4.Role = DataBaseManagerClass.Role.Developpeur.ToString();
+                userToAdd4.AddUser();
+
+                AddUserClass userToAdd5 = new();
+                userToAdd5.Identifiant = "a.Cartier@hubert.com";
+                userToAdd5.Username = "Alexandre Cartier";
+                userToAdd5.Password = "ACARTIER";
+                userToAdd5.Role = DataBaseManagerClass.Role.Commercial.ToString();
+                userToAdd5.AddUser();
+                return Tuple.Create(true, "Les utilisateurs ont été ajoutés avec succès");
+            }
+            catch (MySqlException e)
+            {
+                return e.Number switch
+                {
+                    1062 => Tuple.Create(true, "Les utilisateurs ont déjà été ajoutés"),
+                    _ => Tuple.Create(false, "Erreur : " + e),
+                };
+            }
         }
     }
 }
