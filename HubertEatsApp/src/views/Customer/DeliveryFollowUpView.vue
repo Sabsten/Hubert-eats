@@ -8,6 +8,7 @@ import { storeToRefs } from 'pinia';
 import { useOrderStore } from '@/stores/order';
 import { getAccountId } from '@/stores/auth';
 import { OrderStatus, type IOrders } from '@/models/order';
+import router from '@/router';
 const customerStore = useCustomerStore();
 const orderStore = useOrderStore();
 const {order} = storeToRefs(orderStore);
@@ -26,6 +27,10 @@ onMounted(async () => {
         }
         if (status === OrderStatus.in_delivery) {
             new window.Notification('Commande prise en charge par notre livreur', {vibrate: 500, image:"https://img.freepik.com/vecteurs-libre/paquet-expedition-par-messagerie-plat-illustration-cyclomoteur_74855-5227.jpg?w=2000"});
+        }
+        if (status === OrderStatus.delivered) {
+            new window.Notification('Commande terminée ', {vibrate: 500, image:"https://img.freepik.com/vecteurs-libre/paquet-expedition-par-messagerie-plat-illustration-cyclomoteur_74855-5227.jpg?w=2000"});
+            router.push('/customer');
         }
     })
 })

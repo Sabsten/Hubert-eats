@@ -8,6 +8,7 @@ import { storeToRefs } from 'pinia';
 import { getAccountId, useAuthStore } from '@/stores/auth';
 import { useRestaurantStore } from '@/stores/restaurant';
 import { OrderStatus } from '@/models/order';
+import { io } from 'socket.io-client';
 
 defineComponent({
   HeaderContent,
@@ -25,6 +26,12 @@ onMounted(async () => {
     await orderStore.getOrdersByRestaurant(accountId);
     await restaurantStore.getRestaurantAccount(accountId);
   }
+  const socket = io(import.meta.env.VITE_ORDER_SOCKET_URL);
+    socket.on('ORDER-'+accountId, async () => {
+    console.log("test");
+    await orderStore.getOrdersByRestaurant(getAccountId()!);
+    new window.Notification('Nouvelle commande disponible !', {vibrate: 200, image:"https://media.istockphoto.com/id/467463396/vector/chefs-at-work-in-the-kitchen.jpg?s=612x612&w=0&k=20&c=lBxjsOmSw8UvUKQfrSMQC72UwEUVlRyfKIOvtw59Kso="});
+    });
 });
 
 async function updateOrder(orderID: string, status: OrderStatus) {
@@ -55,14 +62,14 @@ async function updateOrder(orderID: string, status: OrderStatus) {
         <div class="restaurantStatus">
             <div class="bubble">
                 <div style="font-size:18px; font-weight: 600;">
-                   {{ restaurantAccount.name }}
+                   {{ restaurantAccount?.name }}
                 </div>
-                <div class="rate"> {{restaurantStore.getAverageRating(restaurantAccount.rating)}} </div>
+                <div class="rate"> {{restaurantStore.getAverageRating(restaurantAccount?.rating)}} </div>
             </div>
         </div>
         <div class="validateCommand">
           <div class="headerElementPending">
-            Commande
+            Commandes à valider
             <i class="fa-solid fa-sheet-plastic fa-xl" style="color:#44795A; height:5px"></i>
           </div>
           <div class="elementsValidationPending">

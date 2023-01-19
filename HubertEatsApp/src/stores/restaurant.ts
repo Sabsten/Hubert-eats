@@ -9,7 +9,7 @@ export const useRestaurantStore = defineStore({
         return {
             restaurantsList: [] as IRestaurant[],
             error: null as string | null,
-            restaurantAccount: {} as IRestaurantAccount,
+            restaurantAccount: null as IRestaurantAccount | null,
         }
     },
     getters: {
@@ -49,7 +49,7 @@ export const useRestaurantStore = defineStore({
             return Math.round(somme/total * 10)/ 10;
         },
         async getRestaurantAccount(id: string){
-            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/restaurants/' + id;
+            const URL: string = import.meta.env.VITE_ACCOUNT_SERVICE_URL + '/restaurants/account/' + id;
             const RES: Response = await fetch(URL, {
                 method: 'GET',
                 headers: {

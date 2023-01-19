@@ -7,6 +7,7 @@ import { getAccountType, useAuthStore } from '@/stores/auth'
 import { useCustomerStore } from '@/stores/customer'
 import { useCartStore } from '@/stores/cart'
 import CustomerAccountVue from '../views/Customer/CustomerAccount.vue'
+import LoginViewVue from '../views/Auth/LoginView.vue'
 
 
 function courierGuard(to: any, from: any, next: any) {
@@ -51,12 +52,12 @@ const router = createRouter({
       path: '/',
       name: 'default',
       beforeEnter: redirect,
-      component: () => import('../views/Auth/LoginView.vue')
+      component: LoginViewVue
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/Auth/LoginView.vue')
+      component: LoginViewVue
     },
     {
       path: '/signup',
