@@ -45,7 +45,7 @@ export default defineComponent({
 
 <template>
     <div>
-        <HeaderContent/>
+        <HeaderContent title="Service commercial"/>
         <div class="page">
             <div class="users">
                 <h1>Liste des utilisateurs</h1>
