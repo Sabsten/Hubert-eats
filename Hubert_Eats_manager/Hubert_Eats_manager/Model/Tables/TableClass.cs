@@ -56,30 +56,22 @@ namespace Model
             return TableInfo;
         }
 
-        public static Dictionary<string, string> GetUserTableToPrompt()
+        public static string GetUserTable(string key)
         {
             Dictionary<string, string> TableInfo = new()
             {
-                { "idInternalUser", "UserID" },
-                { "identifiant", "Identifiant" },
-                { "nom", "Nom Prénom" },
-                { "password", "Password" },
-                { "role", "Fonction" },
-                { "createdAt", "Date de création" },
-                { "createdBy", "Compte crée par" },
-                { "modifiedAt", "Date de derniere modification" },
-                { "modifiedBy", "Compte dernierement modifié par" }
+                { "UserID", "idInternalUser" },
+                { "Identifiant", "identifiant" },
+                { "Nom Prénom", "nom" },
+                { "Rôle", "role" },
+                { "Created At", "createdAt" },
+                { "Created By", "createdBy" },
+                { "Modified At", "modifiedAt" },
+                { "Modified By", "modifiedBy" },
+                { "Is Active", "isActive" }
             };
-            return TableInfo;
+            return TableInfo[key];
         }
-        public static Dictionary<string, string> GetUserTableToAsk()
-        {
-            Dictionary<string, string> TableInfo = GetUserTableToPrompt();
-            TableInfo.Remove("createdAt");
-            TableInfo.Remove("createdBy");
-            TableInfo.Remove("modifiedAt");
-            TableInfo.Remove("modifiedBy");
-            return TableInfo;
-        }
+   
     }
 }

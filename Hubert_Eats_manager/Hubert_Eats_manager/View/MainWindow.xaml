@@ -326,7 +326,7 @@
                                         <ComboBoxItem
                                             Content="Technique" />
                                         <ComboBoxItem
-                                            Content="Developpeur Tier" />
+                                            Content="Developpeur Tiers" />
                                     </ComboBox>
                                     <ComboBox
                                         x:Name="ChoixActifCombobox"

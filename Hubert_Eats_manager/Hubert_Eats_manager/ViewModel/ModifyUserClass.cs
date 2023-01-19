@@ -14,12 +14,13 @@ namespace Hubert_Eats_manager.ViewModel
         public void ModifyTable()
         {
             Dictionary<string, string> DataTable = new() {
-                { "Key", Identifiant },
+                { "Key", Key },
                 { "Value", Value },
                 { "Identifiant", Identifiant },
             };
             Dictionary<string, string> ModifyTable = new() {
-                { "ModifiedBy", UserLoggedClass.UserName },
+                { "Key", "ModifiedBy"  },
+                { "Value", UserLoggedClass.UserName },
                 { "Identifiant", Identifiant },
             };
             try

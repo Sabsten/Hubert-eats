@@ -39,7 +39,7 @@ namespace ViewModel
         {
             ModifyUserClass userToModify = new();
             userToModify.Value = modifiedparameter;
-            userToModify.Key = selectedParameter;
+            userToModify.Key = Usertable.GetUserTable(selectedParameter);
             userToModify.Identifiant = identifiant;
             userToModify.ModifyTable();
 

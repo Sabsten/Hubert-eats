@@ -107,7 +107,21 @@ namespace Hubert_Eats_manager
 
         public void Button_Click_ModifyUser(object sender, RoutedEventArgs e)
         {
-            ModifyGetInfosClearText();
+            inputUsername = UsernameTextBoxModifyTab.Text;
+            parameterSelected = ModifyCombobox.Text;
+            if (ChoixRoleCombobox.IsVisible)
+            {
+                parameterValue = ChoixRoleCombobox.Text;
+            }
+            else if (ChoixActifCombobox.IsVisible)
+            {
+                parameterValue = ChoixActifCombobox.Text;
+            }
+            else
+            {
+                parameterValue = ChoixValue.Text;
+            }
+            ClearText();
             VmResponse = DataBaseManagerClass.ModifyUser(parameterValue, parameterSelected, inputUsername);
             ModifyUserState.Text = VmResponse.Item2;
             ModifyUserState.Foreground = VmResponse.Item1 ? System.Windows.Media.Brushes.Green : System.Windows.Media.Brushes.Red;
@@ -252,7 +266,7 @@ namespace Hubert_Eats_manager
             inputUsername = UsernameDelete.Text;
             UsernameAddUser.Clear();
         }
-        private void ModifyGetInfosClearText()
+        private void ClearText()
         {
             inputUsername = UsernameTextBoxModifyTab.Text;
             UsernameTextBoxModifyTab.Clear();
@@ -325,7 +339,7 @@ namespace Hubert_Eats_manager
                     ChoixActifCombobox.Visibility = Visibility.Visible;
                     break;
             }
-
+            ModifyButton.Visibility = Visibility.Visible;
         }
         private void RoleAddUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -340,5 +354,7 @@ namespace Hubert_Eats_manager
                 AddUserButton.Visibility = Visibility.Hidden;
             }
         }
+
+
     }
 }

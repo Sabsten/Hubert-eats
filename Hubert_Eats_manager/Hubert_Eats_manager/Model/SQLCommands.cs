@@ -44,17 +44,24 @@ namespace Model
         public static MySqlCommand UpdateTable(Dictionary<string, string> UserData)
         {
             MySqlCommand cmd = DataBaseConnection.CreateCommand();
-            foreach (var item in UserData)
-            {
-                cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
-            }
-            cmd.CommandText = "UPDATE " + SQLDatabase.UserTable + " SET @Key = @Value WHERE identifiant = @identifiant";
+            //foreach (var item in UserData)
+            //{
+            //    cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+            //}
+            cmd.CommandText = "UPDATE " + SQLDatabase.UserTable + " SET " + UserData["Key"] + " = '" + UserData["Value"] + "' WHERE identifiant = '" + UserData["Identifiant"]+"'";
             return cmd;
         }
 
         public static string UpdateTableSqlString(Dictionary<string, string> UserData)
         {
-            return "UPDATE " + SQLDatabase.UserTable + " SET " + UserData["Key"] + " = " + UserData["Value"] + " WHERE identifiant = " + UserData["Identifiant"];
+            switch (UserData["Key"])
+            {
+                case "Password":
+                    return "UPDATE " + SQLDatabase.UserTable + " SET " + EncryptClass.HashPassword(UserData["Key"]) + " = '" + UserData["Value"] + "' WHERE identifiant = '" + UserData["Identifiant"] + "'";
+                default:
+                    return "UPDATE " + SQLDatabase.UserTable + " SET " + UserData["Key"] + " = " + UserData["Value"] + " WHERE identifiant = " + UserData["Identifiant"];
+            }
+            
         }
 
 
@@ -85,7 +92,7 @@ namespace Model
             {
                 cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
             }
-            cmd.CommandText = "UPDATE " + SQLDatabase.UserTable + " SET isActive = FALSE WHERE identifiant = @identifiant";
+            cmd.CommandText = "DELETE FROM " + SQLDatabase.UserTable + " WHERE identifiant = @identifiant";
             return cmd;
         }
 
