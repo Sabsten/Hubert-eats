@@ -53,7 +53,7 @@ const router = createRouter({
       name: 'commercial',
       beforeEnter: commercialGuard,
       component: Commercial
-    }
+    },
     {
       path: '/tech',
       name: 'tech',

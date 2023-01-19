@@ -8,19 +8,9 @@ export default defineComponent({
 
 </script>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import HeaderContent from '@/components/HeaderContent.vue'
-
-export default defineComponent({
-  components: { HeaderContent },
-})
-
-</script>
-
 <template>
     <div>
-        <HeaderContent/>
+        <HeaderContent title="Service commerciale"/>
         <div class="page">
           <form class="userForm">
             <h1>Vos informations personnelles</h1>

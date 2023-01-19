@@ -43,51 +43,6 @@ export default defineComponent({
 
 </script>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { useRouter } from 'vue-router'
-import { useRoute } from 'vue-router'
-import UserFormPage from '@/components/UserFormPage.vue'
-import HeaderContent from '@/components/HeaderContent.vue'
-
-export default defineComponent({
-  data() {
-    return{
-      enterClass: 'fade',
-      leaveClass: 'fade'
-    }
-  },
-  setup(){
-    const router = useRouter()
-    const route = useRoute()
-    const displayCart = (id: number) => {
-      router.push({ path: route.fullPath, query: { cart: 'true', number: id } })
-    }
-    const cancelCart = () => {
-      router.push({ path: route.fullPath })
-    }
-    return { cancelCart, route, displayCart }
-  },
-  components: { HeaderContent, UserFormPage },
-  watch: {
-    $route(to, from) {
-      if(to.path.startsWith('/fact/')){
-        this.enterClass = "animate__animated animate__fadeInRight",
-        this.leaveClass = "animate__animated animate__fadeOutLeft"
-    }else if(from.path.startsWith('/fact/') && to.path === "/facts"){
-      this.enterClass = "animate__animated animate__fadeInLeft",
-      this.leaveClass = "animate__animated animate__fadeOutRight"
-    }else{
-      this.enterClass = "animate__animated animate__fadeIn",
-      this.leaveClass = "animate__animated animate__fadeOut"
-    }
-    console.log(to.path)
-  }
-}
-})
-
-</script>
-
 <template>
     <div>
         <HeaderContent title="Service commercial"/>
