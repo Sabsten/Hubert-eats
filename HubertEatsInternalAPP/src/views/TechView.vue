@@ -10,7 +10,7 @@ export default defineComponent({
 
 <template>
     <div>
-        <HeaderContent/>
+        <HeaderContent  title="Service technique"/>
         <div class="page">
           <form class="userForm">
             <h1>Vos informations personnelles</h1>

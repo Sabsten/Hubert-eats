@@ -2,6 +2,9 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  props:{
+        title: String
+    }
 })
 </script>
 
@@ -10,7 +13,7 @@ export default defineComponent({
     <div class="content">
       <img src="@/assets/HubertEatsLogov2.png" width="200">
       <div class="title">
-        Service commercial
+        {{title}}
       </div>
     </div>
 </template>
