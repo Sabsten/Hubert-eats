@@ -41,10 +41,10 @@ export const useAuthStore = defineStore({
             if (!RES.ok) {
                 return data.error;
             }
-            if (localStorage.getItem(identifiant) === null) {
-                localStorage.setItem(identifiant,data.token)
-            } else if (localStorage.getItem(identifiant) !== data.token) {
-                localStorage.setItem(identifiant,data.token)
+            if (localStorage.getItem("TOKEN") === null) {
+                localStorage.setItem("TOKEN",data.token)
+            } else if (localStorage.getItem("TOKEN") !== data.token) {
+                localStorage.setItem("TOKEN",data.token)
             } else {
                 console.log('Token already exist');
             }

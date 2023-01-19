@@ -25,9 +25,9 @@ async function tryLogin() {
   }
   else
   {
-    console.warn("Login successfull");
     Role = getRole();
-    console.log(Role);
+    console.log("le role est " + Role);
+    console.log (isAuthentified());
     if (isAuthentified()){
       if(Role === "Developpeur"){
         return await router.push({ path: '/dev'});
@@ -35,8 +35,11 @@ async function tryLogin() {
       else if(Role === "Commercial"){
         return await router.push({ path: '/commercial'});
       }
-      else if(Role === "Technicien"){
+      else if(Role === "Technique"){
         return await router.push({ path: '/tech'});
+      }
+      else{
+        return await router.push({ path: '/'});
       }
     }
   }
@@ -46,6 +49,7 @@ async function tryLogin() {
 
 <template>
     <div class="page">
+      
       <div class="presentation">
         <h1>Porte d'accès aux services internes à Hubert-Eats</h1>
         </div>

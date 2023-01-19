@@ -13,7 +13,7 @@ export class MySqlAuthController {
             'SELECT role FROM InternalUserTable WHERE identifiant = ? AND password = ?',
             [identifiant, this.hashSHA256(password)],
         );
-        if (rows[0][0].role.length === 0) {
+        if (rows[0].length === 0) {
             return res.status(404).json({error: "Identifiants incorrect, aucun compte n'a été trouvé"});
         }
         const accessToken = jwt.sign({identifiant: identifiant, role: rows[0][0].role}, "AZERTYUIOP");
