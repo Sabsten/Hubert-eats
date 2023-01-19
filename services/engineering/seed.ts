@@ -7,6 +7,10 @@ import Courier, { ICourier } from "./models/courier";
 import Article, { ArticleType, IArticle } from "./models/articles";
 
 
+interface Food {
+    strMealThumb: string;
+}
+
 let restaurantsIdList: ObjectId[] = [];
 for (let i = 0 ; i < 10 ; i++) {
     restaurantsIdList.push(new ObjectId());
@@ -110,7 +114,7 @@ function createCouriers(): Document[] {
 
 function createArticles(): Document[] {
     let articlesList: Document[] = [];
-    restaurantsIdList.forEach(restaurantID => {
+    restaurantsIdList.forEach(async restaurantID => {
         for (let i = 0; i < 10; i++) {
             articlesList.push(
                 new Article<IArticle>({

@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue'
+import { defineComponent, onMounted, ref, type Ref } from 'vue'
 import HeaderContent from '@/components/HeaderContent.vue'
 import CardPayment from '@/components/CardPayment.vue'
+import Order from '@/components/restaurant/Order.vue'
 import { useCustomerStore } from '@/stores/customer'
 import { storeToRefs } from 'pinia'
+import { useOrderStore } from '@/stores/order'
+import { getAccountId } from '@/stores/auth'
+
+defineComponent({
+  Order,
+})
 
 const customerStore = useCustomerStore();
 const { customerAccount, error } = storeToRefs(customerStore);
+const orderStore = useOrderStore();
+const {orders} = storeToRefs(orderStore);
 
 onMounted(() => {
   customerStore.getCustomerAccount();
@@ -16,6 +25,7 @@ const editionMode: Ref<boolean> = ref(false);
 
 async function updateCustomerAcount() {
   await customerStore.updateCustomerAcount()
+  await orderStore.getOrdersByCustomer(getAccountId()!);
   editionMode.value = false;
 }
 
@@ -91,10 +101,9 @@ async function updateCustomerAcount() {
         <div class="name">
           Historique des commandes <i class="fa-solid fa-receipt"></i>
         </div>
-        <input placeholder="Commande 1" class="inputHistory">
-        <input placeholder="Commande 2" class="inputHistory">
-        <input placeholder="Commande 3" class="inputHistory">
-        <input placeholder="Commande 4" class="inputHistory">
+        <div v-for="order in orders">
+          <Order :order="order"></Order>
+        </div>
       </div>
     </div> 
   </div>

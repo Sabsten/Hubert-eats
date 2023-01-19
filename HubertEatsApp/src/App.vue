@@ -38,7 +38,6 @@ export default defineComponent({
   }
 }
 })
-console.log(import.meta.env.MODE);
 </script>
 
 <template>

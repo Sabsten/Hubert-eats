@@ -19,7 +19,7 @@ function logout() {
     <div class="content">
       <img src="@/assets/HubertEatsLogo.png" width="200">
       <div class="links">
-        <HeaderLink v-if="currentUrl!='/edit-menu-products'" to="/edit-menu-products">
+        <HeaderLink v-if="currentUrl!='/restaurant/edit-menu-products'" to="/restaurant/edit-menu-products">
           <button class="button myProducts-button">
             <i class="fa-solid fa-burger-soda"></i>Mes produits 
           </button>
@@ -54,6 +54,7 @@ function logout() {
   justify-content: space-between;
   align-items: center;
   height: 96px;
+  background-color: #D8E3E2;
 }
 
 .button {

@@ -15,6 +15,7 @@ const props = defineProps<{
         <div v-for="article in props.order.articles">
             <span>{{ article.name }} x {{ article.quantity }}</span>
         </div>
+        <span><b>{{ props.order.price }} €</b></span>
     </div>
 </template>
 

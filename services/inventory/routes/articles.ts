@@ -7,5 +7,6 @@ articlesRouter.get('/', articlesController.getAllArticles);
 articlesRouter.get('/:restaurant_id', articlesController.getArticlesByRestaurantId);
 articlesRouter.post('/', articlesController.addArticle);
 articlesRouter.delete('/:id', articlesController.deleteArticleById);
+articlesRouter.patch('/:id', articlesController.updateArticleById);
 
 export default articlesRouter;
