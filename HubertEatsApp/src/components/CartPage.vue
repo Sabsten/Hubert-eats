@@ -26,17 +26,15 @@ let { cart, totalPrice } = storeToRefs(cartStore);
           <div v-for="article in cart.articles">
             <div class="elementInfo">
                 <div class="add-sub">
+                  <i class="fa-solid fa-plus pointer" @click="cartStore.addQuantity(article)"></i>
+                    <div>{{article.quantity}}</div>
                     <i class="fa-solid fa-minus pointer" @click="cartStore.removeToCart(article)"></i>
-                    <span>{{article.quantity}}</span>
-                    <i class="fa-solid fa-plus pointer" @click="cartStore.addQuantity(article)"></i>
                 </div>
                 <div class="description">
                     <div class="name">{{ article.name }}</div>
                     <div class="price">{{ article.price * article.quantity }}&nbsp;€</div>
                 </div>
-                <div class="image">
-                    <img width="100px" :src="article.image">
-                </div>
+                    <img width="100" :src="article.image">
             </div>
             <hr size="1" color="white" width="100%">
           </div>
@@ -46,7 +44,7 @@ let { cart, totalPrice } = storeToRefs(cartStore);
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 
 *{
 color: white;
@@ -83,11 +81,16 @@ background-color: var(--green);
   border-radius: 10px;
   margin-top: 20px;
 }
+.add-sub{
+    flex-direction: column-reverse;
+    text-align: center;
+  }
 
 .elementInfo{
   display: flex;
+  align-items: center;
   flex-direction: row;
-  gap: 20px;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
@@ -103,9 +106,20 @@ i{
   display:flex;
   flex-direction: column;
   margin-bottom: 20px;
+  padding:20px;
+  h1 {
+    margin-bottom:20px;
+  }
 }
 
 h1, h2{
   margin-bottom: 0px;
+}
+
+@media screen and (max-width: 600px){
+  .add-sub{
+    flex-direction: column-reverse;
+    text-align: center;
+  }
 }
 </style>

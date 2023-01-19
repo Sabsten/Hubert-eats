@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using Hubert_Eats_manager.Model;
 using Model;
 using MySql.Data.MySqlClient;
 
@@ -11,15 +13,14 @@ namespace ViewModel
         {
             if (identifiant == "hubert" && password == EncryptClass.DecodeFrom64("Y2VzaWh1YmVydA=="))
             {
-                Console.WriteLine("Mise en place du seeder"); 
-                SeederClass seed = new(); 
-                seed.InitDb(); 
-                return (false, "La table" + SQLDatabase.UserTable + " a bien été crée!").ToTuple(); 
+                return Tuple.Create(false, "root");
+
+
             }
             Dictionary<string, string> UserInfo = new();
             UserInfo.Add("identifiant", identifiant);
             DataBaseManagerClass.DataBaseConnection.Open();
-            MySqlCommand IDcmd = SQLCommands.FindHashedPasswordSQLString(UserInfo);
+            MySqlCommand IDcmd = SQLCommands.FindHashedPassword(UserInfo);
 
             MySqlDataReader readerID = IDcmd.ExecuteReader();
             if (readerID.HasRows)
@@ -32,18 +33,18 @@ namespace ViewModel
                 if (EncryptClass.HashPassword(password) == dbPassword)
                 {
                     DataBaseManagerClass.DataBaseConnection.Close();
-                    return (true, "Les mots de passes correspondent !").ToTuple(); ;
+                    return (true, "").ToTuple();
                 }
                 else
                 {
                     DataBaseManagerClass.DataBaseConnection.Close();
-                    return (false, "la confirmation a échoué").ToTuple();
+                    return (false, MessageClass.GetErrorMessage("PasswordIncorrect")).ToTuple();
                 }
             }
             else
             {
                 DataBaseManagerClass.DataBaseConnection.Close();
-                return (false, "Identifiant non trouvé dans la base de donnée").ToTuple();
+                return (false, MessageClass.GetErrorMessage("UserNotFound")).ToTuple();
             }
         }
     }

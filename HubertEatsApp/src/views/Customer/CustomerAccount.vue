@@ -229,5 +229,22 @@ async function updateCustomerAcount() {
   color: white;
 }
 
+
+@media screen and (max-width: 700px) {
+  .commandsHistory{
+    width: 90%;
+    min-width: 50px;
+  }
+  .left-part{
+    min-width: 50px;
+    width: 90%;
+  }
+  .personalInformationsForm{
+    min-width: 50px;
+    width: 90%;
+  }
+
+}
+
 </style>
   

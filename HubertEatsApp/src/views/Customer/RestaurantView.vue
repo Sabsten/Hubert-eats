@@ -259,4 +259,13 @@ function scrollTo(anchor: string) {
   }
 }
 
+@media screen and (max-width: 600px){
+    .element {
+    width:250px;
+  }
+  .shopsElements {
+    justify-content: center;
+  }
+}
+
 </style>

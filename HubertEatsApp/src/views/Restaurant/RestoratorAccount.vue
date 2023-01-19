@@ -190,6 +190,21 @@ async function updateRestaurantAcount() {
   flex-direction: column;
 }
 
+@media screen and (max-width: 700px) {
+  .commandsHistory{
+    width: 90%;
+    min-width: 50px;
+  }
+  .left-part{
+    min-width: 50px;
+    width: 90%;
+  }
+  .personalInformationsForm{
+    min-width: 50px;
+    width: 90%;
+  }
+
+}
 
 .personalInformationsForm{
   display: flex;

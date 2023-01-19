@@ -5,24 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800">
+        Title="MainWindow" Height="510" Width="800" MaxHeight="510" MaxWidth="800" MinHeight="510" MinWidth="800">
 
     <Window.Resources>
         <Visibility x:Key="homeVisible">Visible</Visibility>
+        <Visibility x:Key="seederVisible">Hidden</Visibility>
         <Visibility x:Key="pageSelection">Hidden</Visibility>
     </Window.Resources>
 
 
     <Grid>
         <Grid Visibility="{DynamicResource homeVisible}" HorizontalAlignment="Center" Width="800" Height="484" VerticalAlignment="Bottom">
+            <TextBlock x:Name ="ErrorMessage" Foreground="Red"  Margin="38,196,490,266" />
+            <Button
+                Click="Button_Click_Login"
+                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="38,0,440,89" Cursor="Hand" Content="Valider" Height="32" VerticalAlignment="Bottom"/>
             <ProgressBar Height="10" IsIndeterminate="True" Orientation="Vertical" />
+
             <Image
-      Source="../assets/Logo_Hubert_Eats.png"
-      Stretch="UniformToFill" Margin="10,18,424,305" />
-            <TextBox  TextWrapping="Wrap" TextChanged="TextBox_TextChanged_1"
+              Source="../assets/Logo_Hubert_Eats.png"
+              Stretch="UniformToFill" Margin="10,0,424,323" />  
+            <TextBox  TextWrapping="Wrap"
                 x:Name="TextBoxUsername"
-                materialDesign:HintAssist.HelperText=""
-                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="40,214,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209">
+                materialDesign:HintAssist.Hint="Nom d'utilisateur" Margin="40,242,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="209">
                 <TextBox.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -46,7 +52,7 @@
                 materialDesign:PasswordBoxAssist.Password="{Binding userPasswrd, Mode=TwoWay}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 IsEnabled="{Binding IsChecked, ElementName=RevealPasswordDefaultEnabled}"
-                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="40,273,0,0" HorizontalAlignment="Left" Width="209" Height="32" VerticalAlignment="Top" />
+                Style="{StaticResource MaterialDesignRevealPasswordBox}" Margin="40,293,0,0" HorizontalAlignment="Left" Width="209" Height="27" VerticalAlignment="Top" />
             <materialDesign:Card
               Background="#D8E3E2"
              Margin="406,0,0,0">
@@ -67,20 +73,17 @@
 
                     <StackPanel
       Grid.Row="2"
-      Margin="10,10,-2,-79" Grid.ColumnSpan="2" Grid.RowSpan="2">
+      Margin="10,10,-2,10" Grid.ColumnSpan="2">
                         <TextBlock
         FontWeight="Bold" Width="298"><Run Text="Hubert-Eats Manager"/></TextBlock>
                         <TextBlock
             TextWrapping="Wrap" Width="294" Height="190" ><Run/><LineBreak/><Run Text="Bienvenue sur l'application de gestions des utilisateurs internes "/><Run Text="à"/><Run Text=" Hubert-Eats. Merci de vous connecter pour avoir l'accès a l'application."/><LineBreak/><Run/><LineBreak/><Run Text="En cas de problème avec l'application, merci de contacter "/><Run Text="le support de la DSI :"/><LineBreak/><LineBreak/><Run Text="☎ "/><Run Language="fr-fr" Text=": +33 9 15 89 78 31"/><LineBreak/><Run Language="fr-fr" Text="📧 : assistance@hubert.com"/></TextBlock>
                     </StackPanel>
                     <StackPanel
-      Grid.Row="3"
-      Margin="138,8,0,8"
-      HorizontalAlignment="Left"
-      Orientation="Horizontal" Width="0" Grid.Column="1">
-
-
-
+                        Grid.Row="3"
+                        Margin="138,8,0,8"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal" Width="0" Grid.Column="1">
                     </StackPanel>
                     <GroupBox
                         Margin="10,10,20,10"
@@ -110,6 +113,32 @@
                 </Grid>
             </materialDesign:Card>
         </Grid>
+
+        <Grid x:Name="seederVisible" Visibility="{DynamicResource seederVisible}">
+            <Button
+                    Margin="80,76,0,0"
+                    materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
+                    Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Create_Usertable" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="356">
+                Creer la table des utilisateurs
+            </Button>
+            <TextBlock x:Name ="UserTableState" Margin="0,48,10,0" Height="89" VerticalAlignment="Top" HorizontalAlignment="Right" Width="332"/>
+            <Button
+                    Margin="80,225,0,0"
+                    materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
+                    Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Create_LogTable" HorizontalAlignment="Left" Width="356" Height="32" VerticalAlignment="Top">
+
+                Creer la table log
+            </Button>
+            <TextBlock x:Name ="LogTableState" Margin="458,197,0,0" HorizontalAlignment="Left" Width="318" Height="76" VerticalAlignment="Top"/>
+            <Button
+                        Margin="80,0,0,77"
+                        materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand" Click="Button_Click_Use_Seeder" HorizontalAlignment="Left" Width="356" Height="32" VerticalAlignment="Bottom">
+                Appliquer le remplissage automatique
+            </Button>
+            <TextBlock x:Name ="SeederState" Margin="451,0,0,10" Height="141" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="332"/>
+        </Grid>
+
 
         <Grid Visibility="{DynamicResource pageSelection}">
             <Grid VerticalAlignment="Center" Width="200">
@@ -184,7 +213,7 @@
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Rôle"
                                           materialDesign:HintAssist.HintOpacity=".26"
-                                          IsEditable="False">
+                                          IsEditable="False" Height="43" SelectionChanged="RoleAddUser_SelectionChanged">
                                         <ComboBoxItem
                                             Content="Database Manager" />
                                         <ComboBoxItem
@@ -195,14 +224,17 @@
                                             Content="Developpeur Tier" />
                                     </ComboBox>
                                     <Button
+                                        x:Name="AddUserButton"
                                         Margin="0,40,0,0"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="1:1:1"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand"
                                         Click ="Button_Click_ConfirmUserCreation">
                                         Valider
                                     </Button>
+                                    <TextBlock x:Name="AddUserState"  Margin="0,10,0,0" Height="37" HorizontalAlignment="Left" Width="641"/>
                                 </StackPanel>
                             </TabItem>
+
                             <TabItem x:Name="ModifierTab">
                                 <TabItem.Header>
                                     <StackPanel
@@ -218,16 +250,16 @@
                                         Text="Modifier" />
                                     </StackPanel>
                                 </TabItem.Header>
-                                <StackPanel
+                                <Grid
                                     Margin="16">
                                     <TextBlock
-                                    Margin="0,0,0,8"
+                                    Margin="-2,0,0,8"
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                                     Text="Modifier un utilisateur" />
                                     <TextBox
                                             x:Name="UsernameTextBoxModifyTab"
                                             VerticalAlignment="Top"
-                                            Margin="0,10,0,0"
+                                            Margin="-2,51,2,0"
                                             materialDesign:HintAssist.Hint="Nom d'utilisateur (@hubert.com)"
                                             Style="{StaticResource MaterialDesignFilledTextBox}">
                                         <TextBox.Text>
@@ -241,26 +273,23 @@
                                         x:Name="FindUserButtonModifyTab"
                                         Click="Button_Click_FindUser"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                        Margin="0,20,0,0"
+                                        Margin="-2,108,2,300"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Verifier l'existance de l'utilisateur
                                     </Button>
-                                    <TextBlock x:Name ="ConnectedAs"/>
                                     <DataGrid x:Name="ModifyDataGrid"
-                                          Margin="0,20,0,0"
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
                                           Background="LightGreen"
-                                          AutoGenerateColumns="True"/>
+                                          AutoGenerateColumns="True" Width="678" Margin="0,157,0,212"/>
                                     <ComboBox
                                         x:Name="ModifyCombobox"
-                                          Margin="0,20,0,0"
                                           materialDesign:ComboBoxAssist.MaxLength="2"
                                           materialDesign:HintAssist.Hint="Champ à modifier"
                                           materialDesign:HintAssist.HintOpacity=".26"
-                                          IsEditable="False">
+                                          IsEditable="False" Height="31" Margin="0,233,0,0" VerticalAlignment="Top" SelectionChanged="ModifyCombobox_SelectionChanged">
                                         <ComboBoxItem
                                             Content="Identifiant" />
                                         <ComboBoxItem
@@ -269,13 +298,14 @@
                                             Content="Mot de passe" />
                                         <ComboBoxItem
                                             Content="Rôle" />
+                                        <ComboBoxItem
+                                            Content="Compte actif ?" />
                                     </ComboBox>
                                     <TextBox
-                                            x:Name="ModifyValue"
-                                            VerticalAlignment="Top"
-                                            Margin="0,20,0,0"
+                                            x:Name="ChoixValue"
+                                            Margin="0,276,0,122"
                                             materialDesign:HintAssist.Hint="Nouvelle valeur"
-                                            Style="{StaticResource MaterialDesignFilledTextBox}">
+                                            Style="{StaticResource MaterialDesignFilledTextBox}" Height="42">
                                         <TextBox.Text>
                                             <Binding
                                                 Path="Text1"
@@ -283,14 +313,43 @@
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
+                                    <ComboBox
+                                        x:Name="ChoixRoleCombobox"
+                                          materialDesign:ComboBoxAssist.MaxLength="2"
+                                          materialDesign:HintAssist.Hint="Merci de choisir un élement"
+                                          materialDesign:HintAssist.HintOpacity=".26"
+                                          IsEditable="False" Height="32" Margin="-2,286,2,0" VerticalAlignment="Top">
+                                        <ComboBoxItem
+                                            Content="Database Manager" />
+                                        <ComboBoxItem
+                                            Content="Commercial" />
+                                        <ComboBoxItem
+                                            Content="Technique" />
+                                        <ComboBoxItem
+                                            Content="Developpeur Tiers" />
+                                    </ComboBox>
+                                    <ComboBox
+                                        x:Name="ChoixActifCombobox"
+                                          Margin="0,289,0,0"
+                                          materialDesign:ComboBoxAssist.MaxLength="2"
+                                          materialDesign:HintAssist.Hint="Merci de choisir un élement"
+                                          materialDesign:HintAssist.HintOpacity=".26"
+                                          IsEditable="False" VerticalAlignment="Top" Height="28">
+                                        <ComboBoxItem
+                                            Content="Activer le compte" />
+                                        <ComboBoxItem
+                                            Content="Désactiver le compte" />
+                                    </ComboBox>
                                     <Button
+                                        x:Name="ModifyButton"
                                         Click="Button_Click_ModifyUser"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                        Margin="0,20,0,0"
+                                        Margin="0,347,0,61"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Modifier l'utilisateur
                                     </Button>
-                                </StackPanel>
+                                    <TextBlock x:Name="ModifyUserState"  Margin="10,393,0,10" Height="37" HorizontalAlignment="Left" Width="641"/>
+                                </Grid>
                             </TabItem>
                             <TabItem x:Name="DeleteTab">
                                 <TabItem.Header>
@@ -341,7 +400,7 @@
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
                                           SelectionUnit="Cell" 
-                                          Background="PaleGreen">
+                                          Background="PaleGreen"  Height="65">
                                     </DataGrid>
                                     <Button
                                         x:Name="DeleteUserButton"
@@ -351,6 +410,7 @@
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
                                         Supprimer l'utilisateur
                                     </Button>
+                                    <TextBlock x:Name="DeleteUserState" Margin="0,50,0,0" Height="53"  />
                                 </StackPanel>
                             </TabItem>
                             <TabItem x:Name="ConsultationTab">
@@ -375,6 +435,7 @@
                                     Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                                     Text="Consultation de la base de donnée"/>
                                     <DataGrid x:Name="myDataGrid"
+                                          Height="350" 
                                           materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
@@ -382,16 +443,61 @@
                                           Background="LightGreen"
                                           AutoGenerateColumns="True">
                                     </DataGrid>
+                                    <Button
+                                        x:Name="DlConsultData"
+                                        Click="Button_Click_DlData"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,10,0,0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Télécharger un extrait de la base de donnée (.csv)
+                                    </Button>
                                 </StackPanel>
+                            </TabItem>
+                            <TabItem x:Name="LogTab">
+                                <TabItem.Header>
+                                    <StackPanel
+                                  Width="auto"
+                                  Height="auto">
+                                        <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Glasses"/>
+                                        <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Text="Logs" />
+                                    </StackPanel>
+                                </TabItem.Header>
+                                <StackPanel
+                                    Margin="16">
+                                    <TextBlock
+                                    Margin="0,0,0,8"
+                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                    Text="Consultation des logs servers"/>
+                                    <DataGrid Height="350"  x:Name="DataGridLog"
+                                              materialDesign:DataGridAssist.SelectedCellBorderBrush="White"
+                                              CanUserAddRows="False"
+                                              SelectionMode="Extended"
+                                              SelectionUnit="Cell" 
+                                              Background="LightGreen"
+                                              AutoGenerateColumns="True">
+                                    </DataGrid>
+                                    <Button
+                                        x:Name="DlLogData"
+                                        Click="Button_Click_DlData"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Margin="0,10,0,0"
+                                        Style="{StaticResource MaterialDesignRaisedAccentButton}" Cursor="Hand">
+                                        Télécharger un extrait de la base de donnée (.csv)
+                                    </Button>
+                                </StackPanel>
+
                             </TabItem>
                         </TabControl>
                     </materialDesign:Card>
+                    <TextBlock x:Name ="ConnectedAs" Margin="81,448,396,4"/>
                 </Grid>
             </Grid>
         </Grid>
-        <Button
-                Click="Button_Click_Login"
-                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="38,0,440,89" Cursor="Hand" Content="Valider" Height="32" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

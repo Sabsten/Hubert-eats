@@ -185,5 +185,14 @@ onMounted(async () => {
     margin-bottom: 50px;
 }
 
+@media screen and (max-width: 600px){
+    
+    .right-part {
+        display: none;
+    }
+    .left-part {
+        width: 100%;
+    }
+}
 </style>
   

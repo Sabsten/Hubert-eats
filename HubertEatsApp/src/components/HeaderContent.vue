@@ -77,6 +77,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   background-color: #D8E3E2;
+  height: 95px;
 }
 
 .button {
@@ -109,5 +110,15 @@ onMounted(async () => {
   &:hover {
     cursor: pointer;
   }
+}
+
+@media screen and (max-width: 610px) {
+ img{
+  display: none;
+ }
+
+ .content{
+  justify-content: end;
+ }
 }
   </style>

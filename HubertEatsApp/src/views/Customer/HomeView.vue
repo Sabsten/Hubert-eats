@@ -18,7 +18,7 @@ const carouselSettings = {
 const carouselBreakPoints = {
   // 200 and up
   200: {
-    itemsToShow: 2,
+    itemsToShow: 3,
     snapAlign: 'center',
   },
   // 400 and up
@@ -275,6 +275,21 @@ h1{
   margin-bottom: 30px;
 }
 
+
+}
+
+@media screen and (max-width: 500px) {
+  .searchBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: space-between;
+    flex-wrap: wrap;
+    bottom: 25px;
+    left: 30px;
+    gap: 20px;
+    width: calc(100% - 30px)
+  }
 }
 
 </style>

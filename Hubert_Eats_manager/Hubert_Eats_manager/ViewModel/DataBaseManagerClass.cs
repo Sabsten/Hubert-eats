@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using Hubert_Eats_manager.Model;
+using Hubert_Eats_manager.ViewModel;
 using Model;
 using MySql.Data.MySqlClient;
 
@@ -16,44 +17,48 @@ namespace ViewModel
             Technique,
             BddManager
         }
-        public static MySqlConnection DataBaseConnection = SQLDatabase.GetDBConnection();
+        
+        public static MySqlConnection DataBaseConnection = SQLDatabase.GetDatabaseDBConnection();
 
-        public static Tuple<bool, string> AddUser(Dictionary<string, string> UserInfo)
+        public static Tuple<bool, string> AddUser(string identifiant, string username, string password, string role )
         {
-            if (IsUserExists(UserInfo["Identifiant"]))
+            if (IsUserExists(identifiant))
                 return Tuple.Create(false, "Existing User");
             else
             {
-                FillTable(UserInfo);
-                return Tuple.Create(true, "L'utilisateur a bien été ajouté dans la base de donnée.");
+                AddUserClass userToAdd = new();
+                userToAdd.Identifiant = identifiant;
+                userToAdd.Username = username;
+                userToAdd.Password = password;
+                userToAdd.Role = role;
+                userToAdd.AddUser();
+                return Tuple.Create(true, MessageClass.GetConfirmationMessage("UserAdded"));
             }
         }
         public static Tuple<bool, string> ModifyUser(string modifiedparameter, string selectedParameter, string identifiant)
         {
-            Dictionary<string, string> UserInfo = new();
-            UserInfo.Add("Key", selectedParameter);
-            UserInfo.Add("Value", modifiedparameter);
-            UserInfo.Add("Identifiant", identifiant);
-            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString(UserInfo));
-            UserInfo.Clear();
-            UserInfo.Add("ModifiedBy", UserLoggedClass.UserName);
-            UserInfo.Add("Identifiant", identifiant);
-            ExecuteSQLCommand(SQLCommands.UpdateTableSqlString(UserInfo));
-            return Tuple.Create(true, "Modification effectuée pour" + identifiant);
+            ModifyUserClass userToModify = new();
+            userToModify.Value = modifiedparameter;
+            userToModify.Key = Usertable.GetUserTable(selectedParameter);
+            userToModify.Identifiant = identifiant;
+            userToModify.ModifyTable();
+
+            return Tuple.Create(true, MessageClass.GetConfirmationMessage("UserModified"));
         }
 
         public static Tuple<bool, string> DeleteUser(string identifiant)
         {
-            Dictionary<string, string> UserInfo = new();
-            UserInfo.Add("Identifiant", identifiant);
-            ExecuteSQLCommand(SQLCommands.DeleteUserSQLString(UserInfo));
+            DeleteUserClass userToDelete = new();
+            userToDelete.Identifiant = identifiant;
+            userToDelete.DeteteUser();
+
             if (IsUserExists(identifiant) == false)
             {
-                return Tuple.Create(true, "l'utilisateur " + identifiant + " a été supprimé");
+                return Tuple.Create(true, MessageClass.GetConfirmationMessage("UserDeleted"));
             }
             else
             {
-                return Tuple.Create(true, "l'utilisateur n'a pas pu être supprimé");
+                return Tuple.Create(true, MessageClass.GetErrorMessage("UserNotDeleted"));
             }
         }
 
@@ -62,7 +67,7 @@ namespace ViewModel
             Dictionary<string, string> UserInfo = new();
             UserInfo.Add("Identifiant", identifiant);
             DataBaseConnection.Open();
-            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUserSQLString(UserInfo));
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUser(UserInfo));
             List<List<string>> UserInfos = new();
             int i = 0;
             while (readerID.Read())
@@ -86,13 +91,13 @@ namespace ViewModel
             DataBaseConnection.Close();
             return UserInfos;
         }
-        
+
         public static List<ExtractDatabase> FindUserr(string identifiant)
         {
-            Dictionary<string,string> UserInfo = new();
+            Dictionary<string, string> UserInfo = new();
             UserInfo.Add("identifiant", identifiant);
             DataBaseConnection.Open();
-            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUserSQLString(UserInfo));
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUser(UserInfo));
             List<ExtractDatabase> User = new();
             while (readerID.Read())
             {
@@ -104,6 +109,7 @@ namespace ViewModel
                 User.Add(UserTest);
             }
             DataBaseConnection.Close();
+            //ExecuteSQLCommand(SQLCommands.LogFindUserSQLString(UserInfo),DataBaseConnection);
             return User;
         }
         public static string GetRole(string username)
@@ -111,7 +117,7 @@ namespace ViewModel
             Dictionary<string, string> UserInfo = new();
             UserInfo.Add("Identifiant", username);
             DataBaseConnection.Open();
-            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUserSQLString(UserInfo));
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.FindUser(UserInfo));
             string role = "";
             while (readerID.Read())
             {
@@ -124,33 +130,53 @@ namespace ViewModel
         public static List<ExtractDatabase> SQLDataToDatagrid()
         {
             DataBaseConnection.Open();
-            MySqlCommand test = SQLCommands.AllDataSQLString();
-            MySqlDataReader readerID = GetReaderSQLCommand(test);
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.AllData());
             List<ExtractDatabase> User = new();
             while (readerID.Read())
             {
                 ExtractDatabase UserTest = new();
-                if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
-                if (!readerID.IsDBNull(2)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
-                if (!readerID.IsDBNull(3)) { UserTest.nom = readerID.GetString(2).ToString(); } else { UserTest.nom = ""; };
-                if (!readerID.IsDBNull(5)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
+                if (!readerID.IsDBNull(0)) { UserTest.idInternalUser = readerID.GetString(0).ToString(); } else { UserTest.idInternalUser = ""; };
+                if (!readerID.IsDBNull(1)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
+                if (!readerID.IsDBNull(2)) { UserTest.nom = readerID.GetString(2).ToString(); } else { UserTest.nom = ""; };
+                if (!readerID.IsDBNull(4)) { UserTest.role = readerID.GetString(4).ToString(); } else { UserTest.role = ""; };
                 User.Add(UserTest);
             }
             DataBaseConnection.Close();
+            //Dictionary<string, string> UserInfo = new();
+            //UserInfo.Add("createdBy", UserLoggedClass.UserName);
+            //UserInfo.Add("role", UserLoggedClass.UserRole);
+            //UserInfo.Add("command", SQLCommands.AllDataSQLString());
+            //ExecuteSQLCommand(SQLCommands.Log_FillTable(UserInfo), LogConnection);
             return User;
         }
-        public static void FillTable(Dictionary<string, string> Data)
+        public static List<ExtractDatabase> LogSQLDataToDatagrid()
         {
             DataBaseConnection.Open();
-            GetReaderSQLCommand(SQLCommands.FillTableSQLCommand(Data));
+            MySqlDataReader readerID = GetReaderSQLCommand(SQLCommands.AllLogDataSQLString());
+            List<ExtractDatabase> User = new();
+            while (readerID.Read())
+            {
+                ExtractDatabase UserTest = new();
+                if (!readerID.IsDBNull(1)) { UserTest.idInternalUser = readerID.GetString(1).ToString(); } else { UserTest.idInternalUser = ""; };
+                if (!readerID.IsDBNull(2)) { UserTest.identifiant = readerID.GetString(1).ToString(); } else { UserTest.identifiant = ""; };
+                if (!readerID.IsDBNull(3)) { UserTest.nom = readerID.GetString(3).ToString(); } else { UserTest.nom = ""; };
+                User.Add(UserTest);
+            }
             DataBaseConnection.Close();
+
+            //Dictionary<string, string> UserInfo = new();
+            //UserInfo.Add("createdBy", UserLoggedClass.UserName);
+            //UserInfo.Add("role", UserLoggedClass.UserRole);
+            //UserInfo.Add("command", SQLCommands.AllDataSQLString());
+            //ExecuteSQLCommand(SQLCommands.Log_FillTable(UserInfo), LogConnection);
+            return User;
         }
         public static bool IsUserExists(string identifiant)
         {
             DataBaseConnection.Open();
             Dictionary<string, string> UserInfo = new();
             UserInfo.Add("Identifiant", identifiant);
-            MySqlDataReader reader = GetReaderSQLCommand(SQLCommands.FindUserSQLString(UserInfo));
+            MySqlDataReader reader = GetReaderSQLCommand(SQLCommands.FindUser(UserInfo));
             if (reader.HasRows) { DataBaseConnection.Close(); return true; } else { DataBaseConnection.Close(); return false; }
         }
         public static MySqlDataReader GetReaderSQLCommand(MySqlCommand SQLCommand)

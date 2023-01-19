@@ -55,6 +55,7 @@ function logout() {
   align-items: center;
   height: 96px;
   background-color: #D8E3E2;
+  padding-right: 10px;
 }
 
 .button {
