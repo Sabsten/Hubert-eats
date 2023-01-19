@@ -1,30 +1,42 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineComponent, onMounted, type Ref } from 'vue'
 import { ref } from "vue";
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { products } from '@/assets/products'
 import CardProduct from '@/components/CardProduct.vue'
 import HeaderContent from '@/components/HeaderContentRestorator.vue'
+import { useInventoryStore } from '@/stores/inventory';
+import { getAccountId } from '@/stores/auth';
+import type { type } from 'os';
+import type { IArticle } from '@/models/inventaire';
+import { storeToRefs } from 'pinia';
 
-export default defineComponent({
-  setup() {
-    let input = ref("");
-    const router = useRouter()
-    const onEdit = () => {
-      console.log("edit")
-      router.go(-1)
-    }
-    const onDelete = () => {
-      console.log("delete")
-        router.go(-1)
-    }
-    return { products, input, onEdit, onDelete }
-  },
-  components: {
-    CardProduct,
+defineComponent({
+  CardProduct,
     HeaderContent
-  }
-})
+});
+
+let article: Ref<IArticle | undefined> = ref(undefined);
+
+const inventoryStore = useInventoryStore();
+const { inventory } = storeToRefs(inventoryStore)
+const route = useRoute();
+const router = useRouter();
+// router.go(-1);
+
+onMounted(async () => {
+  await inventoryStore.getInventory(getAccountId()!);
+  article.value = inventory.value?.articles?.find((article: IArticle) => article._id === route.params.id.valueOf());
+  console.log(article.value);
+});
+
+async function onDelete(id: string) {
+  await inventoryStore.deleteArticle(id);
+}
+
+async function onUpdate() {
+  await inventoryStore.updateArticle(article.value!);
+}
 
 </script>
 
@@ -35,15 +47,16 @@ export default defineComponent({
         <div class="title">Édition d'un produit</div>
       </div>
       <div class="bottom">
-        <form @submit.prevent="">
-            <input class="shadow" type="text" placeholder="Nom du produit" />
-            <input class="shadow" type="text" placeholder="Type du produit" />
-            <input class="shadow price" type="number" placeholder="Prix du produit" />
-            <input class="shadow" type="url" placeholder="Lien de l'image" />
-            
+        <form @submit.prevent="" v-if="article">
+            <input class="shadow" type="text" placeholder="Nom du produit" v-model="article!.name"/>
+            <input class="shadow" type="text" placeholder="Type du produit" v-model="article!.type"/>
+            <input class="shadow price" type="number" placeholder="Prix du produit" v-model="article!.price"/>
+            <input class="shadow" type="url" placeholder="Lien de l'image" v-model="article!.image"/>
+            <input class="shadow" type="number" placeholder="Quantité" v-model="article!.quantity"/>
+            <input class="shadow" type="text" placeholder="Description" v-model="article!.description"/>
             <div class="endForm">
-                <button class="delete" cli type="submit" @click="onDelete()">Supprimer</button>
-                <button class="edit" type="submit" @click="onEdit()">Modifier</button>
+                <button class="delete" cli type="submit" @click="onDelete(article!._id)">Supprimer</button>
+                <button class="edit" type="submit" @click="onUpdate()">Modifier</button>
             </div>
             
         </form>

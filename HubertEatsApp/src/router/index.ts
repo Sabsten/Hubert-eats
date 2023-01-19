@@ -146,8 +146,8 @@ const router = createRouter({
           beforeEnter: restaurantGuard,
         },
         {
-          path: 'edit-menu-products/starter/:id',
-          name: 'edit-starter',
+          path: 'edit-menu-products/article/:id',
+          name: 'edit-article',
           component: () => import('../views/Restaurant/EditProduct.vue'),
           beforeEnter: restaurantGuard
         },

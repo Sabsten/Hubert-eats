@@ -2,14 +2,13 @@ import { defineStore } from 'pinia';
 import { useAuthStore } from './auth';
 import type { IRestaurant } from '@/models/restaurants';
 import { ArticleType, type IArticle, type IInventory } from '@/models/inventaire';
-import { useRoute } from 'vue-router';
 
 export const useInventoryStore = defineStore({
     id: 'Inventaire',
     state: () => {
         return {
             inventory: null as IInventory| null,
-            error: null as string | null
+            error: null as string | null,
         }
     },
     getters: {
@@ -28,7 +27,6 @@ export const useInventoryStore = defineStore({
     },
     actions: {
         async getInventory(restaurantID: string) {
-            console.log("restID "+ restaurantID);
             const authStore = useAuthStore();
             const URL: string = import.meta.env.VITE_INVENTORY_SERVICE_URL + '/' + restaurantID;
             const RES: Response = await fetch(URL, {
@@ -38,7 +36,6 @@ export const useInventoryStore = defineStore({
                 },
             });
             const data: IInventory = await RES.json();
-            console.log(data);
             if (!RES.ok) {
                 this.$patch({ error: RES.statusText });
                 return
@@ -47,5 +44,36 @@ export const useInventoryStore = defineStore({
                 return
             };
         },
+        async deleteArticle(articleID: string) {
+            const URL: string = import.meta.env.VITE_INVENTORY_SERVICE_URL + '/articles/' + articleID;
+            const RES: Response = await fetch(URL, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
+                },
+            });
+            if (!RES.ok) {
+                this.$patch({ error: RES.statusText });
+                return
+            } else {
+                return
+            };
+        },
+        async updateArticle(article: IArticle) {
+            const URL: string = import.meta.env.VITE_INVENTORY_SERVICE_URL + '/articles/' + article._id;
+            const RES: Response = await fetch(URL, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer: ' + localStorage.getItem('TOKEN')!
+                },
+                body: JSON.stringify(article),
+            });
+            if (!RES.ok) {
+                this.$patch({ error: RES.statusText });
+                return
+            } else {
+                return
+            };
+        }
     }
 })

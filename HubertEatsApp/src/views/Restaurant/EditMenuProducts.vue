@@ -9,6 +9,7 @@ import { useInventoryStore } from '@/stores/inventory';
 import { getAccountId } from '@/stores/auth';
 import { useRestaurantStore } from '@/stores/restaurant';
 import { storeToRefs } from 'pinia';
+import type { IArticle, IInventory } from '@/models/inventaire';
 
 const router = useRouter()
 let input = ref("");
@@ -41,6 +42,10 @@ function scrollTo(anchor: string) {
   el && el.scrollIntoView();
 }
 
+function updateProduct(product: IArticle) {
+  router.push('/restaurant/edit-menu-products/article/'+product._id);
+}
+
 </script>
 
 <template>
@@ -51,13 +56,13 @@ function scrollTo(anchor: string) {
         <div class="top-part-text">
           <div class="restaurantTitle_grade">
             <h1>
-              {{restaurantAccount.name}}
+              {{restaurantAccount?.name}}
             </h1>
             <div class="restaurantRate">{{ restaurantStore.getAverageRating(restaurantAccount?.rating) }}</div>
           </div>
-          <h4>{{restaurantAccount.address?.street_number!}}
-            &nbsp;{{restaurantAccount.address?.street_name!}}
-            ,&nbsp;{{restaurantAccount.address?.city!}}</h4>
+          <h4>{{restaurantAccount?.address?.street_number!}}
+            &nbsp;{{restaurantAccount?.address?.street_name!}}
+            ,&nbsp;{{restaurantAccount?.address?.city!}}</h4>
         </div>
     </div>
   </div>
@@ -73,7 +78,7 @@ function scrollTo(anchor: string) {
         <h2>Entrée</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in getStarters">
-            <CardProduct :article=product />
+            <CardProduct :article=product @click="updateProduct(product)"/>
           </div>
         </div>
       </div>
@@ -81,7 +86,7 @@ function scrollTo(anchor: string) {
         <h2>Plats</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in getMains">
-            <CardProduct :article=product />
+            <CardProduct :article=product @click="updateProduct(product)"/>
           </div>
         </div>
       </div>
@@ -89,7 +94,7 @@ function scrollTo(anchor: string) {
         <h2>Desserts</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in getDesserts">
-            <CardProduct :article=product />
+            <CardProduct :article=product @click="updateProduct(product)"/>
           </div>
         </div>
       </div>
@@ -97,7 +102,7 @@ function scrollTo(anchor: string) {
         <h2>Boissons</h2>
         <div class="shopsElements">
           <div class="element" v-for="product in getDrinks">
-            <CardProduct :article=product />
+            <CardProduct :article=product @click="updateProduct(product)"/>
           </div>
         </div>
       </div>
