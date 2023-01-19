@@ -94,6 +94,7 @@ export default defineComponent({
     margin: 20px;
     background-color: white;
     max-width: 450px;
+    display: none;
 }
 
 .statistics{
