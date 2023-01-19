@@ -1,8 +1,15 @@
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from 'vue'
+import {useRouter} from 'vue-router'
+import { useRoute } from 'vue-router'
 
-export default defineComponent({
-})
+const route = useRoute()
+const router = useRouter()
+
+function logout() {
+  router.push('/');
+  localStorage.removeItem('TOKEN');
+}
 </script>
 
 
@@ -12,6 +19,9 @@ export default defineComponent({
       <div class="title">
         Service commercial
       </div>
+      <button @click="logout()">
+        Deconnect
+      </button>
     </div>
 </template>
 

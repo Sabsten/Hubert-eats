@@ -9,17 +9,15 @@ function devGuard(to: any, from: any, next: any) {
   if (accountType === 'Developpeur') {
     next();
   } else {
-    next();
+    next('/');
   }
 }
 function commercialGuard(to: any, from: any, next: any) {
   const accountType = getRole();
-  console.warn(from)
   if (accountType === 'Commercial') {
-    console.warn('commercialGuard');
     next();
   } else {
-    next();
+    next('/');
   }
 }
 function techGuard(to: any, from: any, next: any) {
@@ -27,7 +25,7 @@ function techGuard(to: any, from: any, next: any) {
   if (accountType === 'Technicien') {
     next();
   } else {
-    next();
+    next('/');
   }
 }
 
@@ -60,7 +58,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/TechView.vue')
+      component: DevTiers
     },
   ]
 })
