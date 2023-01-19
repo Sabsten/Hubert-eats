@@ -23,7 +23,7 @@ function commercialGuard(to: any, from: any, next: any) {
 }
 function techGuard(to: any, from: any, next: any) {
   const accountType = getRole();
-  if (accountType === 'Technicien') {
+  if (accountType === 'Technique') {
     next();
   } else {
     next('/');
