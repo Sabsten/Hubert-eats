@@ -35,7 +35,7 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(json());
 app.use(routes);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

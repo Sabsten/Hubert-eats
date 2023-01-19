@@ -7,26 +7,29 @@ using System.Threading.Tasks;
 
 namespace Hubert_Eats_manager.Model
 {
-    public class ConfirmationMessageClass
+    class MessageClass
     {
         //Cree une fonction qui renvoi un dictionnaire de messages de confirmation
-        public static Dictionary<string, string> GetConfirmationMessage()
+        private static readonly Dictionary<string, string> ConfirmationMessages = new()
         {
-            Dictionary<string, string> test = new();
-            return test;
-        }
+            { "UserDeleted", "L'utilisateur à bien été supprimé de la base." },
+            { "UserModified", "L'utilisateur à bien été modifié de la base." },
+            { "UserAdded", "L'utilisateur à bien été ajouté de la base."},
 
-    }         
-
-    public class ErrorMessageClass
-    {
-        public Dictionary<string, string> ErrorMessages = new Dictionary<string, string>()
-        {
-            { "UserNotFound", "L'utilisateur n'existe pas" },
-            { "UserAlreadyExists", "L'utilisateur existe déjà" },
-            { "PasswordIncorrect", "Le mot de passe est incorrect" },
-            { "PasswordTooShort", "Le mot de passe est trop court" },
-            { "PasswordTooLong", "Le mot de passe est trop long" }
         };
+        public static string GetConfirmationMessage(string key) => ConfirmationMessages[key];
+   
+
+        private static readonly Dictionary<string, string> ErrorMessages = new()
+        {
+            { "UserNotFound", "L'utilisateur n'existe pas dans la base. Merci de réessayer." },
+            { "PasswordIncorrect", "Le mot de passe est incorrect. Merci de réessayer." },
+            { "UserAlreadyExists", "L'utilisateur existe déjà." },
+            { "UserNotDeleted", "L'utilisateur n'a pas pu être supprimé. Merci de contacter un administrateur." },
+            { "UserNotModified", "L'utilisateur n'a pas pu être modifié. Merci de contacter un administrateur." },
+            { "UserNotAdded", "L'utilisateur n'a pas pu être ajouté. Merci de contacter un administrateur." },
+            { "UserNotAllowed","Utilisateur enregistré, mais n'a pas accès a Hubert-Eats Manager. Merci de contacter votre manager pour vous donner les droits." }
+        };
+        public static string GetErrorMessage(string key) => ErrorMessages[key];
     }
 }

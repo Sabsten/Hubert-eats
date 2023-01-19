@@ -17,6 +17,10 @@ services:
     build: ./services/ordering
     restart: always
 
+  # hubert-eats-app:
+  #   build: ./HubertEatsApp
+  #   restart: always
+
   nginx:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped

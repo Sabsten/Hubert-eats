@@ -17,7 +17,7 @@ function logout() {
     <div class="content">
       <img src="@/assets/HubertEatsLogov2.png" width="200">
       <div class="title">
-        Service commercial
+        {{title}}
       </div>
       <button @click="logout()">
         Deconnect
@@ -49,7 +49,7 @@ function logout() {
 
 @media screen and (max-width: 550px) {
   .content{
-    justify-content: right;
+    justify-content: left;
   }
   img{
     display: none;

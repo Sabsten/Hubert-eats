@@ -23,7 +23,7 @@ namespace Model
 
     class Usertable
     {
-        public static Dictionary<string, string> GetUserTable()
+        public static Dictionary<string, string> Seeder_GetUserTable()
         {
             Dictionary<string, string> TableInfo = new()
             {
@@ -36,34 +36,42 @@ namespace Model
                 { "`createdBy`", "VARCHAR(45) NULL," },
                 { "`modifiedAt`", "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," },
                 { "`modifiedBy`", "VARCHAR(45) NULL," },
+                { "`isActive`", "BOOLEAN DEFAULT TRUE," },
+                { "`inactiveDate`", "DATETIME DEFAULT NULL," },
                 { "PRIMARY KEY", "(`idInternalUser`)" }
             };
             return TableInfo;
         }
-        public static Dictionary<string, string> GetUserTableToPrompt()
+        public static Dictionary<string, string> Seeder_GetLogTable()
         {
             Dictionary<string, string> TableInfo = new()
             {
-                { "idInternalUser", "UserID" },
-                { "identifiant", "Identifiant" },
-                { "nom", "Nom Prénom" },
-                { "password", "Password" },
-                { "role", "Fonction" },
-                { "createdAt", "Date de création" },
-                { "createdBy", "Compte crée par" },
-                { "modifiedAt", "Date de derniere modification" },
-                { "modifiedBy", "Compte dernierement modifié par" }
+                { "`idTransaction`", "INT NOT NULL AUTO_INCREMENT," },
+                { "`createdBy`", "VARCHAR(45) NULL," },
+                { "`role`", "VARCHAR(45) NULL," },
+                { "`command`", "VARCHAR(300) NULL," },
+                { "`createdAt`", "TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP," },
+                { "PRIMARY KEY", "(`idTransaction`)" }
             };
             return TableInfo;
         }
-        public static Dictionary<string, string> GetUserTableToAsk()
+
+        public static string GetUserTable(string key)
         {
-            Dictionary<string, string> TableInfo = GetUserTableToPrompt();
-            TableInfo.Remove("createdAt");
-            TableInfo.Remove("createdBy");
-            TableInfo.Remove("modifiedAt");
-            TableInfo.Remove("modifiedBy");
-            return TableInfo;
+            Dictionary<string, string> TableInfo = new()
+            {
+                { "UserID", "idInternalUser" },
+                { "Identifiant", "identifiant" },
+                { "Nom Prénom", "nom" },
+                { "Rôle", "role" },
+                { "Created At", "createdAt" },
+                { "Created By", "createdBy" },
+                { "Modified At", "modifiedAt" },
+                { "Modified By", "modifiedBy" },
+                { "Is Active", "isActive" }
+            };
+            return TableInfo[key];
         }
+   
     }
 }

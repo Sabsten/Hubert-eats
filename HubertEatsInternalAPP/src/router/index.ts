@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
+import Technicien from '../views/TechView.vue'
 import Commercial from '../views/CommercialView.vue'
 import DevTiers from '../views/CommercialView.vue'
 import { getRole } from '../stores/auth'

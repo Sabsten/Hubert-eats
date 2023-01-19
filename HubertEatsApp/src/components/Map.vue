@@ -33,19 +33,19 @@ const customerIconUrl = "https://cdn-icons-png.flaticon.com/512/4766/4766761.png
 
 <template>
     <div style="height:100%; width:100%">
-      <l-map ref="map" :zoom="zoom" :center="[courierLatLong[0], courierLatLong[1]]">
+      <l-map ref="map" :zoom="zoom" :center="[1, 1]">
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           layer-type="base"
           name="OpenStreetMap"
         ></l-tile-layer>
-        <l-marker v-if="courierLatLong" :lat-lng="[courierLatLong[0], courierLatLong[1]]">
+        <l-marker v-if="courierLatLong" :lat-lng="[1, 1]">
             <l-icon :icon-url="veloIconUrl" :icon-size="iconSize" />
         </l-marker>
-        <l-marker v-if="restauLatLong" :lat-lng="[restauLatLong[0], restauLatLong[1]]">
+        <l-marker v-if="restauLatLong" :lat-lng="[1, 1]">
             <l-icon :icon-url="restauIconUrl" :icon-size="iconSize" />
         </l-marker>
-        <l-marker v-if="customerLatLong" :lat-lng="[customerLatLong[0], customerLatLong[1]]">
+        <l-marker v-if="customerLatLong" :lat-lng="[1, 1]">
             <l-icon :icon-url="customerIconUrl" :icon-size="iconSize" />
         </l-marker>
       </l-map>

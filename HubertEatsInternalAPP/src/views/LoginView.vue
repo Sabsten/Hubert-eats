@@ -98,7 +98,9 @@ async function tryLogin() {
 }
 
 h1{
-  font-size: 50px;
+  font-size: 45px;
+  text-align: center;
+  margin: 0px 10px
 }
 
 h2{

@@ -11,9 +11,6 @@ const router = useRouter();
 const goToLogin = () => {
   router.push({ path: `/login` });
 };
-const goToHome = () => {
-  router.push({ path: `/home` });
-};
 let err: Ref<string | null> = ref(null);
 
 let mail: string | undefined;
@@ -49,7 +46,7 @@ async function createAccount(){
   if (err.value === null){
     switch(accountType.value) {
       case 'customer':
-        router.push({ path: '/home'});
+        router.push({ path: '/customer'});
         break;
       case 'courier':
         router.push({ path: '/courier'});
@@ -336,7 +333,7 @@ input[type="radio"]{
     }
     .presentation{
       width: 100%;
-      height: 200px;
+      height: 150px;
     }
     .sign_in{
       display: none;
@@ -349,6 +346,37 @@ input[type="radio"]{
     }
     .page{
     min-height: 900px;
+    }
+
+    .wrapper{
+      display: inline-flex;
+      flex-direction: column;
+      height: 85px;
+      width: 150px;
+      align-items: center;
+      justify-content: space-evenly;
+      border-radius: 5px;
+      padding: 0px 15px;
+    }
+
+    .wrapper .option{
+      justify-content: left;
+    }
+
+    .page{
+      height: 100%;
+    }
+
+    .inputs2{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .inputs2 input{
+      margin-bottom: 10px;
     }
 }
 

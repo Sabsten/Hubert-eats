@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import CourierHeader from '@/components/courier/CourierHeader.vue';
 import CourierHistory from '@/components/courier/CourierHistory.vue';
+import { getAccountId } from '@/stores/auth';
 import { useCourierStore } from '@/stores/courier';
+import { useOrderStore } from '@/stores/order';
 import { storeToRefs } from 'pinia';
 import { getCurrentInstance, onMounted, onUpdated, reactive, ref, type Ref } from 'vue';
 
 const courierStore = useCourierStore()
 const { courierAccount, error } = storeToRefs(courierStore);
+const orderStore = useOrderStore()
+const {getOrdersHistory} = storeToRefs(orderStore);
 
 let editionMode: Ref<boolean> = ref(false);
 
@@ -17,9 +21,9 @@ const historyTest = {
     date: new Date(),
 }
 
-onMounted(() => {
-    const courierStore = useCourierStore();
-    courierStore.getCourierAccount();
+onMounted(async () => {
+    await courierStore.getCourierAccount();
+    await orderStore.getOrdersByCourier(getAccountId()!);
 });
 
 async function updateCourier(){
@@ -71,11 +75,9 @@ async function updateCourier(){
     <div class="history">
         <h1>Historique</h1>
         <div class="historyContent">
-            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
-            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
-            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
-            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
-            <CourierHistory :duree=historyTest.duree :distance=historyTest.distance :gain=historyTest.gain :date=historyTest.date />
+            <div v-for="order in getOrdersHistory">
+                <CourierHistory :duree="0" :distance=0 :gain="Math.round(order.price * (15/100))" :date="new Date(order.createdAt!)" />
+            </div>
         </div>
     </div>
     </div>
