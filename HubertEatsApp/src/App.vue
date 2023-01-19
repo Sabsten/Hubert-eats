@@ -101,4 +101,10 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 100;
 }
+
+@media screen and (max-width: 600px){
+  .element {
+    min-width: 350px;
+  }
+}
 </style>
