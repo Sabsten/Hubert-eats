@@ -80,7 +80,7 @@ let searchValue: string;
       <Slide v-for="(product, i) in products" :key="i">
         <div class="carousel_item">
           <img :src="product.image" width="40" height="40">
-          <span>Test</span>
+          <span>Tag</span>
         </div>
       </Slide>
 
