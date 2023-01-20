@@ -62,9 +62,9 @@ let searchValue: string;
 <template>
   <HeaderContent class="header"/>
     <div class="top">
-      <div>
-        <h1 class="title">Enjoy a good meal</h1>
-        <img class="vegetables" alt="vegetables" src="@/assets/freshVegetable.png" width="170px" style="position:relative; left:10px; bottom:20px;"/>
+      <div class="title">
+        <h1 class="title">Offrez vous un bon repas</h1>
+        <img class="vegetables" src="@/assets/freshVegetable.png" width="170px" style="position:relative; left:10px; bottom:20px;">
       </div>
       <div class="searchBar">
           <div class="searchBarInputArea">
@@ -80,7 +80,7 @@ let searchValue: string;
       <Slide v-for="(product, i) in products" :key="i">
         <div class="carousel_item">
           <img :src="product.image" width="40" height="40">
-          <span>Test</span>
+          <span>Tag</span>
         </div>
       </Slide>
 

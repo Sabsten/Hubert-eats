@@ -3,6 +3,7 @@ import orderSchema, {IOrders, OrderStatus} from "../models/orders";
 import { CallbackError, Document } from "mongoose";
 import { IArticleCart } from "../models/articles";
 import { Server } from 'socket.io';
+import morgan from "morgan";
 
 export class orderController {
     
@@ -23,7 +24,8 @@ export class orderController {
                 return res.status(500).send(err);
             }
             let io: Server = req.app.get('io');
-            io.emit('ORDER', doc)
+            io.emit('ORDER', doc);
+            io.emit('ORDER-'+doc.restaurant_id);
             return res.status(200).send(doc);
         });
         
@@ -80,27 +82,30 @@ export class orderController {
                 break;
             }
             case OrderStatus.in_delivery:{
-                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: Document) => {
+                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, (err: ErrorCallback, doc: IOrders) => {
                     if (err) {
                         return res.status(500).send(err)
                     } else {
                         let io: Server = req.app.get('io');
                         io.emit('ORDER-'+doc._id , OrderStatus.in_delivery);
+                        io.emit('ORDER-'+doc.restaurant_id);
                         return res.status(200).json(doc);
                     };
                 }); 
                 break;
             }
             case OrderStatus.delivered:{
-                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status, code: req.body.code}, (err: ErrorCallback, doc: Document) => {
-                    if (err) {
-                        return res.status(500).send(err)
-                    } else {
-                        let io: Server = req.app.get('io');
-                        io.emit('ORDER-'+doc._id , OrderStatus.delivered);
-                        return res.status(200).json(doc);
-                    };
-                }); 
+                orderSchema.findByIdAndUpdate<IOrders>(req.params.id, {status: req.body.status}, 
+                    (err: ErrorCallback, doc: Document) => {
+                        if (err) {
+                            return res.status(500).send(err)
+                        } else {
+                            let io: Server = req.app.get('io');
+                            io.emit('ORDER-'+doc._id , OrderStatus.delivered);
+                            return res.status(200).json(doc);
+                        };
+                    }
+                );
                 break;
             }
             case OrderStatus.refused: {

@@ -12,8 +12,8 @@ defineComponent({
 })
 const currentUrl = window.location.pathname;
 const homePath = "/customer"
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 const cartStore = useCartStore();
 const orderStore = useOrderStore();
 const {getCurrentOrder} = storeToRefs(orderStore);

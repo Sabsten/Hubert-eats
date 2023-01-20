@@ -28,12 +28,14 @@ function constructCode(): number {
     return Number(code);
 }
 
+let codeError: Ref<string | undefined> = ref(undefined);
+
 onMounted(async () => {
     await orderStore.getOrdersByCourier(getAccountId()!);
     const socket = io(import.meta.env.VITE_ORDER_SOCKET_URL);
     if(!getCurrentOrder.value) {
         socket.on('NEW_ORDER', async (order: IOrders) => {
-        new window.Notification('Nouvelle livraison disponible !', {vibrate: 200, image:"https://cdn.dribbble.com/users/791530/screenshots/6322090/ouch_illustration_animation_icons8.gif"});
+        // new window.Notification('Nouvelle livraison disponible !', {vibrate: 200, image:"https://cdn.dribbble.com/users/791530/screenshots/6322090/ouch_illustration_animation_icons8.gif"});
         newOrder.value = order;
     })
     }
@@ -64,10 +66,12 @@ async function updateOrder(orderID: string, status: OrderStatus) {
 async function closeOrder(orderID: string, status: OrderStatus, code: number) {
     const isOK = await orderStore.changeOrderStatus(orderID, status, code);
     if(isOK) {
+        codeError.value = undefined;
         await orderStore.getOrdersByCourier(getAccountId()!);
-        new Notification('Course terminée ! + '+(order.value.price * (15/100)).toString()+' €', {vibrate: 200, image:"https://img.freepik.com/premium-vector/cartoon-money-payment-mobile-bank-electronic-transaction-transfer-money-via-online-mobile-app-vector-illustration-people-send-receive-money-online-hand-holding-smartphone-with-flowing-banknote_229548-2459.jpg?w=2000"})
+        // new Notification('Course terminée ! + '+(order.value.price * (15/100)).toString()+' €', {vibrate: 200, image:"https://img.freepik.com/premium-vector/cartoon-money-payment-mobile-bank-electronic-transaction-transfer-money-via-online-mobile-app-vector-illustration-people-send-receive-money-online-hand-holding-smartphone-with-flowing-banknote_229548-2459.jpg?w=2000"});
     } else {
-        new Notification('Code de validation incorrect', {vibrate: 200, image:"https://media.istockphoto.com/id/1332343413/vector/man-trying-to-login-into-his-devices-user-forgot-password-web-and-cyber-security-with-wrong.jpg?b=1&s=612x612&w=0&k=20&c=74UvzayDfGfVgkj8kOsuLxcWVzwLb5wz8PT_pzB_cy4="})
+        codeError.value = "Le code inséré n'est pas le bon";
+        // new Notification('Code de validation incorrect', {vibrate: 200, image:"https://media.istockphoto.com/id/1332343413/vector/man-trying-to-login-into-his-devices-user-forgot-password-web-and-cyber-security-with-wrong.jpg?b=1&s=612x612&w=0&k=20&c=74UvzayDfGfVgkj8kOsuLxcWVzwLb5wz8PT_pzB_cy4="})
     }
     
 }
@@ -80,8 +84,8 @@ async function closeOrder(orderID: string, status: OrderStatus, code: number) {
         <div v-if="getCurrentOrder" class="money">+ {{getCurrentOrder.price * (15/100)}} €</div>
         <div class="map">
             <!-- <Map :courier-lat-long="[47.42322, -1.239482]" :restau-lat-long="[47.41322, -1.219482]"/> -->
-            <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=1.4372348785400393%2C43.550292439442046%2C1.5175724029541016%2C43.59127323815584&amp;layer=mapnik&amp;marker=43.57078632436008%2C1.4774036407470703" style="border: 1px solid black"></iframe>
-            <!-- <h2 v-if="!newOrder && !getCurrentOrder">Aucune commandes actuellement disponible ...</h2> -->
+            <iframe v-if="newOrder || getCurrentOrder" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=1.4372348785400393%2C43.550292439442046%2C1.5175724029541016%2C43.59127323815584&amp;layer=mapnik&amp;marker=43.57078632436008%2C1.4774036407470703" style="border: 1px solid black"></iframe>
+            <h2 v-if="!newOrder && !getCurrentOrder">Aucune commandes actuellement disponible ...</h2>
         </div>
         <div class="address" v-if="newOrder">
             <span class="restau-name">{{ newOrder.restaurant_name }}</span>
@@ -106,6 +110,7 @@ async function closeOrder(orderID: string, status: OrderStatus, code: number) {
                 <input id="code4" maxlength="1" type="number" v-model="code4" placeholder="_">
             </div>
             <button type="submit" class="validateButton">Valider la commande</button>
+            <span class="error" v-if="codeError">{{ codeError }}</span>
        </form>
     </div>
 </template>
@@ -164,6 +169,19 @@ async function closeOrder(orderID: string, status: OrderStatus, code: number) {
     align-items: center;
     justify-content:space-around;
     margin: 20px 0;
+    form {
+        display: flex;
+        column-gap: 20px;
+    }
+    .validateButton {
+        border-radius: 25px;
+        background-color: #3EBC72;
+        border:0;
+        color:white;
+    }
+    .error {
+        color:red;
+    }
 }
 /* BUTTONS */
 .tinderButton {
