@@ -363,7 +363,7 @@
                                         Kind="Delete" />
                                         <TextBlock
                                         HorizontalAlignment="Center"
-                                        Text="Delete" />
+                                        Text="Supprimer" />
                                     </StackPanel>
                                 </TabItem.Header>
                                 <StackPanel

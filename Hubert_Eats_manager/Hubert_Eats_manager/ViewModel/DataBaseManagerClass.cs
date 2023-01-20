@@ -142,11 +142,6 @@ namespace ViewModel
                 User.Add(UserTest);
             }
             DataBaseConnection.Close();
-            //Dictionary<string, string> UserInfo = new();
-            //UserInfo.Add("createdBy", UserLoggedClass.UserName);
-            //UserInfo.Add("role", UserLoggedClass.UserRole);
-            //UserInfo.Add("command", SQLCommands.AllDataSQLString());
-            //ExecuteSQLCommand(SQLCommands.Log_FillTable(UserInfo), LogConnection);
             return User;
         }
         public static List<ExtractDatabase> LogSQLDataToDatagrid()
